@@ -4740,13 +4740,14 @@ function mergeStore(a, b){
     if(out[m].result!==undefined) out[m].result = Object.assign({}, (a[m]||{}).result||{}, (b[m]||{}).result||{});
     if(out[m].exams!==undefined){ const seen={}; out[m].exams = [].concat((a[m]||{}).exams||[], (b[m]||{}).exams||[]).filter(e=>e&&e.t&&!seen[e.t]&&(seen[e.t]=true)).sort((x,y)=>x.t-y.t).slice(-50); }
     if(out[m].best!==undefined) out[m].best = Math.max((a[m]||{}).best||0, (b[m]||{}).best||0);
+    if(out[m].wrong!==undefined){ const wa=(a[m]||{}).wrong||{}, wb=(b[m]||{}).wrong||{}; out[m].wrong={}; Object.keys(wa).concat(Object.keys(wb)).forEach(k=>{ out[m].wrong[k]=Math.max(wa[k]||0,wb[k]||0); }); }
   });
   return out;
 }
-function freshStore(){ return {quiz:{done:{},correct:{},best:0,exams:[]},drugs:{done:{},correct:{},best:0,exams:[]},cyto:{done:{},correct:{}},cases:{done:{},result:{}},lab:{done:{},result:{}},fluids:{done:{},result:{}},
-  basic:{done:{},correct:{},best:0,exams:[]},bcases:{done:{},result:{}},blab:{done:{},result:{}},bfluids:{done:{},result:{}},bcyto:{done:{},correct:{}}}; }
+function freshStore(){ return {quiz:{done:{},correct:{},wrong:{},best:0,exams:[]},drugs:{done:{},correct:{},wrong:{},best:0,exams:[]},cyto:{done:{},correct:{},wrong:{}},cases:{done:{},result:{}},lab:{done:{},result:{}},fluids:{done:{},result:{}},
+  basic:{done:{},correct:{},wrong:{},best:0,exams:[]},bcases:{done:{},result:{}},blab:{done:{},result:{}},bfluids:{done:{},result:{}},bcyto:{done:{},correct:{},wrong:{}}}; }
 let store = freshStore();
-function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s && s.quiz && s.cases && s.lab && s.fluids){ store=s; if(!store.drugs) store.drugs={done:{},correct:{},best:0,exams:[]}; ["quiz","drugs"].forEach(m=>{ if(!store[m].exams) store[m].exams=[]; }); ["cases","lab","fluids"].forEach(m=>{ if(!store[m].result) store[m].result={}; }); if(!store.cyto) store.cyto={done:{},correct:{}}; if(!store.basic) store.basic={done:{},correct:{},best:0,exams:[]}; if(!store.basic.exams) store.basic.exams=[]; ["bcases","blab","bfluids"].forEach(k=>{ if(!store[k]) store[k]={done:{},result:{}}; }); if(!store.bcyto) store.bcyto={done:{},correct:{}}; migrateStore(store); } }catch(e){} }
+function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s && s.quiz && s.cases && s.lab && s.fluids){ store=s; if(!store.drugs) store.drugs={done:{},correct:{},best:0,exams:[]}; ["quiz","drugs"].forEach(m=>{ if(!store[m].exams) store[m].exams=[]; }); ["cases","lab","fluids"].forEach(m=>{ if(!store[m].result) store[m].result={}; }); if(!store.cyto) store.cyto={done:{},correct:{}}; if(!store.basic) store.basic={done:{},correct:{},best:0,exams:[]}; if(!store.basic.exams) store.basic.exams=[]; ["bcases","blab","bfluids"].forEach(k=>{ if(!store[k]) store[k]={done:{},result:{}}; }); if(!store.bcyto) store.bcyto={done:{},correct:{}}; migrateStore(store); ["quiz","drugs","basic","cyto","bcyto"].forEach(m=>{ if(!store[m].wrong){ store[m].wrong={}; Object.keys(store[m].done).forEach(k=>{ if(store[m].correct[k]===false) store[m].wrong[k]=1; }); } }); } }catch(e){} }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} cloudSave(); }
 load();
 
@@ -4761,6 +4762,18 @@ const MODES = {
   lab:{name:"Lab Interpreter",icon:"🧪",cls:"c-lab",desc:"Spot the abnormalities, name the pattern",total:()=>LAB.length},
   fluids:{name:"Fluid Therapy",icon:"💧",cls:"c-fluids",desc:"Calculator + rate practice",total:()=>FLUIDS.length}
 };
+// ---- mistakes: questions answered wrong that have not yet been answered correctly again ----
+function markWrong(st,k,ok){ if(!st.wrong) st.wrong={}; if(ok) delete st.wrong[k]; else st.wrong[k]=(st.wrong[k]||0)+1; }
+function mistakes(m){
+  if(m==="quiz"||m==="drugs"||m==="basic"){ const D=MCQ[m].data(); return range(D.length).filter(i=>store[m].wrong[mkey(D[i])]); }
+  if(m==="cyto"||m==="bcyto"){ const D=m==="cyto"?CYTO:BASIC_CYTO; return range(D.length).filter(i=>(store[m].wrong||{})[ykey(D[i])]); }
+  if(m==="lab"||m==="blab"){ const D=m==="lab"?LAB:BASIC_LAB; return range(D.length).filter(i=>{ const r=store[m].result[lkey(D[i])]; return r && !r.ok; }); }
+  if(m==="cases"||m==="bcases"){ const D=m==="cases"?CASES:BASIC_CASES; return range(D.length).filter(i=>{ const r=store[m].result[ckey(D[i])]; return r && (!r.d || !r.t); }); }
+  if(m==="fluids"||m==="bfluids"){ const D=m==="fluids"?FLUIDS:BASIC_FLUIDS; return range(D.length).filter(i=>{ const r=store[m].result[fkey(D[i])]; return r && !r.ok; }); }
+  return [];
+}
+const REV_MODES=[["quiz","📝 Quiz Mode","c-quiz"],["drugs","💊 Drug Formulary","c-drugs"],["basic","🧭 Basic · Questions","c-basic"],["cyto","🔬 Cytology Lab","c-cyto"],["cases","🩺 Clinical Cases","c-cases"],["lab","🧪 Lab Interpreter","c-lab"],["fluids","💧 Fluid Therapy","c-fluids"],["bcases","🧭 Basic · Cases","c-basic"],["blab","🧭 Basic · Lab","c-basic"],["bfluids","🧭 Basic · Fluids","c-basic"],["bcyto","🧭 Basic · Cytology","c-basic"]];
+function mistakesTotal(){ return REV_MODES.reduce((a,[m])=>a+mistakes(m).length,0); }
 function doneCount(m){ if(m==="basic") return ["basic","bcases","blab","bfluids","bcyto"].reduce((a,k)=>a+Object.keys(store[k].done).length,0); return Object.keys(store[m].done).length; }
 function pct(m){ const t=MODES[m].total(); return t? Math.round(doneCount(m)/t*100):0; }
 
@@ -4850,7 +4863,7 @@ function go(v){
   window.scrollTo(0,0);
   render();
 }
-window.addEventListener("hashchange", ()=>{ const h=location.hash.replace("#",""); if(MODES[h]||h==="home"||h==="stats"){ view=h||"home"; render(); } });
+window.addEventListener("hashchange", ()=>{ const h=location.hash.replace("#",""); if(MODES[h]||h==="home"||h==="stats"||h==="review"){ view=h||"home"; render(); } });
 
 // ---------- shell ----------
 function topbar(title, extra=""){
@@ -4862,9 +4875,11 @@ function progBar(m, done, total){
   $("topprog").innerHTML = `<div class="${MODES[m].cls}"><div class="row space" style="font-size:12.5px;color:var(--muted);margin-top:6px"><span>Progress</span><span><b style="color:var(--ink)">${done}/${total}</b> · ${p}%</span></div><div class="prog"><div style="width:${p}%"></div></div></div>`;
 }
 
+function syncEngines(){ const b=isBasic(); C=b?C_B:C_M; L=b?L_B:L_M; CYS=b?Y_B:Y_M; F=b?F_B:F_M; }
 function render(){
-  const b=isBasic(); C=b?C_B:C_M; L=b?L_B:L_M; CYS=b?Y_B:Y_M; F=b?F_B:F_M;
+  syncEngines();
   if(view==="home") renderHome();
+  else if(view==="review") renderReview();
   else if(view==="basic") renderBasic();
   else if(view==="quiz"||view==="drugs") renderMcq(view);
   else if(view==="cases") renderCases();
@@ -4892,6 +4907,7 @@ function renderHome(){
       <div class="stats"><span>Overall: <b>${totalDone}/${totalAll}</b> items completed</span>${store.quiz.best?`<span>Best quiz streak: <b>${store.quiz.best}</b></span>`:""}</div>
     </div>
     <div class="modes">${cards}</div>
+    <button class="mode" data-act="go" data-v="review" style="margin-top:2px"><div class="ic" style="background:var(--bad-bg);color:var(--ink)">❌</div><div class="t"><b>Review mistakes</b><span>${(()=>{ const n=mistakesTotal(); return n?`${n} item${n>1?"s":""} answered wrong, waiting to be corrected`:"No pending mistakes"; })()}</span></div><div class="pct">${mistakesTotal()}</div></button>
     <button class="mode" data-act="go" data-v="stats" style="margin-top:2px"><div class="ic" style="background:var(--soft);color:var(--ink)">📊</div><div class="t"><b>Statistics</b><span>Accuracy by category, weak areas, streaks</span></div></button>
     <div class="row space" style="margin-top:6px"><span class="muted">${BASIC_TOTAL()} basic items · ${QUIZ.length} quiz questions · ${DRUGS.length} drug questions · ${CYTO.length} cytology fields · ${CASES.length} cases · ${LAB.length} lab panels · ${FLUIDS.length} fluid exercises</span></div>
     <div class="card" style="padding:12px 16px">
@@ -4908,7 +4924,7 @@ function renderHome(){
 }
 
 // ---------- MCQ ENGINE (Quiz + Drug Formulary) ----------
-function mcqList(m){ const M=MCQ[m], D=M.data(); return range(D.length).filter(i=>M.st.cat==="All"||D[i].c===M.st.cat); }
+function mcqList(m){ const M=MCQ[m], D=M.data(); if(M.st.cat==="__mistakes") return mistakes(m); return range(D.length).filter(i=>M.st.cat==="All"||D[i].c===M.st.cat); }
 function mcqStart(m, shuf){
   const M=MCQ[m], D=M.data(); M.st.screen="play"; let list = mcqList(m);
   if(shuf) list = shuffle(list);
@@ -4930,6 +4946,7 @@ function renderMcqMenu(m){
     <button class="mode ${M.cls}" data-act="mrandom" data-m="${m}"><div class="ic">🎲</div><div class="t"><b>Random mix</b><span>Questions from every block in random order, with instant feedback</span></div><div class="pct">${D.length}</div></button>
     <div class="mode ${M.cls}" style="display:block;cursor:default"><div class="row" style="gap:14px"><div class="ic">🎓</div><div class="t"><b>Exam</b><span>Random questions, no feedback until the end, timed. ${last?`Last: ${last.ok}/${last.n} (${Math.round(last.ok/last.n*100)}%) in ${fmtTime(last.sec)}`:"Choose the number of questions:"}</span></div></div>
       <div class="row" style="margin-top:10px;gap:8px">${[10,20,30,40,50].map(n=>`<button class="btn small" style="background:${M.color}" data-act="mexam" data-m="${m}" data-n="${n}">${n}</button>`).join("")}</div></div>
+    ${(()=>{ const n=mistakes(m).length; return `<button class="mode ${M.cls}" data-act="rev" data-m="${m}"><div class="ic">❌</div><div class="t"><b>Review mistakes</b><span>${n?`${n} question${n>1?"s":""} answered wrong and not yet corrected`:"Nothing to review - no pending mistakes"}</span></div><div class="pct">${n}</div></button>`; })()}
     <div class="section-label" style="margin-top:6px">Practice by block</div>
     <div class="modes">${catCards}</div>
     <div class="row" style="justify-content:flex-end;margin-top:4px"><button class="btn ghost small" data-act="mall" data-m="${m}">Continue all blocks in order →</button></div>`;
@@ -4971,7 +4988,7 @@ function renderExam(m){
 function examAnswer(m,k){
   const S=MCQ[m].st, E=S.exam, D=MCQ[m].data(); if(!E||E.end!==null) return;
   E.ans.push(k); const qi=E.qs[E.i]; const kk=mkey(D[qi]); const ok=E.perms[E.i][k]===0;
-  if(!store[m].done[kk] || ok) { store[m].done[kk]=true; store[m].correct[kk]=ok; }
+  if(!store[m].done[kk] || ok) { store[m].done[kk]=true; store[m].correct[kk]=ok; } markWrong(store[m],kk,ok);
   E.i++;
   if(E.i>=E.qs.length){ E.end=Date.now(); const nOk=E.ans.filter((a,i)=>E.perms[i][a]===0).length; store[m].exams=(store[m].exams||[]).concat([{t:E.end,n:E.qs.length,ok:nOk,sec:Math.round((E.end-E.start)/1000)}]).slice(-50); }
   save(); window.scrollTo(0,0); render();
@@ -4982,13 +4999,14 @@ function renderMcq(m){
   if(S.screen==="exam" && S.exam){ renderExam(m); return; }
   stopExamTimer();
   if(!S.order.length) mcqStart(m,false);
-  const cats = ["All", ...Array.from(new Set(D.map(q=>q.c)))];
+  const cats = ["All", ...Array.from(new Set(D.map(q=>q.c))), "__mistakes"];
   topbar(M.title, `<button class="btn icon" data-act="mshuffle" data-m="${m}" title="Shuffle">🔀</button>`);
   $("topbar").querySelector('[data-act="home"]').setAttribute("data-act","mmenu"); $("topbar").querySelector('[data-act="mmenu"]').setAttribute("data-m",m);
   const list = mcqList(m);
   progBar(m, list.filter(i=>store[m].done[mkey(D[i])]).length, list.length);
+  if(S.cat==="__mistakes" && !S.order.length){ $("main").innerHTML = `<div class="card done-banner"><div class="big">🎉</div><h2>No mistakes to review</h2><p class="muted">Every question you got wrong has since been answered correctly.</p><div class="actions" style="justify-content:center"><button class="btn ghost" data-act="mmenu" data-m="${m}">Blocks</button></div></div>`; return; }
   if(S.pos >= S.order.length){
-    $("main").innerHTML = `<div class="card done-banner"><div class="big">🎉</div><h2>Set complete</h2><p class="muted">Session: ${S.sessC}/${S.sessA} correct. Best streak: ${store[m].best}.</p>
+    $("main").innerHTML = `<div class="card done-banner"><div class="big">🎉</div><h2>${S.cat==="__mistakes"?"Mistakes reviewed":"Set complete"}</h2><p class="muted">Session: ${S.sessC}/${S.sessA} correct. Best streak: ${store[m].best}.</p>
       <div class="actions" style="justify-content:center"><button class="btn" style="background:${M.color}" data-act="mshuffle" data-m="${m}">Shuffle &amp; repeat</button><button class="btn ghost" data-act="mrestart" data-m="${m}">Restart in order</button><button class="btn ghost" data-act="mmenu" data-m="${m}">Blocks</button></div></div>`;
     return;
   }
@@ -5006,7 +5024,7 @@ function renderMcq(m){
           <div class="actions"><button class="btn" style="background:${M.color}" data-act="mnext" data-m="${m}">Next →</button></div>`;
   }
   $("main").innerHTML = `
-    <div class="row space"><select class="sel" id="mcat">${cats.map(c=>`<option ${c===S.cat?"selected":""}>${esc(c)}</option>`).join("")}</select>
+    <div class="row space"><select class="sel" id="mcat">${cats.map(c=>`<option value="${esc(c)}" ${c===S.cat?"selected":""}>${c==="__mistakes"?"❌ Mistakes ("+mistakes(m).length+")":esc(c)}</option>`).join("")}</select>
       <div class="stats"><span>Score <b>${S.sessC}/${S.sessA}</b></span><span>Streak <b>${S.streak}</b> 🔥</span><span>Best <b>${store[m].best}</b></span></div></div>
     <div class="card ${M.cls}">
       <div class="row space" style="margin-bottom:8px"><span class="chip mode-chip">${esc(q.c)}</span><span class="muted">Question ${S.pos+1} of ${S.order.length}${store[m].done[mkey(q)]?" · seen":""}</span></div>
@@ -5019,11 +5037,11 @@ function mcqAnswer(m,k){
   const S=MCQ[m].st, D=MCQ[m].data(); if(S.answered!==null) return;
   S.answered=k; const qi=S.order[S.pos]; const ok = S.perm[k]===0;
   S.sessA++; if(ok){ S.sessC++; S.streak++; if(S.streak>store[m].best) store[m].best=S.streak; } else S.streak=0;
-  const kk=mkey(D[qi]); store[m].done[kk]=true; store[m].correct[kk]=ok; save(); render();
+  const kk=mkey(D[qi]); store[m].done[kk]=true; store[m].correct[kk]=ok; markWrong(store[m],kk,ok); save(); render();
 }
 
 // ---------- cData() ----------
-function casesStart(shuf){ C.order = shuf? shuffle(range(cData().length)) : range(cData().length); C.pos=0; caseReset(); }
+function casesStart(shuf,list){ C.order = list? list.slice() : shuf? shuffle(range(cData().length)) : range(cData().length); C.pos=0; caseReset(); }
 function caseReset(){ C.step=0; C.sel={}; C.ddxPerm=null; C.txPerm=null; C.ddx=null; C.tx=null; }
 function renderCases(){
   if(!C.order.length) casesStart(false);
@@ -5077,7 +5095,7 @@ function renderCases(){
 }
 
 // ---------- lData() ----------
-function labStart(shuf){ L.order = shuf? shuffle(range(lData().length)) : range(lData().length); L.pos = 0; if(!shuf){ const f=L.order.findIndex(i=>!lSt().done[lkey(lData()[i])]); if(f>0) L.pos=f; } labReset(); }
+function labStart(shuf,list){ L.order = list? list.slice() : shuf? shuffle(range(lData().length)) : range(lData().length); L.pos = 0; if(!shuf&&!list){ const f=L.order.findIndex(i=>!lSt().done[lkey(lData()[i])]); if(f>0) L.pos=f; } labReset(); }
 function labReset(){ L.flags={}; L.perm=null; L.choice=null; L.submitted=false; }
 function rowAbn(r){ if(r.txt!==undefined) return r.abn? "abn":""; if(r.v<r.lo) return "lo"; if(r.v>r.hi) return "hi"; return ""; }
 function renderLab(){
@@ -5124,7 +5142,7 @@ function renderLab(){
 }
 
 // ---------- fData() ----------
-function fluidsStart(shuf){ F.order = shuf? shuffle(range(fData().length)) : range(fData().length); F.pos=0; if(!shuf){ const f=F.order.findIndex(i=>!fSt().done[fkey(fData()[i])]); if(f>0) F.pos=f; } fluidReset(); }
+function fluidsStart(shuf,list){ F.order = list? list.slice() : shuf? shuffle(range(fData().length)) : range(fData().length); F.pos=0; if(!shuf&&!list){ const f=F.order.findIndex(i=>!fSt().done[fkey(fData()[i])]); if(f>0) F.pos=f; } fluidReset(); }
 function fluidReset(){ F.input=""; F.checked=false; F.revealed=false; F.wasCorrect=false; }
 function calcFluids(c){
   const w=parseFloat(c.w)||0, deh=parseFloat(c.deh)||0, hrs=parseFloat(c.hrs)||24, loss=parseFloat(c.loss)||0, factor=parseFloat(c.factor)||0, drop=parseFloat(c.drop)||20;
@@ -5206,7 +5224,7 @@ function fluidOut(){
 }
 
 // ---------- CYTOLOGY ----------
-function cytoStart(shuf){ CYS.order = shuf? shuffle(range(yData().length)) : range(yData().length); CYS.pos=0; if(!shuf){ const f=CYS.order.findIndex(i=>!ySt().done[ykey(yData()[i])]); if(f>0) CYS.pos=f; } CYS.perm=null; CYS.answered=null; CYS.field=null; }
+function cytoStart(shuf,list){ CYS.order = list? list.slice() : shuf? shuffle(range(yData().length)) : range(yData().length); CYS.pos=0; if(!shuf&&!list){ const f=CYS.order.findIndex(i=>!ySt().done[ykey(yData()[i])]); if(f>0) CYS.pos=f; } CYS.perm=null; CYS.answered=null; CYS.field=null; }
 function renderCyto(){
   if(!CYS.order.length) cytoStart(false);
   topbar(ttl("Cytology Lab"), `<button class="btn icon" data-act="cyshuffle" title="Shuffle">🔀</button>`);
@@ -5244,6 +5262,15 @@ function renderBasic(){
   $("main").insertAdjacentHTML("afterbegin", html);
 }
 
+// ---------- REVIEW MISTAKES ----------
+function renderReview(){
+  topbar("Review mistakes"); $("topprog").innerHTML="";
+  const total=mistakesTotal();
+  const cards=REV_MODES.map(([m,name,cls])=>{ const n=mistakes(m).length; return `<button class="mode ${cls}" data-act="rev" data-m="${m}" ${n?"":"disabled style=\"opacity:.55\""}><div class="ic">${name.slice(0,2)}</div><div class="t"><b>${esc(name.slice(2).trim())}</b><span>${n?`${n} to review`:"nothing pending"}</span></div><div class="pct">${n}</div></button>`; }).join("");
+  $("main").innerHTML=`<div class="hero"><h2>Review mistakes</h2><p class="muted" style="margin:6px 0 0">${total?`${total} item${total>1?"s":""} you answered wrong. Each one leaves this list as soon as you answer it correctly again (practice or exam).`:"Nothing pending. Mistakes from any mode will collect here."}</p></div>
+    <div class="modes">${cards}</div>
+    <p class="muted" style="font-size:12.5px;margin-top:10px">Questions and cytology fields are cleared by a correct answer. Cases, lab panels and fluid exercises are cleared when you complete them again with the right diagnosis, pattern or result.</p>`;
+}
 // ---------- STATS ----------
 function mcqStats(m){
   const D=MCQ[m].data(); const cats={};
@@ -5259,7 +5286,7 @@ function renderStats(){
   const q=mcqStats("quiz"), dr=mcqStats("drugs"), bq=mcqStats("basic");
   const cr=Object.values(store.cases.result), lr=Object.values(store.lab.result), fr=Object.values(store.fluids.result);
   const totalDone = Object.keys(MODES).reduce((a,m)=>a+doneCount(m),0), totalAll = Object.keys(MODES).reduce((a,m)=>a+MODES[m].total(),0);
-  const allA=q.tot.a+dr.tot.a+bq.tot.a, allOk=q.tot.ok+dr.tot.ok+bq.tot.ok;
+  const allA=q.tot.a+dr.tot.a+bq.tot.a, allOk=q.tot.ok+dr.tot.ok+bq.tot.ok; const nMis=mistakesTotal();
   // weakest categories (>=3 answered, accuracy <75%)
   const weak=[]; [["quiz",q],["drugs",dr],["basic",bq]].forEach(([m,st])=>Object.entries(st.cats).forEach(([c,v])=>{ if(v.a>=3 && v.ok/v.a<0.75) weak.push({m,c,p:v.ok/v.a,a:v.a}); }));
   weak.sort((x,y)=>x.p-y.p);
@@ -5274,6 +5301,7 @@ function renderStats(){
         <div class="kpi"><b>${Math.max(store.quiz.best,store.drugs.best,store.basic.best||0)}</b><small>best streak</small></div></div>
       <div style="margin-top:12px">${Object.keys(MODES).map(m=>{ const M=MODES[m]; return `<div class="${M.cls}">${barRow(M.icon+" "+M.name, doneCount(m), M.total(), "var(--mc)", `${doneCount(m)}/${M.total()}`)}</div>`; }).join("")}</div>
     </div>
+    <div class="card"><div class="row space"><div><h3 style="margin:0">❌ Mistakes to review</h3><p class="muted" style="margin:4px 0 0;font-size:13.5px">${nMis?`${nMis} pending across all modes`:"No pending mistakes"}</p></div><button class="btn small" data-act="go" data-v="review">Open</button></div></div>
     ${weak.length?`<div class="card"><h3>Areas to review</h3><p class="muted" style="font-size:13.5px">Categories with at least 3 answers and accuracy below 75%. Tap to practice.</p>
       <div class="weak">${weak.slice(0,6).map(w=>`<button data-act="mpractice" data-m="${w.m}" data-c="${esc(w.c)}">${esc(w.c)} · ${Math.round(w.p*100)}%</button>`).join("")}</div></div>`:
       (allA>=10?`<div class="card"><h3>Areas to review</h3><p class="muted">No weak categories yet - keep going.</p></div>`:"")}
@@ -5296,6 +5324,14 @@ function renderStats(){
 function act(a, d){
   switch(a){
     case "home": go("home"); break;
+    case "rev": { const m=d.m; const list=mistakes(m); const basic=["basic","bcases","blab","bfluids","bcyto"].includes(m);
+        if(m==="quiz"||m==="drugs"||m==="basic"){ MCQ[m].st.cat="__mistakes"; mcqStart(m,true); if(basic) B.tab="questions"; go(m); break; }
+        view = basic? "basic" : m; syncEngines();
+        if(m==="cyto"||m==="bcyto"){ if(basic) B.tab="cyto"; cytoStart(false,list); }
+        else if(m==="lab"||m==="blab"){ if(basic) B.tab="lab"; labStart(false,list); }
+        else if(m==="cases"||m==="bcases"){ if(basic) B.tab="cases"; casesStart(false,list); }
+        else if(m==="fluids"||m==="bfluids"){ if(basic) B.tab="fluids"; F.tab="practice"; fluidsStart(false,list); }
+        go(view); break; }
     case "btab": B.tab=d.t; window.scrollTo(0,0); render(); break;
     case "go": go(d.v); break;
     case "theme": cycleTheme(); break;
@@ -5330,7 +5366,7 @@ function act(a, d){
     case "cshuffle": casesStart(true); render(); break;
     case "crestart": casesStart(false); render(); break;
     // lab
-    case "cyans": if(CYS.answered===null){ CYS.answered=+d.k; const it=yData()[CYS.order[CYS.pos]]; const k=ykey(it); const ok=CYS.perm[CYS.answered]===0; if(!ySt().done[k]||ok){ ySt().done[k]=true; ySt().correct[k]=ok; } save(); render(); } break;
+    case "cyans": if(CYS.answered===null){ CYS.answered=+d.k; const it=yData()[CYS.order[CYS.pos]]; const k=ykey(it); const ok=CYS.perm[CYS.answered]===0; if(!ySt().done[k]||ok){ ySt().done[k]=true; ySt().correct[k]=ok; } markWrong(ySt(),k,ok); save(); render(); } break;
     case "cynext": CYS.pos++; CYS.field=null; CYS.answered=null; window.scrollTo(0,0); render(); break;
     case "cyshuffle": cytoStart(true); render(); break;
     case "cyrestart": cytoStart(false); CYS.pos=0; render(); break;
@@ -5357,7 +5393,7 @@ document.addEventListener("click", e=>{
 });
 
 // ---------- boot ----------
-(function(){ try{ const l=document.createElement("link"); l.rel="icon"; l.type="image/png"; l.href=FAVICON; document.head.appendChild(l); }catch(e){} const h=location.hash.replace("#",""); if(MODES[h]||h==="stats") view=h; render(); cloudInit(); })();
+(function(){ try{ const l=document.createElement("link"); l.rel="icon"; l.type="image/png"; l.href=FAVICON; document.head.appendChild(l); }catch(e){} const h=location.hash.replace("#",""); if(MODES[h]||h==="stats"||h==="review") view=h; render(); cloudInit(); })();
 </script>
 <script>
 if("serviceWorker" in navigator){ window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").then(reg=>{
