@@ -216,6 +216,26 @@ textarea{background:var(--soft2);color:var(--ink)}
 .tsec{display:flex;flex-direction:column;align-items:center;line-height:1.1}
 .tsec small{font-size:9.5px;font-weight:600;letter-spacing:.02em;opacity:.8}
 .basictabs button small{font-weight:600;opacity:.7;font-size:11px}
+.c-tools{--mc:var(--blue);--mcb:var(--blue-bg)}
+.btn.icon.star{font-size:19px;line-height:1;color:var(--muted);flex:0 0 auto}
+.btn.icon.star.on{color:#e0a100;border-color:#e0a100}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.rt{border-collapse:collapse;width:100%;font-size:13.5px}
+table.rt th{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line)}
+table.rt td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+table.rt td:first-child{font-weight:600;min-width:104px}
+table.rt small{color:var(--muted);font-weight:400}
+.bigout{background:var(--mcb,var(--soft));border-radius:12px;padding:12px 14px}
+.bigout b{display:block;font-size:26px;line-height:1.2}
+.bigout span{display:block;color:var(--muted);font-size:13.5px;margin-top:4px}
+.phr{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line)}
+.phr:last-child{border-bottom:0}
+.phr b{display:block;font-size:15px;font-weight:600}
+.phr span{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.tnote{margin-top:14px}
+.tnote textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:14.5px;resize:vertical}
+.srow{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:14px;margin-top:8px}
+.seg button{font-size:13.5px;padding:10px 4px}
 </style>
 </head>
 <body>
@@ -2252,6 +2272,47 @@ QUIZ.push(
 {t:"lab-electrolytes",c:"Clinical Skills",q:"Very high potassium with very low calcium in an otherwise well animal suggests:",o:["EDTA contamination of the sample", "Addisonian crisis with collapse", "Late ethylene glycol poisoning", "Tumor lysis after chemotherapy"],e:"Potassium EDTA from the purple tube adds potassium and binds calcium. Repeat with correct order of draw before acting."},
 {t:"emerg-env",c:"Emergency",q:"Which finding carries a poor prognosis in heatstroke?",o:["Hypoglycemia with prolonged clotting times", "A heart rate of 140 per minute on arrival", "Heavy panting while being cooled down", "Marked thirst once the dog has recovered"],e:"Also falling platelets, rising creatinine after 24 hours, nucleated red cells, seizures or coma, and delay before cooling."},
 {t:"emerg-env",c:"Emergency",q:"A dog licks a pine processionary caterpillar and its tongue swells. First aid?",o:["Flush with warm water without rubbing", "Scrub the tongue firmly with dry gauze", "Apply ice directly to the tongue for an hour", "Induce vomiting with apomorphine at once"],e:"Rubbing breaks more hairs and releases more toxin. Then give an anti-inflammatory steroid, antihistamine and analgesia; watch for tongue necrosis."}
+);
+// ===== QUIZ part 7: ophthalmology and orthopedics reinforcement (t = theory topic id) =====
+QUIZ.push(
+// --- ophthalmology ---
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"What is a normal Schirmer tear test result in a dog?",o:["15 mm/min or more","5 mm/min or less","Exactly 10 mm/min","Over 40 mm/min"],e:"Normal is 15 mm/min or more; under 10 mm/min with clinical signs means dry eye. Run it before any drops or cleaning."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"What is the normal intraocular pressure in dogs and cats?",o:["About 10-25 mmHg","About 1-5 mmHg","About 30-45 mmHg","About 60-80 mmHg"],e:"Both eyes should be within a few mmHg of each other. Do not press on the neck or the lids while measuring: it raises the reading."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"A healthy 6-week-old puppy has no menace response. What does this mean?",o:["Nothing: the response is learned", "Congenital blindness is almost certain", "A facial nerve lesion", "A cerebellar lesion"],e:"The menace response is a learned response that appears at 10-12 weeks. Use the dazzle reflex and pupillary light reflexes in younger animals."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"A simple superficial ulcer has not healed after 10 days. What is the next step?",o:["Search for an underlying cause", "Add a topical corticosteroid twice daily", "Send anesthetic drops home", "Wait three more weeks"],e:"Look for entropion, extra or ectopic lashes, a foreign body under the third eyelid, dry eye or an indolent ulcer with a loose epithelial lip."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"A Boxer's ulcer has a loose lip of epithelium that fluorescein runs under. This is:",o:["An indolent ulcer","A melting ulcer","A descemetocele","A dendritic ulcer"],e:"Debride with a dry cotton bud, then grid keratotomy or diamond burr plus a contact lens. Never use a grid in cats or in infected ulcers."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"A cornea turns grey and gelatinous within hours. Which treatment is added to antibiotics?",o:["Serum drops (anti-collagenase)", "Prednisolone acetate drops every 4 h", "Proparacaine drops at home", "Latanoprost once daily"],e:"A melting ulcer: fluoroquinolone every 1-2 hours plus anti-collagenase (serum, EDTA or acetylcysteine), oral doxycycline, analgesia and urgent referral."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"Which statement about anterior uveitis is correct?",o:["It is often a sign of systemic disease", "It always follows blunt corneal trauma", "It raises the eye pressure from the start", "It needs no tests beyond the eye itself"],e:"Infectious (Ehrlichia, Leishmania, FIP, FeLV), neoplastic, immune-mediated and lens-induced causes are common: do a full examination, blood pressure and blood work."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"When is atropine NOT used in an eye with uveitis?",o:["When the pressure is rising","When the pupil is small","When the eye is painful","When fluorescein is negative"],e:"Atropine relieves ciliary spasm and prevents adhesions, but it can precipitate glaucoma. Recheck pressure at every visit."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"Which drug lowers intraocular pressure fastest in acute primary glaucoma?",o:["Latanoprost","Atropine","Ciclosporin","Tropicamide"],e:"One drop, repeated in 15-30 minutes if needed; add dorzolamide and, if needed, mannitol. Avoid latanoprost with anterior lens luxation or marked uveitis."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"A dog has primary glaucoma in one eye. What is done for the other eye?",o:["Start preventive drops","Nothing until it is red","Remove it at the same time","Give atropine daily"],e:"The second eye follows within months to years; prophylactic treatment delays the onset. Recheck pressures regularly."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"Which eye cannot be treated with latanoprost?",o:["One with anterior lens luxation", "One with primary inherited glaucoma", "One with a clear cornea", "One with a normal fellow eye"],e:"The intense miosis it causes traps the lens in the anterior chamber. Terriers are predisposed to lens luxation; these eyes need urgent surgery."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"An old dog has bluish, hazy lenses but still sees well and the fundus is visible. This is:",o:["Nuclear sclerosis", "Mature diabetic cataract", "Diffuse corneal edema", "Anterior lens luxation"],e:"A normal ageing change that does not need treatment. A cataract blocks the fundus reflection and reduces vision."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"An old cat becomes blind overnight with wide pupils. What do you measure first?",o:["Blood pressure","Tear production","Blood glucose","Body temperature"],e:"Hypertensive retinal detachment is the leading cause; look for kidney disease and hyperthyroidism. Amlodipine may restore some vision if started early."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"Which drug class can cause dry eye in dogs?",o:["Sulfonamides","Penicillins","Macrolides","Tetracyclines"],e:"Trimethoprim-sulfonamide combinations can cause keratoconjunctivitis sicca: check tear production before and during long courses."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",q:"Why is a topical anesthetic never dispensed for home use?",o:["It delays healing and hides pain", "It keeps the pupil dilated for days", "It raises eye pressure", "It causes cataracts"],e:"Repeated use is toxic to the epithelium and removes the protective blink, so ulcers deepen unnoticed. It is for the examination only."},
+{t:"ophtho-ortho",c:"Neuro/Ophtho/Ortho",q:"Which sign best separates acute glaucoma from uveitis at a glance?",o:["A dilated pupil", "A red, painful eye", "Squinting and tearing", "Rubbing at the face"],e:"Glaucoma gives a wide, fixed pupil and high pressure; uveitis a small pupil and low pressure. Both are red and painful."},
+{t:"ophtho-ortho",c:"Neuro/Ophtho/Ortho",q:"Which red eye is NOT an emergency?",o:["Mild allergic conjunctivitis", "Deep stromal ulcer with a crater", "Acute glaucoma", "Proptosed globe"],e:"Conjunctivitis has mild pain, a clear cornea, a normal pupil and normal pressure. The others threaten the eye within hours."},
+{t:"ophtho-ortho",c:"Neuro/Ophtho/Ortho",q:"In which order are the basic eye tests performed?",o:["Tears, fluorescein, then pressure","Pressure, tears, then fluorescein","Fluorescein, pressure, then tears","Dilate first, then all the others"],e:"Schirmer first (drops alter it), then fluorescein, then tonometry after topical anesthetic. Dilate only when the pressure is normal."},
+// --- orthopedics ---
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"Which gait sign indicates a hindlimb lameness?",o:["The hip on the lame side rises more", "The head drops when the lame leg lands", "The tail is held to the sound side", "Both elbows are turned outward"],e:"The 'hip hike': the pelvis rises on the painful side as weight is taken off it. A head nod belongs to forelimb lameness."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"A 7-month-old German Shepherd has lameness that moves from leg to leg. Most likely?",o:["Panosteitis","Osteosarcoma","Hip dysplasia","Septic arthritis"],e:"Pain on pressing the long bones in a dog of 5-18 months; self-limiting, treated with analgesia."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"A 4-month-old Great Dane has fever and hot, painful swellings above the carpi. Most likely?",o:["Hypertrophic osteodystrophy", "Panosteitis of the long bones", "Elbow dysplasia, both elbows", "Nutritional rickets of the radius"],e:"Metaphyseal inflammation in fast-growing puppies of 2-6 months, with systemic illness. Analgesia and supportive care."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"A 9-month-old Yorkshire Terrier has a painful hip and muscle wasting. Most likely?",o:["Avascular necrosis of the femoral head", "Hip dysplasia with secondary osteoarthritis", "Rupture of the cranial cruciate ligament", "Panosteitis of the femoral shaft and neck"],e:"Legg-Calve-Perthes disease affects small breeds at 4-11 months. Femoral head and neck excision gives good results."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"Which statement about cranial cruciate disease in dogs is correct?",o:["It is mostly a slow degeneration", "It is always an acute sports injury", "It never affects both stifles", "It heals with two weeks of rest"],e:"The ligament degenerates and finally fails; about half of dogs rupture the other side within 1-2 years."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"A click is felt when flexing a stifle with a ruptured cruciate. It suggests a tear of the:",o:["Medial meniscus","Lateral collateral","Patellar ligament","Long digital extensor"],e:"The caudal horn of the medial meniscus is crushed by the unstable femur in about half of cases; it is treated at surgery."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"Which test detects hip laxity in a young dog?",o:["Ortolani sign","Cranial drawer","Tibial compression","Sit test"],e:"The subluxated head clunks back into the socket as the limb is abducted. Drawer and tibial compression test the cruciate."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"Which surgery for hip dysplasia must be done before 18-20 weeks of age?",o:["Juvenile pubic symphysiodesis", "Total hip replacement, cemented", "Femoral head excision", "Triple pelvic osteotomy"],e:"Fusing the pubic symphysis early lets the sockets rotate over the heads as the pelvis grows. It only works in very young puppies."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"A small dog skips for a few steps on a hind leg and then walks normally. Most likely?",o:["Medial patellar luxation", "Hip dysplasia with arthritis", "Cranial cruciate rupture", "Achilles tendon injury"],e:"The patella slips out, the dog carries the leg, and it returns when the stifle extends. Surgery for grade 2 and above with signs."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"What is the first step with an open fracture on arrival?",o:["Cover it with a sterile dressing", "Flush it with tap water in the yard", "Take radiographs at once", "Close the skin with staples"],e:"Cover immediately to stop hospital contamination, give analgesia and an IV antibiotic early, then lavage and debride under anesthesia."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"Which fracture must NOT be managed with a cast?",o:["Radius and ulna of a toy breed", "Stable metacarpal fracture in a cat", "Greenstick tibial fracture in a puppy", "Stable distal ulna fracture, radius intact"],e:"Poor blood supply gives a high non-union rate in toy breeds: these fractures are plated."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"An intramedullary pin used alone resists which force?",o:["Bending only","Rotation only","Compression only","All forces"],e:"It must be combined with cerclage wires or a fixator to control rotation and collapse. A plate with screws resists all forces."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"A fractured femur arrives after a road accident. Which films are taken before anesthesia?",o:["Thorax","Skull","Tail","Carpus"],e:"A large share of trauma patients have lung contusions, pneumothorax or diaphragmatic hernia. Stabilize the patient before the bone."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"Which fixation suits an avulsion fracture of the olecranon?",o:["Tension band wire", "Fibreglass cast alone", "Robert Jones bandage", "Strict cage rest only"],e:"The triceps pulls the fragment away; pins with a figure-of-eight wire turn that pull into compression. The same applies to the tibial crest and greater trochanter."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"How does osteoarthritis usually show in cats?",o:["Less jumping and poor grooming","An obvious limp on one leg","Loud vocalizing when walking","Swollen, hot joints with fever"],e:"Cats rarely limp. Ask about jumping, grooming, litter tray use and temperament."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",q:"Which monthly injection targets nerve growth factor for osteoarthritis pain in dogs?",o:["Bedinvetmab","Lokivetmab","Frunevetmab","Maropitant"],e:"Bedinvetmab in dogs and frunevetmab in cats. Lokivetmab targets interleukin-31 for itch."},
+{t:"ophtho-ortho",c:"Neuro/Ophtho/Ortho",q:"How do you separate an orthopedic from a neurological cause of an abnormal gait?",o:["Check conscious proprioception", "Take the rectal temperature twice", "Palpate the popliteal nodes", "Measure the blood glucose"],e:"Paw placement is normal in purely orthopedic disease and delayed in neurological disease. Then look for pain, swelling and instability."},
+{t:"ophtho-ortho",c:"Neuro/Ophtho/Ortho",q:"Several swollen, painful joints with fever and a stiff gait suggest:",o:["Immune-mediated polyarthritis", "Bilateral cranial cruciate rupture", "Generalized osteoarthritis", "Panosteitis of all limbs"],e:"'Walking on eggshells'. Tap several joints (neutrophils without bacteria) and test for tick-borne disease and leishmaniosis."}
 );
 // ===== CLINICAL CASES =====
 // tests: key=true means it should be ordered; result shown if chosen; note = feedback
@@ -9512,6 +9573,211 @@ QUIZ.push(
 {t:"hemostasis",c:"Hematology/Oncology",fig:"coag",hl:"A",q:"Hemophilia A (factor VIII deficiency) is a defect of which labelled part?",o:["A","B","C","D"],e:"A: the intrinsic pathway (XII, XI, IX, VIII). The aPTT is prolonged while the PT stays normal."},
 {t:"hemostasis",c:"Hematology/Oncology",fig:"coag",hl:"D",q:"The buccal mucosal bleeding time evaluates which labelled step?",o:["D","C","A","B"],e:"D: primary hemostasis, the platelet plug that depends on platelet number and function and on von Willebrand factor. Clotting times (A, B, C) are normal in these disorders."}
 );
+// ===== FIGURES part 3: schematic radiographs, fracture diagrams and front views of the eye; legends; theory placement; image questions =====
+(function(){
+  const BK="#07090a", AIR="#262b2f", FAT="#3a3f43", ST="#62676b", ST2="#8a8f93", BN="#dfe2e4";
+  let uid=0;
+  // radiograph frame: black film, slightly blurred shapes, caption; diagnosis shown only on reveal
+  function film(W,H,body,cap,name,r,over){ const id="rf"+(uid++);
+    return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:system-ui,sans-serif;border-radius:8px"><defs><filter id="${id}" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="1.5"/></filter><filter id="${id}s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter></defs><rect width="${W}" height="${H}" fill="${BK}"/><g filter="url(#${id})">${body.replace(/SOFTBLUR/g,`url(#${id}s)`)}</g>${over||""}<text x="8" y="14" font-size="10.5" fill="#aeb6ba">${cap}</text>${r&&name?`<rect x="0" y="${H-22}" width="${W}" height="22" fill="#000" opacity=".62"/><text x="${W/2}" y="${H-7}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7be3a4">${name}</text>`:""}</svg>`; }
+  const LB=(x,y,letter,t,r)=>{ const hit=r&&letter===t; return `<g><circle cx="${x}" cy="${y}" r="11" fill="${hit?"#2fa56b":"#f4f6f7"}" stroke="${hit?"#7be3a4":"#1f2d32"}" stroke-width="${hit?2.5:1.5}"/><text x="${x}" y="${y+4.5}" text-anchor="middle" font-size="12" font-weight="700" fill="${hit?"#fff":"#1f2d32"}">${letter}</text></g>`; };
+  const spine=(x0,x1,y,dy)=>{ let s=""; for(let x=x0,i=0;x<x1;x+=25,i++){ const yy=y+(dy?dy(x):0); s+=`<rect x="${x}" y="${yy}" width="21" height="13" rx="3" fill="${BN}" opacity=".88"/><path d="M${x+7} ${yy} L${x+13} ${yy-16} L${x+17} ${yy}" fill="${BN}" opacity=".5"/>`; } return s; };
+
+  // ---------- lateral thorax (head to the left) ----------
+  function thorax(o){ o=o||{}; const h=Object.assign({cx:146,cy:146,rx:37,ry:50,rot:-20},o.heart||{}); const tr=o.trach||[30,84,142,102];
+    const vy=x=>170+(x-60)*(34/175);
+    let ribs=""; for(let i=0;i<9;i++){ const x=66+i*22; ribs+=`<path d="M${x} 56 Q ${x+26} 130 ${x-6} ${vy(x-6)}" fill="none" stroke="${BN}" stroke-width="3.5" opacity=".2"/>`; }
+    let stern=""; for(let i=0;i<7;i++){ const x=62+i*25; stern+=`<rect x="${x}" y="${vy(x)+1}" width="19" height="8" rx="3" fill="${BN}" opacity=".7" transform="rotate(11 ${x} ${vy(x)})"/>`; }
+    const vessels=o.noVessels?"":`<g stroke="${ST2}" fill="none" opacity=".5"><path d="M158 108 Q 200 100 248 84" stroke-width="2.6"/><path d="M160 116 Q 200 124 226 150" stroke-width="2.4"/><path d="M130 104 Q 100 100 70 110" stroke-width="2.4"/><path d="M196 102 L214 70" stroke-width="1.6"/><path d="M186 122 L196 160" stroke-width="1.6"/><path d="M104 102 L92 136" stroke-width="1.6"/></g>`;
+    return `<path d="M0 18 H360 V224 L250 224 L40 184 L0 156 Z" fill="${ST}"/>
+      <path d="M46 58 L268 56 C 240 92 214 150 234 204 L60 170 L44 122 Z" fill="${o.lung||AIR}"/>
+      ${o.under||""}${vessels}
+      <path d="M150 100 Q 176 66 268 64" fill="none" stroke="${ST2}" stroke-width="9" opacity=".5"/>
+      <path d="M176 138 L226 126" fill="none" stroke="${ST2}" stroke-width="10" opacity=".5"/>
+      <path d="M${tr[0]} ${tr[1]+12} L${tr[2]} ${tr[3]+14} L${h.cx-10} ${h.cy-h.ry+16} L44 150 Z" fill="${ST2}" opacity=".3"/>
+      ${o.noHeart?"":`<ellipse cx="${h.cx}" cy="${h.cy}" rx="${h.rx}" ry="${h.ry}" fill="${ST2}" transform="rotate(${h.rot} ${h.cx} ${h.cy})"/>`}
+      ${o.mid||""}
+      <path d="M${tr[0]} ${tr[1]} L${tr[2]} ${tr[3]}" stroke="${ST2}" stroke-width="13" stroke-linecap="round"/><path d="M${tr[0]} ${tr[1]} L${tr[2]} ${tr[3]}" stroke="${BK}" stroke-width="8.5" stroke-linecap="round"/>
+      ${ribs}${stern}<rect x="0" y="18" width="360" height="26" fill="${ST}"/>${spine(14,350,44,x=>-4*Math.sin((x-14)/336*Math.PI))}
+      <ellipse cx="282" cy="96" rx="15" ry="10" fill="${AIR}" opacity=".85"/>${o.over||""}`; }
+  const TH="Lateral thorax · schematic radiograph";
+  AFIG.rad_thorax=(t,r)=>film(360,230,thorax(),TH,"Normal thorax",r);
+  AFIG.rad_chf=(t,r)=>film(360,230,thorax({heart:{cx:150,cy:140,rx:50,ry:60,rot:-16},trach:[30,80,150,72],
+    mid:`<ellipse cx="186" cy="96" rx="26" ry="19" fill="${ST2}"/>`,
+    over:`<g filter="SOFTBLUR"><ellipse cx="214" cy="92" rx="36" ry="20" fill="#e9ecee" opacity=".62"/><ellipse cx="226" cy="118" rx="24" ry="16" fill="#e9ecee" opacity=".45"/><ellipse cx="182" cy="74" rx="22" ry="10" fill="#e9ecee" opacity=".4"/></g>`}),TH,"Cardiomegaly with pulmonary edema (left-sided failure)",r);
+  AFIG.rad_pleural=(t,r)=>film(360,230,thorax({noVessels:true,
+    over:`<path d="M46 124 Q 72 104 96 122 Q 124 98 150 118 Q 180 96 204 116 Q 222 104 232 118 C 222 150 222 180 234 204 L60 170 Z" fill="${ST2}" opacity=".93"/><g stroke="${ST2}" stroke-width="2.2" fill="none" opacity=".85"><path d="M118 66 L100 120"/><path d="M178 62 L186 112"/><path d="M228 66 L214 108"/></g>`}),TH,"Pleural effusion",r);
+  AFIG.rad_pneumo=(t,r)=>film(360,230,thorax({lung:"#0b0d0f",noVessels:true,heart:{cx:140,cy:124,rx:34,ry:44,rot:-22},
+    under:`<path d="M70 70 Q 150 60 222 78 Q 240 100 206 124 Q 150 112 76 120 Q 58 96 70 70 Z" fill="#535a60"/><g stroke="${ST2}" fill="none" opacity=".55"><path d="M150 100 Q 180 92 214 88" stroke-width="2.4"/><path d="M128 98 Q 100 94 82 100" stroke-width="2.2"/></g>`}),TH,"Pneumothorax",r);
+  AFIG.rad_megaes=(t,r)=>film(360,230,thorax({heart:{cx:150,cy:158,rx:34,ry:44,rot:-20},trach:[30,104,138,124],
+    under:`<path d="M44 62 Q 150 50 246 82 Q 150 112 44 100 Z" fill="${BK}"/><path d="M44 62 Q 150 50 246 82" fill="none" stroke="${ST2}" stroke-width="2.6"/><path d="M44 100 Q 150 112 246 82" fill="none" stroke="${ST2}" stroke-width="2.6"/>`,
+    over:`<g filter="SOFTBLUR"><ellipse cx="96" cy="150" rx="26" ry="15" fill="#e9ecee" opacity=".42"/></g>`}),TH,"Megaesophagus (with aspiration pneumonia)",r);
+  AFIG.rad_dh=(t,r)=>film(360,230,thorax({heart:{cx:118,cy:140,rx:32,ry:44,rot:-18},noVessels:true,
+    over:`<path d="M214 128 C 216 160 222 184 250 224 L 300 224 L 290 120 Z" fill="${ST}"/><g fill="${BK}" stroke="${ST2}" stroke-width="3.2"><ellipse cx="196" cy="150" rx="24" ry="13" transform="rotate(-24 196 150)"/><ellipse cx="176" cy="178" rx="22" ry="11" transform="rotate(14 176 178)"/><ellipse cx="226" cy="172" rx="24" ry="12" transform="rotate(-48 226 172)"/><ellipse cx="208" cy="118" rx="20" ry="10" transform="rotate(20 208 118)"/><ellipse cx="160" cy="146" rx="15" ry="9" transform="rotate(60 160 146)"/></g>`}),TH,"Diaphragmatic hernia: bowel loops in the chest",r);
+
+  // ---------- lateral abdomen (head to the left) ----------
+  function abdomen(o){ o=o||{};
+    let ribs=""; for(let i=0;i<4;i++){ const x=14+i*24; ribs+=`<path d="M${x} 58 Q ${x+40} 110 ${x+34} 176" fill="none" stroke="${BN}" stroke-width="3.5" opacity=".2"/>`; }
+    const loops=o.noLoops?"":`<g fill="none" stroke="${ST2}" stroke-width="9" stroke-linecap="round" opacity=".8"><path d="M132 150 Q 160 126 188 150 Q 214 172 240 148"/><path d="M128 178 Q 170 200 214 184"/><path d="M150 122 Q 190 108 226 124"/></g><g fill="${BK}" opacity=".7"><ellipse cx="160" cy="140" rx="7" ry="3"/><ellipse cx="204" cy="162" rx="6" ry="3"/><ellipse cx="176" cy="190" rx="8" ry="3"/></g>`;
+    return `<path d="M0 18 H360 V196 Q 250 228 120 222 L0 206 Z" fill="${ST}"/>
+      <path d="M0 52 L58 52 Q 30 86 0 104 Z" fill="${AIR}"/>
+      <ellipse cx="190" cy="150" rx="118" ry="60" fill="${FAT}" opacity=".75"/><rect x="60" y="58" width="250" height="38" fill="${FAT}" opacity=".6"/>
+      <path d="M0 104 Q 36 78 62 60 L98 118 Q 80 190 22 202 L0 204 Z" fill="#7d8286"/>
+      ${o.noStomach?"":`<ellipse cx="98" cy="112" rx="26" ry="40" fill="#74797d" transform="rotate(14 98 112)"/><ellipse cx="92" cy="86" rx="14" ry="9" fill="${AIR}"/>`}
+      <ellipse cx="150" cy="76" rx="23" ry="13" fill="#80858a" opacity=".85"/><ellipse cx="190" cy="84" rx="23" ry="13" fill="#80858a" opacity=".85"/>
+      ${o.noColon?"":`<path d="M150 108 Q 240 92 322 104" fill="none" stroke="#90959a" stroke-width="15" stroke-linecap="round" opacity=".85"/><g fill="${BK}" opacity=".6"><ellipse cx="200" cy="100" rx="9" ry="3"/><ellipse cx="262" cy="98" rx="11" ry="3.5"/></g>`}
+      ${loops}${o.noBladder?"":`<ellipse cx="282" cy="166" rx="30" ry="20" fill="#858a8f"/>`}${o.body||""}
+      ${ribs}<path d="M286 48 L352 60 L360 96 L330 108 L300 84 Z" fill="${BN}" opacity=".6"/><path d="M330 84 L304 196" stroke="${BN}" stroke-width="15" stroke-linecap="round" opacity=".62"/><circle cx="330" cy="86" r="11" fill="${BN}" opacity=".75"/>
+      <rect x="0" y="18" width="360" height="26" fill="${ST}"/>${spine(8,292,44)}`; }
+  const AB="Right lateral abdomen · schematic radiograph";
+  AFIG.rad_gdv=(t,r)=>film(360,230,abdomen({noStomach:true,noLoops:true,noColon:true,
+    body:`<ellipse cx="146" cy="142" rx="84" ry="60" fill="${BK}" stroke="${ST2}" stroke-width="3"/><ellipse cx="92" cy="88" rx="42" ry="30" fill="${BK}" stroke="${ST2}" stroke-width="3"/><path d="M52 104 Q 100 128 138 92" fill="none" stroke="${ST2}" stroke-width="8"/><g fill="none" stroke="${ST2}" stroke-width="8" opacity=".8"><path d="M240 132 Q 256 150 244 172"/><path d="M252 112 Q 290 104 320 112"/></g>`}),AB,"Gastric dilatation-volvulus: compartmentalized stomach",r);
+  AFIG.rad_obstr=(t,r)=>film(360,230,abdomen({noLoops:true,
+    body:`<g fill="${BK}" stroke="${ST2}" stroke-width="3"><rect x="118" y="116" width="118" height="24" rx="12"/><rect x="126" y="143" width="124" height="24" rx="12"/><rect x="116" y="170" width="112" height="24" rx="12"/></g><path d="M236 128 Q 252 142 250 155" fill="none" stroke="${ST2}" stroke-width="3"/><ellipse cx="240" cy="182" rx="13" ry="10" fill="${BN}" opacity=".9"/><g fill="none" stroke="${ST2}" stroke-width="7" opacity=".8"><path d="M258 180 Q 272 196 250 204"/><path d="M256 128 Q 270 122 266 138"/></g>`}),AB,"Small-intestinal obstruction: dilated, stacked loops and a foreign body",r);
+  AFIG.rad_stones=(t,r)=>film(360,230,abdomen({body:`<g fill="#f4f6f7"><ellipse cx="276" cy="172" rx="6" ry="5"/><ellipse cx="288" cy="176" rx="5" ry="4"/><ellipse cx="282" cy="165" rx="4" ry="3.5"/><ellipse cx="296" cy="170" rx="3.6" ry="3"/><ellipse cx="268" cy="166" rx="3.4" ry="3"/></g>`}),AB,"Radiopaque bladder stones",r);
+  AFIG.rad_preg=(t,r)=>{ const fetus=(x,y,a)=>`<g transform="rotate(${a} ${x} ${y})" stroke="${BN}" fill="none" stroke-width="2.4"><circle cx="${x-20}" cy="${y}" r="8.5"/><path d="M${x-11} ${y+2} Q ${x+6} ${y+12} ${x+22} ${y-2}" stroke-dasharray="3 2.4"/><path d="M${x-2} ${y+7} l-2 -9 M${x+5} ${y+8} l-1 -10 M${x+12} ${y+5} l0 -9" stroke-width="1.5"/><path d="M${x+18} ${y} l8 8 M${x-4} ${y+8} l-6 9" stroke-width="1.6"/></g>`;
+    return film(360,230,abdomen({noLoops:true,noBladder:true,body:`<ellipse cx="196" cy="158" rx="104" ry="46" fill="#777c80"/>${fetus(146,150,-12)}${fetus(206,176,8)}${fetus(236,138,18)}${fetus(152,188,6)}`}),AB,"Late pregnancy: four mineralized fetal skeletons",r); };
+
+  // ---------- orthopedics ----------
+  AFIG.rad_stifle=(t,r)=>film(360,230,`<path d="M96 18 Q 60 110 110 230 L286 230 Q 300 120 300 18 Z" fill="${ST}"/>
+      <path d="M150 104 L128 74 Q 150 112 150 138 Z" fill="${FAT}"/>
+      <ellipse cx="150" cy="108" rx="22" ry="20" fill="${ST2}" opacity=".9"/><ellipse cx="238" cy="118" rx="20" ry="16" fill="${ST2}" opacity=".85"/>
+      <path d="M262 18 L206 96" stroke="${BN}" stroke-width="36" stroke-linecap="round" opacity=".9"/><circle cx="198" cy="100" r="31" fill="${BN}" opacity=".93"/>
+      <ellipse cx="136" cy="72" rx="9" ry="17" fill="${BN}" transform="rotate(24 136 72)"/><ellipse cx="238" cy="92" rx="7" ry="5" fill="${BN}" opacity=".9"/>
+      <path d="M130 134 L208 134 L196 164 L186 230 L152 230 L146 168 L126 150 Z" fill="${BN}" opacity=".93"/><path d="M126 150 L118 162 L148 182 Z" fill="${BN}" opacity=".8"/>
+      <path d="M214 142 L226 230" stroke="${BN}" stroke-width="9" opacity=".7"/><path d="M208 132 l9 -4 M128 132 l-8 -3" stroke="${BN}" stroke-width="3"/>`,
+    "Lateral stifle · schematic radiograph (cranial to the left)","Cruciate rupture: effusion, tibia displaced cranially",r,
+    r?`<path d="M196 150 H150 m9 -6 l-9 6 l9 6" fill="none" stroke="#7be3a4" stroke-width="2.4"/>`:"");
+  AFIG.rad_hips=(t,r)=>film(360,230,`<path d="M0 18 H360 V230 H0 Z" fill="${ST}"/>
+      <path d="M150 18 H210 L204 78 H156 Z" fill="${BN}" opacity=".8"/>
+      <path d="M96 30 L150 46 L158 92 L132 116 L104 96 Z M264 30 L210 46 L202 92 L228 116 L256 96 Z" fill="${BN}" opacity=".78"/>
+      <path d="M130 112 L178 120 L182 196 L140 206 L118 160 Z M230 112 L182 120 L178 196 L220 206 L242 160 Z" fill="${BN}" opacity=".78"/>
+      <ellipse cx="152" cy="162" rx="13" ry="23" fill="${ST}"/><ellipse cx="208" cy="162" rx="13" ry="23" fill="${ST}"/><ellipse cx="180" cy="98" rx="20" ry="14" fill="${ST}"/>
+      <path d="M134 104 Q 120 114 124 132" fill="none" stroke="${BK}" stroke-width="5"/><path d="M226 104 Q 240 114 236 132" fill="none" stroke="${BK}" stroke-width="5"/>
+      <path d="M96 124 L74 150 L60 230" fill="none" stroke="${BN}" stroke-width="24" stroke-linejoin="round" opacity=".9"/><ellipse cx="104" cy="114" rx="17" ry="14" fill="${BN}"/>
+      <path d="M264 124 L286 150 L300 230" fill="none" stroke="${BN}" stroke-width="24" stroke-linejoin="round" opacity=".9"/><ellipse cx="256" cy="114" rx="17" ry="14" fill="${BN}"/>
+      <path d="M84 104 l-9 -5 M276 104 l9 -5" stroke="${BN}" stroke-width="4"/>`,
+    "Extended ventrodorsal pelvis · schematic radiograph","Hip dysplasia: shallow sockets, subluxated flattened heads",r);
+  AFIG.rad_osa=(t,r)=>film(360,230,`<path d="M110 18 H250 Q 262 120 286 168 Q 262 200 262 230 H100 Q 96 200 76 168 Q 100 120 110 18 Z" fill="${ST}"/>
+      <path d="M160 18 H196 L204 150 Q 206 170 216 178 L140 178 Q 152 170 154 150 Z" fill="${BN}" opacity=".93"/><path d="M204 18 H222 L226 172" fill="none" stroke="${BN}" stroke-width="10" opacity=".7"/>
+      <g fill="${BK}" opacity=".78"><ellipse cx="170" cy="142" rx="8" ry="10"/><ellipse cx="188" cy="156" rx="9" ry="7"/><ellipse cx="178" cy="120" rx="6" ry="8"/><ellipse cx="196" cy="134" rx="5" ry="7"/><ellipse cx="160" cy="162" rx="6" ry="5"/></g>
+      <g stroke="${BN}" stroke-width="2.2" opacity=".85"><path d="M152 118 l-16 -6 M151 130 l-19 -1 M150 142 l-20 5 M149 154 l-18 10 M146 166 l-14 14"/><path d="M158 96 L140 112" stroke-width="3"/></g>
+      <g fill="${BN}" opacity=".9"><rect x="140" y="184" width="26" height="14" rx="5"/><rect x="170" y="184" width="22" height="14" rx="5"/><rect x="196" y="184" width="24" height="14" rx="5"/><rect x="146" y="202" width="68" height="13" rx="5"/></g>`,
+    "Distal radius and carpus · schematic radiograph","Aggressive bone lesion: primary bone tumor",r);
+  AFIG.fx_types=(t,r)=>{ const bone=(x,cut)=>`<ellipse cx="${x}" cy="52" rx="19" ry="14" fill="${BN}"/><rect x="${x-11}" y="52" width="22" height="126" fill="${BN}"/><ellipse cx="${x}" cy="180" rx="19" ry="14" fill="${BN}"/><g stroke="${BK}" stroke-width="4" fill="none" stroke-linecap="round">${cut}</g>`;
+    return film(360,230, bone(44,`<path d="M30 116 H58"/>`)+bone(112,`<path d="M98 96 L126 136"/>`)+bone(180,`<path d="M168 84 C 198 100 162 128 192 146"/>`)+
+      bone(248,`<path d="M234 98 L262 108 M236 132 L262 126 M248 102 L246 130 M236 114 L247 118"/>`)+`<path d="M266 110 l12 5 l-3 13 l-10 -4 Z" fill="${BN}"/>`+
+      bone(316,`<path d="M303 112 L318 118 M318 118 L316 96"/>`), "Fracture patterns in a long bone · schematic","",false,
+      LB(44,212,"A",t,r)+LB(112,212,"B",t,r)+LB(180,212,"C",t,r)+LB(248,212,"D",t,r)+LB(316,212,"E",t,r)); };
+  AFIG.fx_salter=(t,r)=>{ const end=(x,fx)=>`<path d="M${x-13} 36 H${x+13} L${x+24} 118 H${x-24} Z" fill="${BN}"/><rect x="${x-24}" y="118" width="48" height="7" fill="#4d5357"/><path d="M${x-24} 125 H${x+24} Q ${x+28} 160 ${x} 164 Q ${x-28} 160 ${x-24} 125 Z" fill="${BN}"/><g stroke="#ff5a4d" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round">${fx}</g>`;
+    return film(360,230, end(44,(x=>`<path d="M${x-24} 121.5 H${x} L${x+16} 84"/>`)(44))+end(112,(x=>`<path d="M${x-6} 60 L${x+2} 121 L${x+8} 163"/>`)(112))+end(180,(x=>`<path d="M${x-24} 121.5 H${x+24}"/>`)(180))+
+      end(248,(x=>`<path d="M${x-10} 100 v12 m-5 -6 l5 6 l5 -6 M${x+10} 100 v12 m-5 -6 l5 6 l5 -6 M${x-10} 148 v-14 m-5 6 l5 -6 l5 6 M${x+10} 148 v-14 m-5 6 l5 -6 l5 6"/>`)(248))+
+      end(316,(x=>`<path d="M${x-24} 121.5 H${x} L${x+6} 163"/>`)(316)), "Growth-plate fractures · metaphysis above, joint below","",false,
+      LB(44,206,"A",t,r)+LB(112,206,"B",t,r)+LB(180,206,"C",t,r)+LB(248,206,"D",t,r)+LB(316,206,"E",t,r)); };
+
+  // ---------- front view of the eye (medial canthus on the left) ----------
+  function eyeSvg(parts,cap,name,r,W){ return `<svg viewBox="0 0 ${W||360} 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:system-ui,sans-serif;border-radius:8px"><rect width="${W||360}" height="200" fill="#a9825f"/>${parts}<text x="8" y="14" font-size="10.5" fill="#2a1c10">${cap}</text>${r?`<text x="${(W||360)/2}" y="192" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0d3b22">${name}</text>`:""}</svg>`; }
+  function eye(o){ o=o||{}; const id="ey"+(uid++); const dx=o.dx||0, s=o.s||1; const P=o.pupil===undefined?21:o.pupil;
+    const fis=o.ptosis?"M62 104 Q 180 64 298 104 Q 180 170 62 104 Z":"M62 104 Q 180 18 298 104 Q 180 182 62 104 Z";
+    let ves="";
+    if(o.inj==="superficial"){ [[70,104,118,96],[84,84,126,84],[90,128,128,116],[290,104,244,98],[276,82,238,84],[272,130,236,118],[150,44,160,62],[214,46,204,62],[156,158,164,144],[212,158,200,144]].forEach(v=>{ ves+=`<path d="M${v[0]} ${v[1]} Q ${(v[0]+v[2])/2} ${(v[1]+v[3])/2-5} ${v[2]} ${v[3]}" stroke="#d6342b" stroke-width="1.5" fill="none"/>`; }); }
+    if(o.inj==="ciliary"){ for(let a=0;a<360;a+=12){ const c=Math.cos(a*Math.PI/180), si=Math.sin(a*Math.PI/180); ves+=`<path d="M${180+60*c} ${100+60*si} L${180+73*c} ${100+73*si}" stroke="#8e1f3a" stroke-width="2.4"/>`; } }
+    if(o.inj==="episcleral"){ [[66,104,120,100],[78,82,124,86],[86,130,126,118],[294,104,240,100],[280,80,236,86],[276,132,234,118]].forEach((v,i)=>{ const mx=(v[0]+v[2])/2, my=(v[1]+v[3])/2; ves+=`<path d="M${v[0]} ${v[1]} Q ${mx} ${my-9} ${mx} ${my} T ${v[2]} ${v[3]}" stroke="#7a0f1e" stroke-width="3.4" fill="none"/>`; }); }
+    const pupil=o.cat?`<ellipse cx="180" cy="100" rx="${Math.max(3,P*0.3)}" ry="${Math.max(P*1.5,20)}" fill="#0b0b0c"/>`:`<circle cx="180" cy="100" r="${P}" fill="#0b0b0c"/>`;
+    let iris=""; for(let a=0;a<360;a+=15){ const c=Math.cos(a*Math.PI/180), si=Math.sin(a*Math.PI/180); iris+=`<path d="M${180+24*c} ${100+24*si} L${180+55*c} ${100+55*si}" stroke="${o.cat?"#6f8a2d":"#5f3a16"}" stroke-width="1.6" opacity=".55"/>`; }
+    return `<g transform="translate(${dx} 0) scale(${s})"><defs><clipPath id="${id}"><path d="${fis}"/></clipPath><clipPath id="${id}c"><circle cx="180" cy="100" r="58"/></clipPath></defs>
+      <g clip-path="url(#${id})"><rect x="50" y="10" width="260" height="180" fill="${o.red?"#f3cfc8":"#f6f1ea"}"/>${ves}
+        <circle cx="180" cy="100" r="58" fill="${o.cat?"#a7b84a":"#8b5a2b"}"/>${iris}${pupil}
+        <g clip-path="url(#${id}c)">${o.inner||""}${o.edema?`<circle cx="180" cy="100" r="58" fill="#9fc3df" opacity="${o.edema}"/>`:""}${o.cornea||""}</g>
+        <circle cx="180" cy="100" r="58" fill="none" stroke="#3b2a1a" stroke-width="1.6"/>${o.dull?"":`<ellipse cx="158" cy="76" rx="9" ry="5.5" fill="#fff" opacity=".85" transform="rotate(-30 158 76)"/>`}
+        ${o.third?`<path d="M58 104 Q 96 ${104-o.third} 132 ${92} Q 128 ${118+o.third*0.5} 96 ${134+o.third*0.3} Z" fill="#e7a9a0" stroke="#7a4a3a" stroke-width="1.6"/>`:`<path d="M60 104 Q 78 92 88 104 Q 78 116 60 104 Z" fill="#e7a9a0"/>`}${o.extra||""}</g>
+      <path d="${fis}" fill="none" stroke="#3a2412" stroke-width="5" stroke-linejoin="round"/>${o.out||""}</g>`; }
+  const EV="Eye, front view · schematic";
+  AFIG.eye_ulcer=(t,r)=>eyeSvg(eye({red:true,inj:"superficial",pupil:15,cornea:`<path d="M186 84 Q 214 80 218 104 Q 212 126 190 120 Q 172 106 186 84 Z" fill="#8dff3a" opacity=".92"/>`}),EV+" · after fluorescein","Superficial corneal ulcer",r);
+  AFIG.eye_desc=(t,r)=>eyeSvg(eye({red:true,inj:"superficial",pupil:14,edema:.28,cornea:`<circle cx="196" cy="104" r="20" fill="none" stroke="#8dff3a" stroke-width="9" opacity=".95"/><circle cx="196" cy="104" r="14" fill="#1c130c" opacity=".78"/>`}),EV+" · after fluorescein","Descemetocele",r);
+  AFIG.eye_dendritic=(t,r)=>eyeSvg(eye({cat:true,red:true,inj:"superficial",pupil:16,cornea:`<g stroke="#8dff3a" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".95"><path d="M150 84 L172 100 L196 96 L214 112"/><path d="M172 100 L166 122 M196 96 L204 78 M166 122 L152 130 M204 78 L220 72 M214 112 L210 128"/></g>`}),"Cat's eye, front view · after fluorescein","Dendritic ulcers: feline herpesvirus",r);
+  AFIG.eye_uveitis=(t,r)=>eyeSvg(eye({red:true,inj:"ciliary",pupil:8,edema:.22,inner:`<path d="M118 130 Q 180 122 242 130 L242 170 L118 170 Z" fill="#f1e6b8" opacity=".95"/>`}),EV,"Anterior uveitis: miosis, ciliary flush, hypopyon",r);
+  AFIG.eye_glaucoma=(t,r)=>eyeSvg(eye({red:true,inj:"episcleral",pupil:42,edema:.45,dull:true}),EV,"Acute glaucoma: wide pupil, blue cornea",r);
+  AFIG.eye_cherry=(t,r)=>eyeSvg(eye({third:8,extra:`<ellipse cx="96" cy="112" rx="24" ry="19" fill="#d94a4a" stroke="#8c2020" stroke-width="1.6"/><ellipse cx="89" cy="105" rx="7" ry="4" fill="#fff" opacity=".5"/>`}),EV,"Cherry eye: prolapsed gland of the third eyelid",r);
+  AFIG.eye_kcs=(t,r)=>eyeSvg(eye({red:true,inj:"superficial",dull:true,pupil:20,cornea:`<circle cx="180" cy="100" r="58" fill="#b9a58a" opacity=".38"/><g stroke="#b3382f" stroke-width="1.8" fill="none"><path d="M124 96 Q 146 92 160 100"/><path d="M236 100 Q 214 94 202 104"/><path d="M176 44 Q 180 62 174 74"/></g><path d="M196 110 Q 220 112 226 132 Q 206 142 190 128 Z" fill="#4a3320" opacity=".6"/>`,
+    extra:`<path d="M90 118 Q 180 170 270 118 Q 180 138 90 118 Z" fill="#d8cf7a" stroke="#9a9344" stroke-width="1.2"/><ellipse cx="78" cy="106" rx="13" ry="8" fill="#d8cf7a"/>`}),EV,"Dry eye (keratoconjunctivitis sicca)",r);
+  AFIG.eye_horner=(t,r)=>eyeSvg(eye({s:.5,dx:2,pupil:24})+eye({s:.5,dx:178,pupil:9,ptosis:true,third:26})+`<text x="92" y="150" text-anchor="middle" font-size="11" fill="#2a1c10">Right eye</text><text x="268" y="150" text-anchor="middle" font-size="11" fill="#2a1c10">Left eye</text>`,
+    "Both eyes of the same dog, in dim light · schematic","Horner's syndrome (left): miosis, ptosis, third eyelid up",r);
+})();
+
+Object.assign(FIG_LEGEND,{
+  rad_thorax:"Normal: the heart occupies about two thirds of the height of the chest, the trachea diverges from the spine, the lungs are dark with fine vessels, and the diaphragm is sharp.",
+  rad_chf:"Tall, wide heart with a bulging left atrium that lifts the trachea toward the spine; fluffy white (alveolar) opacity around the hilus and in the caudodorsal lung.",
+  rad_pleural:"The ventral chest is uniformly grey, the heart outline is lost, the lung edges are rounded and pulled away from the wall, and thin fissure lines separate the lobes.",
+  rad_pneumo:"The heart is lifted off the sternum, the lung lobes are small and denser than normal, and around them there is black space with no vessels.",
+  rad_megaes:"A wide, gas-filled tube runs dorsally through the chest and tapers toward the diaphragm; the trachea and heart are pushed ventrally. Look for aspiration pneumonia in the ventral lobes.",
+  rad_dh:"The ventral diaphragm line is lost and gas-filled bowel loops lie in the caudal chest, pushing the heart forward.",
+  rad_gdv:"Right lateral view: a huge gas-filled stomach divided by a soft-tissue band, with the pylorus as a separate gas bubble dorsally and cranially ('double bubble').",
+  rad_obstr:"Several small-intestinal loops are far wider than the rest, lie stacked in parallel with hairpin turns, and end at a dense object. Two populations of bowel mean obstruction.",
+  rad_stones:"Several mineral-dense stones in the bladder. Struvite and calcium oxalate are radiopaque; urate and cystine are often not visible.",
+  rad_preg:"Fetal skeletons mineralize from about day 42-45; count skulls and spines for the litter size.",
+  rad_stifle:"Grey effusion bulges in front of and behind the joint and squeezes the dark fat pad; the tibia sits forward of the femoral condyles.",
+  rad_hips:"Both femoral heads sit outside shallow sockets with less than half of each head covered; the necks are thickened.",
+  rad_osa:"Moth-eaten bone loss in the distal radius with spiky new bone and lifted periosteum (Codman triangle) and soft-tissue swelling; the carpal bones are spared.",
+  fx_types:"A transverse · B oblique · C spiral · D comminuted (several fragments) · E greenstick (incomplete, young bone)",
+  fx_salter:"A type II (plate + metaphysis) · B type IV (metaphysis, plate and epiphysis) · C type I (plate only) · D type V (crush) · E type III (plate + epiphysis, into the joint)",
+  eye_ulcer:"A patch of cornea holds the green dye: the epithelium is missing and the stroma is exposed.",
+  eye_desc:"A deep pit whose walls stain green while the floor stays clear and dark: only Descemet's membrane is left. Surgical emergency.",
+  eye_dendritic:"Fine branching lines of stain on a cat's cornea are the hallmark of feline herpesvirus.",
+  eye_uveitis:"Small pupil, a ring of deep vessels around the limbus, a hazy chamber and white cells settled ventrally (hypopyon). The pressure is low.",
+  eye_glaucoma:"Wide fixed pupil, diffusely blue cornea and thick, dark episcleral vessels. The pressure is high and the eye is very painful.",
+  eye_cherry:"A smooth red mass at the inner corner: the gland of the third eyelid has prolapsed. Reposition it, never remove it.",
+  eye_kcs:"Thick yellow mucus stuck to a dull, lustreless cornea with vessels and pigment growing in. Schirmer tear test is low.",
+  eye_horner:"The left eye has a small pupil, a drooping upper lid, a raised third eyelid and looks sunken: loss of sympathetic supply."
+});
+
+(function(){
+  const put=(id,head,figs)=>{ const t=THEORY.find(x=>x.id===id); if(!t) return; const s=t.sections.find(x=>x.h.indexOf(head)===0)||t.sections[0]; s.b+="\n\n"+figs.map(f=>"{{fig:"+f+"}}").join("\n\n"); };
+  put("imaging","Reading the thorax",["rad_thorax","rad_chf","rad_pleural","rad_pneumo"]); put("imaging","Reading the abdomen",["rad_gdv","rad_obstr","rad_stones"]);
+  put("cardio-mmvd","Acute congestive",["rad_chf"]); put("resp-distress","Pleural space",["rad_pleural","rad_pneumo"]);
+  put("gi-esophagus","Megaesophagus",["rad_megaes"]); put("emerg","Trauma",["rad_pneumo","rad_dh"]);
+  put("gi-obstruction","Intestinal foreign body",["rad_obstr"]); put("gi-obstruction","Gastric dilatation",["rad_gdv"]);
+  put("renal-uti-stones","Urolithiasis",["rad_stones"]); put("repro-cycle","Pregnancy",["rad_preg"]);
+  put("ortho","Cranial cruciate",["rad_stifle"]); put("ortho","Hip dysplasia",["rad_hips"]); put("ortho","Fractures",["fx_types","fx_salter"]); put("ortho","Usual suspects",["rad_osa"]);
+  put("onco","Hemangiosarcoma and osteosarcoma",["rad_osa"]);
+  put("ophtho","The red eye",["eye_uveitis","eye_glaucoma"]); put("ophtho","Corneal ulcers",["eye_ulcer","eye_desc","eye_dendritic"]); put("ophtho","Dry eye",["eye_kcs","eye_cherry"]);
+  put("neuro","Neurolocalization",["eye_horner"]); put("ophtho-ortho","The red or painful eye",["eye_ulcer","eye_glaucoma"]);
+})();
+
+// ---- image questions: radiology, fractures, eyes ----
+QUIZ.push(
+{t:"imaging",c:"Cardiorespiratory",fig:"rad_chf",q:"A coughing 11-year-old Cavalier with a loud murmur. What does this radiograph show?",o:["Cardiomegaly with pulmonary edema","Pleural effusion hiding the heart","Normal chest of a deep-chested dog","Megaesophagus with a ventral trachea"],e:"The heart is tall and wide, the left atrium bulges and lifts the trachea, and there is fluffy alveolar opacity around the hilus: left-sided congestive failure. Give oxygen and furosemide."},
+{t:"resp-distress",c:"Cardiorespiratory",fig:"rad_pleural",q:"A cat breathes fast and shallow with muffled heart sounds. What does the film show?",o:["Pleural effusion", "Tension pneumothorax", "Cardiogenic pulmonary edema", "Feline asthma with air trapping"],e:"Uniform soft-tissue opacity ventrally, loss of the heart outline, rounded and retracted lung edges and fissure lines. Drain it: thoracocentesis is both treatment and diagnosis."},
+{t:"resp-distress",c:"Emergency",fig:"rad_pneumo",q:"A dog was hit by a car and is breathing with effort. What does this film show?",o:["Pneumothorax","Pleural effusion","Lung contusions only","Diaphragmatic hernia"],e:"The heart is raised off the sternum and the collapsed lobes are surrounded by black space without vessels. Tap the chest dorsally at the 7th-9th space."},
+{t:"resp-distress",c:"Emergency",fig:"rad_pneumo",q:"Where is the needle placed to drain what this radiograph shows, with the dog standing or sternal?",o:["Dorsal third of the 7th-9th space","Ventral third of the 7th-8th space","Left 5th space at the heart apex","Cranial to the first rib at the inlet"],e:"Air rises: aim dorsally, at the cranial edge of the rib to avoid the intercostal vessels. Fluid is drained ventrally."},
+{t:"gi-esophagus",c:"GI",fig:"rad_megaes",q:"A young German Shepherd regurgitates undigested food. What does the film show?",o:["A dilated, gas-filled esophagus","Free air in the pleural space","A normal chest with a full stomach","Collapse of the thoracic trachea"],e:"A wide gas-filled tube dorsal to the trachea tapering to the diaphragm, pushing the trachea and heart ventrally: megaesophagus. Check for aspiration pneumonia and test for myasthenia gravis."},
+{t:"emerg",c:"Emergency",fig:"rad_dh",q:"A cat has been breathing with effort since a fall two days ago. What does this film show?",o:["Diaphragmatic hernia","Lung lobe tumor","Aspiration pneumonia","Heart enlargement"],e:"The diaphragm outline is interrupted and gas-filled bowel loops lie inside the chest. Stabilize with oxygen first; repair once the patient is stable, sooner if the stomach is herniated."},
+{t:"gi-obstruction",c:"Emergency",fig:"rad_gdv",q:"A Great Dane retches without producing anything and has a tight abdomen. What is shown?",o:["Gastric dilatation-volvulus","Simple gastric dilatation","Small-intestinal obstruction","Splenic mass with free fluid"],e:"On the right lateral view the gas-filled stomach is divided by a soft-tissue band, with the pylorus displaced dorsally: compartmentalization means volvulus. Shock fluids, decompression, then surgery with gastropexy."},
+{t:"gi-obstruction",c:"Emergency",fig:"rad_gdv",q:"Which view is taken first when the condition in this radiograph is suspected?",o:["Right lateral abdomen","Left lateral abdomen","Ventrodorsal abdomen","Standing lateral thorax"],e:"In right lateral recumbency gas moves into the displaced pylorus, which produces the diagnostic compartmentalized image. One view is usually enough; do not delay stabilization."},
+{t:"gi-obstruction",c:"GI",fig:"rad_obstr",q:"A young Labrador has vomited for two days. What does this film show?",o:["Small-intestinal obstruction","Normal fasted abdomen","Colon full of feces","Generalized ileus from enteritis"],e:"Two populations of bowel: some loops are far wider than others and lie stacked with hairpin turns, ending at a dense object. Surgery after stabilization."},
+{t:"renal-uti-stones",c:"Renal/Urinary",fig:"rad_stones",q:"A Miniature Schnauzer strains and passes blood in the urine. What is shown?",o:["Radiopaque bladder stones","Gas in the bladder wall","Normal bladder, full of urine","Enlarged, mineralized prostate"],e:"Several mineral-dense stones in the bladder. Struvite and calcium oxalate are radiopaque; always include the whole urethra on the film in male dogs."},
+{t:"renal-uti-stones",c:"Renal/Urinary",fig:"rad_stones",q:"Which stone types would be easy to MISS on a plain film like this one?",o:["Urate and cystine","Struvite and oxalate","Calcium phosphate","Silica stones"],e:"Urate (Dalmatians, liver shunts) and cystine stones are poorly radiopaque and usually need ultrasound or contrast studies."},
+{t:"repro-cycle",c:"Reproductive",fig:"rad_preg",q:"From which day of pregnancy can a film like this one be used to count the litter?",o:["About day 45","About day 21","About day 28","About day 12"],e:"Fetal skeletons mineralize from about day 42-45. Before that, ultrasound confirms pregnancy and viability (from day 25) but is unreliable for counting."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",fig:"rad_stifle",q:"A lame Labrador sits with one hind leg out to the side. What does this stifle film show?",o:["Effusion and cranial tibial displacement", "A transverse fracture of the patella", "Avulsion of the tibial tuberosity in a puppy", "A normal adult stifle with a clear fat pad"],e:"The fat pad is compressed by effusion and the tibia lies forward of the femoral condyles: the radiographic signs of cranial cruciate ligament rupture."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",fig:"rad_hips",q:"A 9-month-old Labrador bunny-hops and is reluctant to jump. What does this pelvis film show?",o:["Hip dysplasia with subluxation","Normal hips with deep sockets","Fractures of both femoral necks","Necrosis of one femoral head"],e:"Shallow acetabula covering less than half of each femoral head, with thickened necks. Most cases are managed with weight control, exercise and analgesia."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",fig:"rad_osa",q:"An 8-year-old Great Dane has a painful swelling above the carpus. Most likely diagnosis?",o:["Primary bone tumor (osteosarcoma)", "Panosteitis of the distal radius", "Hypertrophic osteodystrophy of a puppy", "Healing greenstick fracture with callus"],e:"Bone destruction with spiky new bone and a Codman triangle in the metaphysis of an old giant-breed dog, not crossing the joint. Take chest films and discuss biopsy, amputation and chemotherapy."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",fig:"fx_types",hl:"D",q:"Which bone shows a comminuted fracture?",o:["D","A","B","E"],e:"D: more than two fragments. A is transverse, B oblique, C spiral and E greenstick."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",fig:"fx_types",hl:"C",q:"Which fracture pattern is produced by a twisting force?",o:["C","A","D","E"],e:"C: a spiral fracture curves around the shaft. Bending gives transverse or short oblique fractures; high energy gives comminuted ones."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",fig:"fx_types",hl:"E",q:"Which pattern is an incomplete fracture typical of young animals?",o:["E","B","C","D"],e:"E: a greenstick fracture breaks one cortex and bends the other. It often heals well with external support."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",fig:"fx_salter",hl:"A",q:"Which is a Salter-Harris type II fracture, the most common type?",o:["A","B","C","E"],e:"A: through the growth plate and out through a corner of the metaphysis. C is type I, E type III, B type IV and D type V."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",fig:"fx_salter",hl:"E",q:"Which is a Salter-Harris type III fracture that enters the joint?",o:["E","A","C","D"],e:"E: along the plate and down through the epiphysis into the joint surface, so it needs exact reconstruction. B (type IV) is also articular but crosses the metaphysis too."},
+{t:"ortho",c:"Neuro/Ophtho/Ortho",fig:"fx_salter",hl:"D",q:"Which injury is often invisible at first and shows later as a limb deformity?",o:["D","A","B","C"],e:"D: type V, a crush of the growth plate. Classic example: premature closure of the distal ulnar plate with bowing of the radius."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",fig:"eye_ulcer",q:"A squinting dog after fluorescein staining. What does the eye show?",o:["Superficial corneal ulcer", "Anterior uveitis with hypopyon", "Normal tear drainage (Jones test)", "Mature cataract"],e:"The dye sticks to exposed stroma. Topical antibiotic, atropine if painful, a collar, and never a topical steroid. It should heal within a week."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",fig:"eye_desc",q:"The walls of this defect stain but its centre stays clear. What is it?",o:["Descemetocele","Indolent ulcer","Corneal dystrophy","Healed scar"],e:"Descemet's membrane does not take up fluorescein. The cornea is one layer from rupture: collar, no pressure on the globe, urgent surgical referral."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",fig:"eye_dendritic",q:"A cat with sneezing and a painful eye. What causes this staining pattern?",o:["Feline herpesvirus", "Chlamydia felis infection", "Feline calicivirus", "Mycoplasma felis"],e:"Branching 'dendritic' ulcers are pathognomonic for herpesvirus. Famciclovir, lubricants and no steroids."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",fig:"eye_uveitis",q:"This red eye has a pressure of 6 mmHg and is fluorescein-negative. Diagnosis?",o:["Anterior uveitis", "Acute primary glaucoma", "Allergic conjunctivitis", "Dry eye"],e:"Miosis, ciliary flush, a hazy chamber with hypopyon and low pressure. Look for a systemic cause; treat with topical steroid and atropine if the pressure allows."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",fig:"eye_glaucoma",q:"A Cocker Spaniel has had a painful, cloudy eye since this morning. Which test confirms your suspicion?",o:["Tonometry","Schirmer tear test","Fluorescein stain","Conjunctival cytology"],e:"Dilated pupil, blue cornea and engorged episcleral vessels suggest acute glaucoma: a pressure above 25-30 mmHg confirms it. Vision is lost within a day or two without treatment."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",fig:"eye_glaucoma",q:"Which drug is contraindicated in the eye shown here?",o:["Atropine","Latanoprost","Dorzolamide","Mannitol"],e:"Atropine dilates the pupil and closes the drainage angle further, raising the pressure. The other three are part of emergency treatment."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",fig:"eye_cherry",q:"A young Bulldog has this mass at the inner corner of the eye. Correct treatment?",o:["Surgical repositioning of the gland", "Complete excision of the whole gland", "Topical steroid drops for three months", "Removal of the entire third eyelid"],e:"The gland of the third eyelid produces up to a third of the tears; removing it predisposes to dry eye. It is tucked back with a pocket technique."},
+{t:"ophtho",c:"Neuro/Ophtho/Ortho",fig:"eye_kcs",q:"A West Highland White Terrier has had this eye for months. Which test is done first?",o:["Schirmer tear test", "Rebound tonometry", "Ocular ultrasound scan", "Blood pressure"],e:"Thick mucoid discharge on a dull, vascularized cornea means dry eye: under 10 mm/min with signs is diagnostic. Lifelong ciclosporin or tacrolimus."},
+{t:"neuro",c:"Neuro/Ophtho/Ortho",fig:"eye_horner",q:"Which syndrome affects the LEFT eye of this dog?",o:["Horner's syndrome","Facial nerve paralysis","Oculomotor nerve palsy","Acute glaucoma"],e:"Miosis, ptosis, a raised third eyelid and a sunken globe: loss of sympathetic innervation. Look at the middle ear, neck, chest inlet and brachial plexus; many cases are idiopathic."},
+{t:"neuro",c:"Neuro/Ophtho/Ortho",fig:"eye_horner",q:"Which disease commonly causes the left-eye signs shown here, together with a head tilt?",o:["Otitis media","Hypothyroidism","Cervical disc disease","Optic neuritis"],e:"The sympathetic fibres run through the middle ear, so otitis media gives Horner's syndrome, often with facial paralysis and vestibular signs."}
+);
 // ===== THEORY: final ordering by area =====
 (function(){
   const ADD={"Hematology/Oncology":["hemato","onco","hemostasis","transfusion","lymphoma-chemo"],"Nutrition/Preventive":["nutrition","preventive"],"Clinical Skills":["wounds","urinalysis-cyto","lab-electrolytes","comm-records"]};
@@ -9523,6 +9789,583 @@ QUIZ.push(
 })();
 const LOGO="data:image/png;base64,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";
 const FAVICON="data:image/png;base64,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";
+// ===== TOOLS DATA: dose table, CRI presets, emergency sheet, quick reference, clinical English phrases =====
+// DOSES: u = unit of the dose per kg (mg, mcg, mL, U); conc in mg/mL (or U/mL when u is U); null conc = oral or variable (enter it)
+// dog / cat = [low, high] per kg; null = do not use (see note)
+const DOSES=[
+ // --- sedation, anesthesia ---
+ {n:"Butorphanol",cls:"Sedation & anesthesia",u:"mg",conc:10,dog:[0.2,0.4],cat:[0.2,0.4],route:"IV, IM, SC",freq:"every 1-2 h",note:"Good sedation and cough suppression, weak short analgesia. Partially reverses full opioids."},
+ {n:"Methadone",cls:"Sedation & anesthesia",u:"mg",conc:10,dog:[0.2,0.5],cat:[0.2,0.3],route:"IV slowly, IM",freq:"every 4 h",note:"Full opioid for moderate to severe pain; little vomiting."},
+ {n:"Buprenorphine",cls:"Sedation & anesthesia",u:"mg",conc:0.3,dog:[0.01,0.02],cat:[0.02,0.03],route:"IV, IM; transmucosal in cats",freq:"every 6-8 h",note:"Moderate pain. Slow onset (30-45 min)."},
+ {n:"Fentanyl (bolus)",cls:"Sedation & anesthesia",u:"mcg",conc:0.05,dog:[2,5],cat:[2,5],route:"IV",freq:"loading dose before a CRI",note:"Lasts 20-30 min. Bradycardia and respiratory depression: be ready to ventilate."},
+ {n:"Dexmedetomidine",cls:"Sedation & anesthesia",u:"mcg",conc:0.5,dog:[2,10],cat:[3,10],route:"IM, IV (lower end)",freq:"once",note:"Use the lower half with an opioid as premedication. Healthy patients only: marked bradycardia and vasoconstriction."},
+ {n:"Medetomidine",cls:"Sedation & anesthesia",u:"mcg",conc:1,dog:[5,20],cat:[10,40],route:"IM, IV (lower end)",freq:"once",note:"Twice the dexmedetomidine dose in micrograms. Healthy patients only."},
+ {n:"Atipamezole",cls:"Sedation & anesthesia",u:"mcg",conc:5,dog:[20,100],cat:[15,50],route:"IM",freq:"once",note:"Rule of thumb: the same VOLUME as the dexmedetomidine 0.5 mg/mL (or medetomidine 1 mg/mL) given in dogs, half that volume in cats. It also removes the analgesia."},
+ {n:"Acepromazine",cls:"Sedation & anesthesia",u:"mg",conc:null,cv:"2 or 10",dog:[0.01,0.03],cat:[0.01,0.03],route:"IM, IV, SC",freq:"once",note:"Often supplied as 10 mg/mL: check the vial. Maximum about 2-3 mg per dog. Avoid in shock, hypovolemia and bleeding disorders; no analgesia."},
+ {n:"Midazolam",cls:"Sedation & anesthesia",u:"mg",conc:5,dog:[0.2,0.5],cat:[0.2,0.5],route:"IV, IM, intranasal",freq:"repeat once or twice for seizures",note:"May excite healthy animals when used alone."},
+ {n:"Diazepam",cls:"Sedation & anesthesia",u:"mg",conc:5,dog:[0.5,1],cat:[0.5,1],route:"IV; rectal 1-2 mg/kg",freq:"repeat up to 3 times for seizures",note:"Not IM (painful, erratic). Do not give orally to cats (liver necrosis)."},
+ {n:"Ketamine",cls:"Sedation & anesthesia",u:"mg",conc:null,cv:"50 or 100",dog:[2,5],cat:[2,10],route:"IV; IM in cats",freq:"once",note:"Always with a benzodiazepine or an alpha-2 agonist. Upper end in cats is for IM use."},
+ {n:"Propofol",cls:"Sedation & anesthesia",u:"mg",conc:10,dog:[2,6],cat:[4,8],route:"IV slowly, to effect",freq:"induction",note:"Give a quarter of the dose every 30 s. Apnea and hypotension are dose and speed related. Premedicated patients need the lower end."},
+ {n:"Alfaxalone",cls:"Sedation & anesthesia",u:"mg",conc:10,dog:[1,3],cat:[2,5],route:"IV slowly, to effect",freq:"induction",note:"Give over 60 s. Recovery can be agitated without sedation."},
+ // --- analgesia, anti-inflammatory ---
+ {n:"Meloxicam (injection)",cls:"Analgesia & anti-inflammatory",u:"mg",conc:null,cv:"2 (cat) or 5 (dog)",dog:[0.2,0.2],cat:[0.2,0.3],route:"SC",freq:"single dose",note:"Then oral: dogs 0.1 mg/kg, cats 0.05 mg/kg once daily. The cat injection is usually 2 mg/mL. Only in hydrated, normotensive patients; never with steroids."},
+ {n:"Carprofen",cls:"Analgesia & anti-inflammatory",u:"mg",conc:50,dog:[2,4],cat:[4,4],route:"SC, IV; oral in dogs",freq:"dogs every 24 h; cats ONE dose only",note:"Dogs: 4 mg/kg once daily or 2 mg/kg twice daily."},
+ {n:"Robenacoxib (injection)",cls:"Analgesia & anti-inflammatory",u:"mg",conc:20,dog:[2,2],cat:[2,2],route:"SC",freq:"every 24 h, up to 3 days",note:"Tablets: 1-2 mg/kg once daily, without food."},
+ {n:"Paracetamol",cls:"Analgesia & anti-inflammatory",u:"mg",conc:10,dog:[10,15],cat:null,route:"IV over 15 min, oral",freq:"every 8-12 h",note:"DOGS ONLY. Never in cats: methemoglobinemia and death."},
+ {n:"Gabapentin",cls:"Analgesia & anti-inflammatory",u:"mg",conc:null,dog:[10,20],cat:[5,10],route:"oral",freq:"every 8-12 h",note:"Start low: sedation and ataxia. Before a stressful visit: cats 50-100 mg per cat, 2 h before. Avoid liquids with xylitol in dogs."},
+ {n:"Dexamethasone",cls:"Analgesia & anti-inflammatory",u:"mg",conc:null,cv:"2 or 4",dog:[0.1,0.2],cat:[0.1,0.2],route:"IV, IM",freq:"every 24 h",note:"Anti-inflammatory dose. About 7 times as potent as prednisolone. Vials of 2 or 4 mg/mL: check."},
+ {n:"Prednisolone (anti-inflammatory)",cls:"Analgesia & anti-inflammatory",u:"mg",conc:null,dog:[0.5,1],cat:[1,2],route:"oral",freq:"per day, then taper",note:"Never with an NSAID."},
+ {n:"Prednisolone (immunosuppressive)",cls:"Analgesia & anti-inflammatory",u:"mg",conc:null,dog:[2,2],cat:[2,4],route:"oral",freq:"per day, then taper slowly",note:"Large dogs: cap at about 60 mg/day (or dose by surface area)."},
+ // --- gastrointestinal ---
+ {n:"Maropitant",cls:"Gastrointestinal",u:"mg",conc:10,dog:[1,1],cat:[1,1],route:"SC, IV slowly",freq:"every 24 h",note:"Oral: 2 mg/kg in dogs. Stings SC: keep refrigerated."},
+ {n:"Metoclopramide",cls:"Gastrointestinal",u:"mg",conc:5,dog:[0.2,0.5],cat:[0.2,0.5],route:"SC, IM, oral",freq:"every 8 h",note:"Contraindicated in gastrointestinal obstruction."},
+ {n:"Ondansetron",cls:"Gastrointestinal",u:"mg",conc:2,dog:[0.5,1],cat:[0.5,1],route:"IV slowly, oral",freq:"every 8-12 h",note:"Added to maropitant for refractory vomiting."},
+ {n:"Omeprazole",cls:"Gastrointestinal",u:"mg",conc:null,dog:[1,1],cat:[1,1],route:"oral, before food",freq:"every 12 h",note:"Taper after more than 3-4 weeks of use."},
+ {n:"Pantoprazole",cls:"Gastrointestinal",u:"mg",conc:4,dog:[1,1],cat:[1,1],route:"IV over 15 min",freq:"every 12 h",note:"A 40 mg vial in 10 mL gives 4 mg/mL."},
+ {n:"Apomorphine",cls:"Gastrointestinal",u:"mg",conc:1,dog:[0.03,0.1],cat:null,route:"IV 0.03 mg/kg; SC 0.1 mg/kg",freq:"once",note:"Dogs only. Cats: dexmedetomidine 7 mcg/kg IM instead. No emesis with caustics, hydrocarbons, seizures or a depressed patient."},
+ {n:"Activated charcoal",cls:"Gastrointestinal",u:"mg",conc:null,dog:[1000,4000],cat:[1000,4000],route:"oral",freq:"repeat half dose every 6-8 h if enterohepatic",note:"1-4 g/kg. Only in an alert patient that can swallow; risk of aspiration and hypernatremia."},
+ {n:"Fenbendazole",cls:"Gastrointestinal",u:"mg",conc:100,dog:[50,50],cat:[50,50],route:"oral",freq:"every 24 h for 3-5 days",note:"A 10% suspension is 100 mg/mL."},
+ // --- antimicrobials ---
+ {n:"Amoxicillin-clavulanate (oral)",cls:"Antimicrobials",u:"mg",conc:null,dog:[12.5,25],cat:[12.5,25],route:"oral, with food",freq:"every 12 h",note:""},
+ {n:"Amoxicillin-clavulanate (IV)",cls:"Antimicrobials",u:"mg",conc:null,dog:[20,20],cat:[20,20],route:"IV slowly",freq:"every 8 h",note:"Concentration depends on how the vial is reconstituted: enter it."},
+ {n:"Ampicillin",cls:"Antimicrobials",u:"mg",conc:null,dog:[20,30],cat:[20,30],route:"IV",freq:"every 6-8 h",note:"Concentration depends on reconstitution: enter it."},
+ {n:"Cefazolin",cls:"Antimicrobials",u:"mg",conc:100,dog:[22,22],cat:[22,22],route:"IV slowly",freq:"30-60 min before incision, then every 90 min in surgery",note:"100 mg/mL if 1 g is made up to 10 mL: confirm how yours was mixed."},
+ {n:"Cefalexin",cls:"Antimicrobials",u:"mg",conc:null,dog:[22,30],cat:[22,30],route:"oral",freq:"every 12 h",note:""},
+ {n:"Enrofloxacin",cls:"Antimicrobials",u:"mg",conc:null,cv:"25, 50 or 100",dog:[5,20],cat:[5,5],route:"SC, IV diluted slowly, oral",freq:"every 24 h",note:"CATS: never above 5 mg/kg/day (retinal degeneration, blindness). Not in growing dogs. Vials of 25 or 50 mg/mL."},
+ {n:"Marbofloxacin",cls:"Antimicrobials",u:"mg",conc:10,dog:[2,4],cat:[2,4],route:"SC, IV, oral",freq:"every 24 h",note:"Not in growing dogs."},
+ {n:"Metronidazole",cls:"Antimicrobials",u:"mg",conc:5,dog:[10,15],cat:[10,15],route:"IV over 20 min, oral",freq:"every 12 h",note:"Neurotoxic at high or prolonged doses; reduce in liver failure."},
+ {n:"Doxycycline",cls:"Antimicrobials",u:"mg",conc:null,dog:[10,10],cat:[10,10],route:"oral, with food",freq:"every 24 h (or 5 mg/kg every 12 h)",note:"Cats: always follow tablets with water or food (esophageal stricture)."},
+ {n:"Clindamycin",cls:"Antimicrobials",u:"mg",conc:null,dog:[5.5,11],cat:[5.5,11],route:"oral",freq:"every 12 h",note:"Cats: follow capsules with water."},
+ // --- cardiovascular, diuretics ---
+ {n:"Furosemide",cls:"Heart & diuretics",u:"mg",conc:null,cv:"10 or 50",dog:[2,4],cat:[1,2],route:"IV, IM",freq:"every 1-2 h until breathing improves, then every 6-12 h",note:"Veterinary vials are 50 mg/mL, human ampoules 10 mg/mL: check."},
+ {n:"Pimobendan",cls:"Heart & diuretics",u:"mg",conc:null,dog:[0.25,0.3],cat:[0.25,0.3],route:"oral, 1 h before food",freq:"every 12 h",note:"Off-label in cats."},
+ {n:"Benazepril",cls:"Heart & diuretics",u:"mg",conc:null,dog:[0.25,0.5],cat:[0.25,0.5],route:"oral",freq:"every 12-24 h",note:"Check creatinine and potassium after 1-2 weeks."},
+ {n:"Amlodipine",cls:"Heart & diuretics",u:"mg",conc:null,dog:[0.1,0.5],cat:[0.125,0.25],route:"oral",freq:"every 24 h",note:"Cats: usually 0.625 mg per cat (1.25 mg if over 5 kg or severe hypertension)."},
+ {n:"Atropine",cls:"Heart & diuretics",u:"mg",conc:null,cv:"0.5, 0.6 or 1",dog:[0.02,0.04],cat:[0.02,0.04],route:"IV, IM",freq:"once; CPR dose 0.04 mg/kg",note:"Ampoules of 0.5, 0.6 or 1 mg/mL: check and change the concentration."},
+ {n:"Glycopyrrolate",cls:"Heart & diuretics",u:"mg",conc:0.2,dog:[0.005,0.01],cat:[0.005,0.01],route:"IV, IM",freq:"once",note:"Slower and longer than atropine; less tachycardia."},
+ {n:"Lidocaine (antiarrhythmic bolus)",cls:"Heart & diuretics",u:"mg",conc:20,dog:[2,2],cat:[0.25,0.5],route:"IV slowly over 1-2 min",freq:"repeat up to 8 mg/kg total in dogs",note:"Cats are very sensitive: tiny dose, very slowly, and only if essential. Use lidocaine WITHOUT epinephrine."},
+ // --- emergency ---
+ {n:"Epinephrine (adrenaline)",cls:"Emergency",u:"mg",conc:1,dog:[0.01,0.01],cat:[0.01,0.01],route:"IV, IO in CPR; IM in anaphylaxis",freq:"CPR: every other 2-min cycle",note:"1 mg/mL (1:1000). Under 10 kg dilute 1 mL to 10 mL (0.1 mg/mL) and give 0.1 mL/kg."},
+ {n:"Naloxone",cls:"Emergency",u:"mg",conc:0.4,dog:[0.01,0.04],cat:[0.01,0.04],route:"IV, IM",freq:"repeat every 30-60 min as needed",note:"Shorter acting than most opioids; also removes the analgesia."},
+ {n:"Flumazenil",cls:"Emergency",u:"mg",conc:0.1,dog:[0.01,0.02],cat:[0.01,0.02],route:"IV",freq:"repeat as needed",note:"Reverses benzodiazepines."},
+ {n:"Diphenhydramine",cls:"Emergency",u:"mg",conc:50,dog:[1,2],cat:[1,2],route:"IM",freq:"every 8-12 h",note:"Allergic reactions; second line after epinephrine in anaphylaxis."},
+ {n:"Dextrose 50%",cls:"Emergency",u:"mL",conc:null,dog:[0.5,1],cat:[0.5,1],route:"IV, diluted at least 1:3",freq:"then 2.5-5% in the fluids",note:"0.25-0.5 g/kg. Never undiluted into a peripheral vein."},
+ {n:"Calcium gluconate 10%",cls:"Emergency",u:"mL",conc:null,dog:[0.5,1.5],cat:[0.5,1.5],route:"IV slowly over 10-20 min",freq:"with ECG",note:"Hyperkalemia (protects the heart for 20-30 min) and hypocalcemia. Stop if the heart slows."},
+ {n:"Mannitol 20%",cls:"Emergency",u:"mg",conc:200,dog:[500,1000],cat:[500,1000],route:"IV over 15-20 min, through a filter",freq:"may repeat once or twice",note:"0.5-1 g/kg for raised intracranial pressure. Not in a hypovolemic patient."},
+ {n:"Hypertonic saline 7.2-7.5%",cls:"Emergency",u:"mL",conc:null,dog:[3,5],cat:[2,4],route:"IV over 10-15 min",freq:"once, then crystalloids",note:"Not with dehydration or hypernatremia."},
+ {n:"Tranexamic acid",cls:"Emergency",u:"mg",conc:100,dog:[10,15],cat:[10,15],route:"IV slowly",freq:"every 8 h",note:"Vomiting if given fast."},
+ {n:"Vitamin K1",cls:"Emergency",u:"mg",conc:10,dog:[2.5,5],cat:[2.5,5],route:"SC first dose (small needle); then oral with fatty food",freq:"per day, 3-4 weeks",note:"Never IV (anaphylaxis). Recheck PT 48-72 h after the last dose."},
+ {n:"Levetiracetam",cls:"Emergency",u:"mg",conc:100,dog:[30,60],cat:[20,60],route:"IV over 5 min",freq:"loading; maintenance 20 mg/kg every 8 h",note:"Very safe; useful in liver disease."},
+ {n:"Phenobarbital (maintenance)",cls:"Emergency",u:"mg",conc:null,dog:[2.5,3],cat:[1.5,2.5],route:"oral",freq:"every 12 h",note:"Loading in status epilepticus: 4-6 mg/kg IV, repeated to a total of 16-20 mg/kg. Check serum level after 2-3 weeks."},
+ // --- reproduction ---
+ {n:"Aglepristone",cls:"Reproduction",u:"mg",conc:30,dog:[10,10],cat:[10,15],route:"SC, max 5 mL per site",freq:"pyometra: days 1, 2 and 8; mismating: two doses 24 h apart",note:"Wear gloves; pregnant women must not handle it."},
+ {n:"Cabergoline",cls:"Reproduction",u:"mcg",conc:0.05,dog:[5,5],cat:[5,5],route:"oral",freq:"every 24 h for 5-7 days",note:"Pseudopregnancy and to stop lactation. May cause vomiting."}
+];
+
+// CRI presets: u = mcg/kg/min, mcg/kg/h, mg/kg/h or mg/kg/min; conc in mg/mL
+const CRIS=[
+ {n:"Fentanyl",u:"mcg/kg/h",conc:0.05,dog:[2,10],cat:[2,5],note:"Loading dose 2-5 mcg/kg first. Watch heart rate and ventilation."},
+ {n:"Lidocaine",u:"mcg/kg/min",conc:20,dog:[25,50],cat:null,note:"DOGS ONLY as an analgesic infusion. Loading 1-2 mg/kg. Antiarrhythmic range up to 80 mcg/kg/min."},
+ {n:"Ketamine",u:"mcg/kg/min",conc:100,dog:[2,10],cat:[2,10],note:"Loading 0.5 mg/kg. 2-5 after surgery, up to 10 during surgery."},
+ {n:"Dexmedetomidine",u:"mcg/kg/h",conc:0.5,dog:[0.5,2],cat:[0.5,2],note:"For agitated or painful patients with stable cardiovascular function."},
+ {n:"Metoclopramide",u:"mg/kg/h",conc:5,dog:[0.04,0.08],cat:[0.04,0.08],note:"1-2 mg/kg/day. Protect the line from light. Not with obstruction."},
+ {n:"Midazolam",u:"mg/kg/h",conc:5,dog:[0.1,0.5],cat:[0.1,0.5],note:"Status epilepticus after the boluses."},
+ {n:"Propofol",u:"mg/kg/min",conc:10,dog:[0.1,0.4],cat:[0.1,0.3],note:"Refractory seizures or total intravenous anesthesia: airway control is essential. Cats: slow recovery and Heinz bodies with long infusions."},
+ {n:"Norepinephrine",u:"mcg/kg/min",conc:1,dog:[0.1,1],cat:[0.1,1],note:"Septic shock that stays hypotensive after fluids. Central line if possible; direct blood pressure ideal."},
+ {n:"Dopamine",u:"mcg/kg/min",conc:40,dog:[5,10],cat:[5,10],note:"5-10 for inotropy; higher doses vasoconstrict."},
+ {n:"Dobutamine",u:"mcg/kg/min",conc:12.5,dog:[2,10],cat:[1,5],note:"Poor contractility (dilated cardiomyopathy). Cats: seizures at higher rates."},
+ {n:"Furosemide",u:"mg/kg/h",conc:null,cv:"10 or 50",dog:[0.5,1],cat:[0.3,0.6],note:"After a bolus, for severe pulmonary edema. Check kidney values and potassium."}
+];
+
+// Emergency sheet rows: per kg values; mL computed from conc. sp: "dog" | "cat" | undefined (both)
+const ERSHEET=[
+ {g:"CPR (RECOVER 2024)",rows:[
+  {n:"Epinephrine 1 mg/mL",d:[0.01,0.01],u:"mg",conc:1,txt:"IV/IO every other 2-min cycle"},
+  {n:"Epinephrine diluted 1:10 (0.1 mg/mL)",d:[0.01,0.01],u:"mg",conc:0.1,txt:"same dose, easier to measure under 10 kg"},
+  {n:"Atropine 0.6 mg/mL",d:[0.04,0.04],u:"mg",conc:0.6,txt:"once, early, if vagal arrest is suspected"},
+  {n:"Vasopressin 20 U/mL",d:[0.8,0.8],u:"U",conc:20,txt:"alternative or addition to epinephrine"},
+  {n:"Lidocaine 20 mg/mL",d:[2,2],u:"mg",conc:20,sp:"dog",txt:"shock-resistant VF or pulseless VT"},
+  {n:"Amiodarone 50 mg/mL",d:[5,5],u:"mg",conc:50,sp:"cat",txt:"shock-resistant VF or pulseless VT"},
+  {n:"Defibrillation, biphasic",d:[2,2],u:"J",txt:"external; double once (4 J/kg) if the first shock fails"},
+  {n:"Defibrillation, monophasic",d:[4,6],u:"J",txt:"external"},
+  {n:"Tidal volume",d:[10,10],u:"mL",txt:"10 breaths/min, 1 s each; compressions 100-120/min"}]},
+ {g:"Reversal",rows:[
+  {n:"Naloxone 0.4 mg/mL",d:[0.04,0.04],u:"mg",conc:0.4,txt:"opioids"},
+  {n:"Flumazenil 0.1 mg/mL",d:[0.01,0.01],u:"mg",conc:0.1,txt:"benzodiazepines"},
+  {n:"Atipamezole 5 mg/mL",d:[0.1,0.1],u:"mg",conc:5,txt:"alpha-2 agonists (IM; IV only in arrest)"}]},
+ {g:"Shock and bleeding",rows:[
+  {n:"Crystalloid bolus",d:[10,20],u:"mL",sp:"dog",txt:"over 15-20 min, reassess, repeat"},
+  {n:"Crystalloid bolus",d:[5,10],u:"mL",sp:"cat",txt:"over 15-20 min, warm the cat, reassess"},
+  {n:"Hypertonic saline 7.2-7.5%",d:[3,5],u:"mL",sp:"dog",txt:"over 10-15 min"},
+  {n:"Hypertonic saline 7.2-7.5%",d:[2,4],u:"mL",sp:"cat",txt:"over 10-15 min"},
+  {n:"Tranexamic acid 100 mg/mL",d:[10,15],u:"mg",conc:100,txt:"IV slowly"}]},
+ {g:"Seizures",rows:[
+  {n:"Diazepam 5 mg/mL",d:[0.5,1],u:"mg",conc:5,txt:"IV (rectal 1-2 mg/kg); up to 3 times"},
+  {n:"Midazolam 5 mg/mL",d:[0.2,0.5],u:"mg",conc:5,txt:"IV, IM or intranasal"},
+  {n:"Levetiracetam 100 mg/mL",d:[30,60],u:"mg",conc:100,txt:"IV over 5 min"},
+  {n:"Phenobarbital",d:[4,6],u:"mg",txt:"IV loading, repeat to 16-20 mg/kg total"}]},
+ {g:"Metabolic",rows:[
+  {n:"Dextrose 50%",d:[0.5,1],u:"mL",txt:"dilute at least 1:3; hypoglycemia"},
+  {n:"Calcium gluconate 10%",d:[0.5,1.5],u:"mL",txt:"over 10-20 min with ECG; hyperkalemia, eclampsia"},
+  {n:"Regular insulin",d:[0.25,0.5],u:"U",txt:"IV with 2 g dextrose per unit; hyperkalemia"}]},
+ {g:"Anaphylaxis and airway",rows:[
+  {n:"Epinephrine 1 mg/mL",d:[0.01,0.01],u:"mg",conc:1,txt:"IM; repeat in 5-15 min if needed"},
+  {n:"Diphenhydramine 50 mg/mL",d:[1,2],u:"mg",conc:50,txt:"IM"},
+  {n:"Dexamethasone 2 mg/mL",d:[0.1,0.2],u:"mg",conc:2,txt:"IV; airway swelling"},
+  {n:"Butorphanol 10 mg/mL",d:[0.2,0.4],u:"mg",conc:10,txt:"IM; calms the dyspneic patient"}]},
+ {g:"Heart failure and head trauma",rows:[
+  {n:"Furosemide 50 mg/mL",d:[2,4],u:"mg",conc:50,sp:"dog",txt:"IV or IM; repeat in 1-2 h"},
+  {n:"Furosemide 50 mg/mL",d:[1,2],u:"mg",conc:50,sp:"cat",txt:"IV or IM; repeat in 1-2 h"},
+  {n:"Mannitol 20%",d:[0.5,1],u:"g",conc:0.2,txt:"over 15-20 min; raised intracranial pressure"}]},
+ {g:"Induction for intubation",rows:[
+  {n:"Propofol 10 mg/mL",d:[2,6],u:"mg",conc:10,sp:"dog",txt:"IV slowly to effect"},
+  {n:"Propofol 10 mg/mL",d:[4,8],u:"mg",conc:10,sp:"cat",txt:"IV slowly to effect"},
+  {n:"Alfaxalone 10 mg/mL",d:[1,3],u:"mg",conc:10,sp:"dog",txt:"IV slowly to effect"},
+  {n:"Alfaxalone 10 mg/mL",d:[2,5],u:"mg",conc:10,sp:"cat",txt:"IV slowly to effect"}]}
+];
+
+// Quick reference: searchable tables
+const REF=[
+ {id:"vitals",icon:"🩺",title:"Vital signs",cols:["Parameter","Dog","Cat"],rows:[
+  ["Rectal temperature","38.0-39.2 C","38.0-39.3 C"],
+  ["Heart rate (clinic)","60-140/min (giants 60-100, toys to 180, puppies to 200)","140-220/min (120-160 at home)"],
+  ["Respiratory rate","10-30/min (sleeping under 30)","20-40/min (sleeping under 30)"],
+  ["Capillary refill time","under 2 s","under 2 s"],
+  ["Systolic blood pressure","110-160 mmHg","110-160 mmHg"],
+  ["Mean arterial pressure","80-120 mmHg (keep above 60-70)","80-120 mmHg (keep above 60-70)"],
+  ["SpO2 on room air","95% or more","95% or more"],
+  ["Urine output","1-2 mL/kg/h","1-2 mL/kg/h"],
+  ["Blood volume","80-90 mL/kg","55-65 mL/kg"]],
+  note:"Hypotension: systolic under 90. Hypertension: 160 or more (severe 180 or more). Temperature above 41 C or below 36 C is an emergency."},
+ {id:"hema",icon:"🩸",title:"Hematology",cols:["Test","Dog","Cat"],rows:[
+  ["PCV / hematocrit","37-55 %","30-45 %"],["Total protein (refractometer)","5.5-7.5 g/dL","6.0-8.0 g/dL"],
+  ["White cells","6-17 x10^9/L","5.5-19.5 x10^9/L"],["Segmented neutrophils","3-11.5 x10^9/L","2.5-12.5 x10^9/L"],["Band neutrophils","0-0.3 x10^9/L","0-0.3 x10^9/L"],
+  ["Lymphocytes","1-4.8 x10^9/L","1.5-7 x10^9/L"],["Monocytes","0.15-1.35 x10^9/L","0-0.85 x10^9/L"],["Eosinophils","0.1-1.25 x10^9/L","0-1.5 x10^9/L"],
+  ["Platelets","200-500 x10^9/L","150-600 x10^9/L"],["Platelets on a smear","10-25 per oil-immersion field (each = about 15-20 x10^9/L)","same; clumps are common"],
+  ["Reticulocytes (regenerative if above)","60 x10^9/L","50 x10^9/L (aggregate)"],["MCV","60-77 fL","39-55 fL"],["MCHC","32-36 g/dL","30-36 g/dL"],
+  ["PT","6-9 s","8-12 s"]],
+  note:"Ranges change with the laboratory and analyzer: always read the range printed on your own report."},
+ {id:"chem",icon:"🧪",title:"Biochemistry and electrolytes",cols:["Test","Dog","Cat"],rows:[
+  ["Glucose","70-120 mg/dL","70-150 mg/dL (stress to 300)"],["BUN","7-27 mg/dL","16-36 mg/dL"],["Creatinine","0.5-1.5 mg/dL","0.8-2.0 mg/dL"],["SDMA","under 14 ug/dL","under 14 ug/dL"],
+  ["Albumin","2.6-4.0 g/dL","2.5-3.9 g/dL"],["Globulins","2.5-4.5 g/dL","2.6-5.1 g/dL"],["ALT","10-100 U/L","20-100 U/L"],["ALP","20-150 U/L","10-60 U/L"],["GGT","0-10 U/L","0-5 U/L"],
+  ["Total bilirubin","0-0.3 mg/dL","0-0.3 mg/dL"],["Cholesterol","110-320 mg/dL","75-220 mg/dL"],["Bile acids, fasting / 2 h after food","under 10 / under 25 umol/L","under 10 / under 25 umol/L"],
+  ["Total calcium","9.0-11.5 mg/dL","8.0-11.0 mg/dL"],["Ionized calcium","1.25-1.45 mmol/L","1.10-1.40 mmol/L"],["Phosphorus","2.5-6.0 mg/dL","3.0-6.0 mg/dL"],
+  ["Sodium","141-152 mmol/L","147-157 mmol/L"],["Potassium","3.8-5.4 mmol/L","3.5-5.5 mmol/L"],["Chloride","105-115 mmol/L","112-129 mmol/L"],
+  ["Bicarbonate","18-26 mmol/L","17-24 mmol/L"],["Venous pH","7.35-7.45","7.30-7.42"],["Lactate","under 2.5 mmol/L","under 2.5 mmol/L"],
+  ["Total T4","1.0-4.0 ug/dL","0.8-4.0 ug/dL"],["Fructosamine","about 225-365 umol/L","190-365 umol/L"]],
+  note:"Same ranges as the Lab Interpreter mode. Your laboratory's own ranges take priority."},
+ {id:"urine",icon:"💛",title:"Urine",cols:["Item","Dog","Cat"],rows:[
+  ["Specific gravity, well hydrated","above 1.030","above 1.035"],["Isosthenuria (same as plasma)","1.008-1.012","1.008-1.012"],["Hyposthenuria (actively diluted)","under 1.008","under 1.008"],
+  ["Protein:creatinine ratio","under 0.2 normal · 0.2-0.5 borderline · over 0.5 proteinuric","under 0.2 normal · 0.2-0.4 borderline · over 0.4 proteinuric"],
+  ["pH","5.5-7.5","5.5-7.5"],["Sediment","under 5 red cells and 5 white cells per high-power field","same"],
+  ["Sample for culture","cystocentesis","cystocentesis"],["Oliguria","under 0.5 mL/kg/h (under 1 on fluids)","same"]]},
+ {id:"anes",icon:"😴",title:"Anesthesia: monitoring targets",cols:["Parameter","Target","Act when"],rows:[
+  ["Heart rate","dog 60-140, cat 100-200/min","dog under 50-60, cat under 100: check depth, blood pressure, drugs"],
+  ["Mean arterial pressure","70-100 mmHg","under 60 (systolic under 90): reduce the vaporizer, fluid bolus, then drugs"],
+  ["SpO2","95-100 %","under 95: check the tube, oxygen supply, probe; ventilate"],
+  ["End-tidal CO2","35-45 mmHg","over 55: ventilate; sudden fall: leak, disconnection or arrest"],
+  ["Respiratory rate","8-20/min","apnea over 30-60 s: give a breath, check depth"],
+  ["Temperature","above 37 C","warm from induction; hypothermia delays recovery"],
+  ["Fluids in surgery","dog 5, cat 3 mL/kg/h to start","reduce after the first hour; less in heart disease"],
+  ["Fasting","adults 6-8 h food, water until premedication","puppies and kittens under 8 weeks: 1-2 h only"]]},
+ {id:"fluids",icon:"💧",title:"Fluids and transfusion",cols:["Item","Dog","Cat"],rows:[
+  ["Maintenance","60 mL/kg/day (2-3 mL/kg/h)","40 mL/kg/day (2 mL/kg/h)"],["Deficit","kg x % dehydration x 10 = mL","same"],
+  ["Shock bolus (isotonic crystalloid)","10-20 mL/kg over 15-20 min","5-10 mL/kg over 15-20 min"],
+  ["Dehydration signs","5% tacky gums · 6-8% skin tent, dry gums · 10-12% sunken eyes, weak pulses","same"],
+  ["KCl in fluids by serum K","under 2.0: 80 · 2.1-2.5: 60 · 2.6-3.0: 40 · 3.1-3.5: 28 mEq/L","same; never exceed 0.5 mEq/kg/h"],
+  ["Whole blood","2 mL/kg raises PCV by 1% (10-20 mL/kg)","same"],["Packed red cells","1 mL/kg raises PCV by 1% (6-12 mL/kg)","same"],["Plasma","10-20 mL/kg","10-20 mL/kg"],
+  ["Transfusion rate","0.5 mL/kg/h for 15-30 min, then finish within 4 h","same; always type cats first"],
+  ["Safe donation","15-20 mL/kg every 2-3 months","10-12 mL/kg, replace with fluids"]]},
+ {id:"tubes",icon:"🧫",title:"Sample tubes and order of draw",cols:["Tube","Contains","Used for"],rows:[
+  ["Light blue","Sodium citrate (fill exactly to the line)","PT, aPTT, fibrinogen, D-dimers"],
+  ["Red or gold (gel)","Nothing or clot activator: serum","Biochemistry, hormones, serology, bile acids"],
+  ["Green","Lithium heparin: plasma","In-house biochemistry, electrolytes, blood gas"],
+  ["Purple / lavender","EDTA","Hematology, blood smear, PCR, blood typing"],
+  ["Grey","Fluoride oxalate","Glucose and lactate when testing is delayed"],
+  ["Order of draw","Citrate, then serum, heparin, EDTA, fluoride last","EDTA carried into other tubes gives false high potassium and low calcium"],
+  ["Urine","Plain sterile pot (boric acid if culture is delayed)","Urinalysis within 30-60 min or refrigerate"],
+  ["Cytology slides","Air-dried, unfixed, labelled in pencil","Keep far from formalin pots: the fumes ruin staining"]]},
+ {id:"gear",icon:"💉",title:"Needles, catheters and tubes",cols:["Item","Size","Typical use"],rows:[
+  ["IV catheter 24 G (yellow)","smallest","kittens, puppies, very small or dehydrated cats"],["IV catheter 22 G (blue)","small","cats and small dogs"],
+  ["IV catheter 20 G (pink)","medium","medium dogs"],["IV catheter 18 G (green)","large","large dogs, fast fluids, blood products"],["IV catheter 16-14 G (grey, orange)","very large","shock in large dogs"],
+  ["Needle 25 G (orange)","fine","vaccines and SC injections in cats, intradermal"],["Needle 23 G (blue)","small","most injections, cystocentesis, fine-needle aspirates"],
+  ["Needle 21 G (green)","medium","blood sampling, thicker solutions"],["Needle 18 G (pink)","large","drawing up drugs, fluids under the skin in large dogs"],
+  ["Endotracheal tube, cat","3-4.5 mm","spray lidocaine on the larynx first"],["Endotracheal tube, dog 2-10 kg","4-8 mm","have one size above and below ready"],
+  ["Endotracheal tube, dog 10-30 kg","8-11 mm",""],["Endotracheal tube, dog over 30 kg","11-14 mm",""],
+  ["Giving set","20 drops/mL standard · 60 drops/mL pediatric","drops/min = mL/h x drops per mL / 60"]],
+  note:"Hub colours follow the ISO standard, but needle and catheter colours are different scales: read the gauge on the pack."},
+ {id:"scores",icon:"📏",title:"Scores, stages and thresholds",cols:["Scale","Values","Meaning"],rows:[
+  ["Body condition (1-9)","4-5 ideal","each point above 5 is about 10% overweight"],
+  ["Glasgow pain scale, dog","6/24 or more (5/20 if not walked)","give analgesia"],["Feline Grimace Scale","4/10 or more","give analgesia"],
+  ["Modified Glasgow Coma Scale","3-8 grave · 9-14 guarded · 15-18 good","repeat every 30-60 min after head trauma"],
+  ["Shock index","heart rate / systolic pressure over 1","suggests shock in dogs"],
+  ["IRIS stage by creatinine, dog","1: under 1.4 · 2: 1.4-2.8 · 3: 2.9-5.0 · 4: over 5.0 mg/dL","stable, hydrated patient"],
+  ["IRIS stage by creatinine, cat","1: under 1.6 · 2: 1.6-2.8 · 3: 2.9-5.0 · 4: over 5.0 mg/dL","sub-stage by proteinuria and blood pressure"],
+  ["Blood pressure risk","under 140 normal · 140-159 pre · 160-179 hypertensive · 180+ severe","treat at 160+ if persistent or with organ damage"],
+  ["ACVIM heart disease","A at risk · B1 murmur · B2 murmur + enlargement · C failure · D refractory","pimobendan from B2"],
+  ["ASA status","I healthy · II mild disease · III severe · IV life-threatening · V moribund; E = emergency","anesthetic risk"],
+  ["Heart murmur grade","I very soft · III easily heard · V with a thrill · VI heard off the chest","out of VI"],
+  ["Patellar luxation","1 returns alone · 2 luxates in movement · 3 mostly out, replaceable · 4 fixed out","surgery from grade 2 with signs"]]},
+ {id:"tox",icon:"☠️",title:"Common poisons",cols:["Poison","Risk","Signs and first action"],rows:[
+  ["Decontamination","Emesis only within 1-2 h, alert patient, not for caustics or hydrocarbons","Dog: apomorphine 0.03 mg/kg IV. Cat: dexmedetomidine 7 mcg/kg IM. Charcoal 1-4 g/kg"],
+  ["Chocolate (dogs)","Methylxanthines: signs from 20 mg/kg, heart 40, seizures 60. Milk about 2 mg/g, dark 5-6, baking 14-16","Vomiting, agitation, tachycardia, tremors. Emesis, charcoal, fluids, urinary catheter"],
+  ["Grapes, raisins (dogs)","Any amount; unpredictable","Kidney failure in 1-3 days. Emesis, IV fluids for 48 h, monitor creatinine"],
+  ["Xylitol (dogs)","Over 0.1 g/kg hypoglycemia; over 0.5 g/kg liver failure","Glucose check and dextrose; liver values for 72 h"],
+  ["Onion, garlic","Dogs 15-30 g/kg, cats 5 g/kg","Heinz-body hemolytic anemia after several days"],
+  ["Lilies (cats)","Any part, pollen or vase water","Kidney failure: decontaminate and IV fluids for 48-72 h at once"],
+  ["Paracetamol","Cats: any dose. Dogs: over 100 mg/kg","Brown gums, facial swelling (cats); liver damage (dogs). N-acetylcysteine 140 mg/kg, then 70 mg/kg every 6 h"],
+  ["Ibuprofen and other NSAIDs","Dogs: ulcers from about 50 mg/kg, kidney injury from about 175; cats about half","Emesis, charcoal, omeprazole, IV fluids 48 h"],
+  ["Ethylene glycol (antifreeze)","Lethal: dog 4.4-6.6 mL/kg, cat 1.4 mL/kg","'Drunk', then kidney failure. Fomepizole or ethanol within 8 h (dog) or 3 h (cat)"],
+  ["Anticoagulant rat poison","Bleeding after 3-5 days","PT prolonged first. Vitamin K1 2.5-5 mg/kg/day for 3-4 weeks; plasma if bleeding"],
+  ["Permethrin (cats)","Dog spot-on applied to or licked by a cat","Tremors, seizures. Wash with dish soap, methocarbamol, IV lipid, keep cool"],
+  ["Organophosphates, carbamates","Insecticides, some baits","Salivation, miosis, bradycardia, tremors. Atropine 0.2-0.5 mg/kg; wash the animal"],
+  ["Snake and scorpion (regional)","Vipers in the UAE cause swelling and bleeding disorders","Keep still, IV access, clotting tests, analgesia, antivenom if available; no tourniquet"],
+  ["Heat (UAE summer)","Rectal temperature above 41 C","Cool with water and airflow BEFORE transport; stop at 39.5 C; IV fluids; check clotting and glucose"]]},
+ {id:"repro",icon:"🍼",title:"Reproduction and young animals",cols:["Item","Dog","Cat"],rows:[
+  ["Pregnancy length","63 days from ovulation (57-72 from mating)","63-65 days"],["Ultrasound confirms pregnancy","from day 25","from day 16-25"],["Skeletons visible on radiographs","from day 42-45","from day 38-40"],
+  ["Sign of whelping within 24 h","rectal temperature falls below 37.5 C","less reliable"],
+  ["Dystocia: act when","30 min of strong straining without a puppy; over 2 h between puppies; green discharge with no puppy","same rules for kittens"],
+  ["Puberty","6-12 months (later in giant breeds)","4-10 months; season-dependent"],["Estrous cycle","one or two heats a year; ovulates spontaneously","repeated heats in the long-day season; ovulation induced by mating"],
+  ["Newborn temperature","35.5-36.5 C in week 1; never feed a cold neonate","same"],["Newborn weight gain","5-10% of birth weight per day","about 10-15 g per day"],
+  ["Eyes open","10-14 days","7-10 days"],["Core vaccine series","from 6-8 weeks, every 2-4 weeks until 16 weeks or older; booster at 6-12 months","same"],
+  ["Deworming","every 2 weeks from 2 weeks to 12 weeks, then monthly to 6 months","from 3 weeks, same pattern"]]},
+ {id:"conv",icon:"🧮",title:"Conversions and formulas",cols:["Item","Formula","Example"],rows:[
+  ["Percent solution","1% = 10 mg/mL","2% lidocaine = 20 mg/mL; 50% dextrose = 500 mg/mL"],["Dose volume","mL = kg x mg/kg / (mg/mL)","20 kg x 0.2 / 5 = 0.8 mL"],
+  ["Dilution","C1 x V1 = C2 x V2","5% dextrose in 500 mL: 50 mL of 50% + 450 mL fluid"],["Drip rate","drops/min = mL/h x drops per mL / 60","60 mL/h with a 20-drop set = 20 drops/min"],
+  ["CRI in mcg/kg/min","mg/h = mcg/kg/min x kg x 0.06","5 x 20 x 0.06 = 6 mg/h"],["Weight","1 kg = 2.2 lb","44 lb = 20 kg"],["Temperature","F = C x 1.8 + 32","39 C = 102.2 F"],
+  ["Glucose","mmol/L = mg/dL / 18","90 mg/dL = 5 mmol/L"],["Creatinine","umol/L = mg/dL x 88.4","1.6 mg/dL = 141 umol/L"],["Urea","mmol/L = BUN mg/dL x 0.357","28 mg/dL = 10 mmol/L"],
+  ["Anion gap","(Na + K) - (Cl + HCO3)","dog 12-24, cat 13-27 mmol/L"],["Resting energy","70 x kg^0.75 kcal/day","10 kg: about 394 kcal"],
+  ["Body surface area","m2 = 10.1 x kg^0.67 / 100 (cat 10.0)","20 kg dog: about 0.74 m2"]]}
+];
+
+// Clinical English: [English, Spanish gloss]
+const PHRASES=[
+ {title:"Greeting and opening",icon:"👋",items:[
+  ["Good morning, I'm Lucas, one of the vets here. What brings you and Max in today?","Buenos días, soy Lucas, uno de los veterinarios. ¿Qué les trae hoy a usted y a Max?"],
+  ["Is it all right if I ask you a few questions first and then examine him?","¿Le parece bien que primero le haga unas preguntas y luego lo explore?"],
+  ["How long has this been going on?","¿Desde cuándo le pasa?"],
+  ["Has anything like this happened before?","¿Le había pasado algo parecido antes?"],
+  ["What worries you most about it?","¿Qué es lo que más le preocupa?"]]},
+ {title:"Taking the history",icon:"📝",items:[
+  ["Is she eating and drinking as usual?","¿Come y bebe como siempre?"],
+  ["Has he been sick at all? Is the food coming back up straight after eating, or is he heaving first?","¿Ha vomitado? ¿Devuelve la comida nada más comer o hace arcadas antes?"],
+  ["What do his stools look like? Any blood or mucus?","¿Cómo son las heces? ¿Hay sangre o moco?"],
+  ["Is she drinking or urinating more than usual?","¿Bebe u orina más de lo normal?"],
+  ["Is he straining to pass urine, or going little and often?","¿Hace esfuerzos para orinar o hace poco y muchas veces?"],
+  ["Has she been coughing, sneezing or breathing faster?","¿Tose, estornuda o respira más rápido?"],
+  ["Is he up to date with his vaccinations and worming?","¿Tiene al día las vacunas y la desparasitación?"],
+  ["Is she on any medication or supplements at the moment?","¿Toma ahora algún medicamento o suplemento?"],
+  ["Could he have eaten anything he shouldn't have? Rubbish, toys, human medicines, plants?","¿Ha podido comer algo que no debía? ¿Basura, juguetes, medicamentos, plantas?"],
+  ["Has she been spayed? When was her last season?","¿Está esterilizada? ¿Cuándo fue su último celo?"],
+  ["Does he go outdoors? Does he mix with other animals?","¿Sale al exterior? ¿Tiene contacto con otros animales?"],
+  ["Has he travelled or been imported from another country?","¿Ha viajado o viene de otro país?"]]},
+ {title:"During the examination",icon:"🔎",items:[
+  ["I'm just going to listen to her heart and lungs.","Voy a auscultarle el corazón y los pulmones."],
+  ["Could you hold his head gently for me?","¿Me sujeta la cabeza con suavidad?"],
+  ["I'm going to feel her tummy now; tell me if she seems uncomfortable at home when you pick her up.","Ahora le voy a palpar la barriga; dígame si en casa le molesta cuando la coge."],
+  ["His temperature is normal. / She has a fever.","La temperatura es normal. / Tiene fiebre."],
+  ["His gums are a bit pale and he is dehydrated.","Tiene las encías algo pálidas y está deshidratado."],
+  ["I can hear a heart murmur, which means the blood flow is turbulent.","Oigo un soplo, que significa que la sangre fluye con turbulencia."],
+  ["One of my colleagues will help hold him so that it is safe for everyone.","Un compañero ayudará a sujetarlo para que sea seguro para todos."],
+  ["She is quite nervous, so we will go slowly and may give her something to relax.","Está bastante nerviosa; iremos despacio y quizá le demos algo para relajarla."]]},
+ {title:"Explaining findings and tests",icon:"🧪",items:[
+  ["From what I can see so far, the most likely causes are...","Por lo que veo hasta ahora, las causas más probables son..."],
+  ["To find out what is going on, I would recommend a blood test and an X-ray.","Para saber qué ocurre, recomiendo un análisis de sangre y una radiografía."],
+  ["The blood test tells us how the kidneys and liver are working and whether there is infection or anemia.","El análisis nos dice cómo funcionan los riñones y el hígado y si hay infección o anemia."],
+  ["We will need to give a light sedation to get good X-rays.","Necesitaremos una sedación ligera para obtener buenas radiografías."],
+  ["I'd like to take a small sample with a fine needle; it is quick and usually well tolerated.","Me gustaría tomar una muestra con una aguja fina; es rápido y se tolera bien."],
+  ["The results will be ready in about twenty minutes. / We will have them tomorrow.","Los resultados estarán en unos veinte minutos. / Los tendremos mañana."],
+  ["The results are normal, which rules out the more serious causes.","Los resultados son normales, lo que descarta las causas más graves."],
+  ["I'm not certain yet, and I'd rather be honest about that. These are the next steps.","Aún no estoy seguro y prefiero ser sincero. Estos son los siguientes pasos."]]},
+ {title:"Estimates and consent",icon:"💳",items:[
+  ["Before we go ahead, let me give you an estimate of the cost.","Antes de continuar, le doy un presupuesto."],
+  ["The estimate is between X and Y dirhams, depending on what we find.","El presupuesto está entre X e Y dírhams, según lo que encontremos."],
+  ["There are a few options; let me explain the advantages and disadvantages of each.","Hay varias opciones; le explico ventajas e inconvenientes de cada una."],
+  ["If cost is a concern, we can start with the most important tests first.","Si el coste le preocupa, podemos empezar por las pruebas más importantes."],
+  ["Every anesthetic carries a small risk; we reduce it with a check-up, blood tests and monitoring.","Toda anestesia tiene un pequeño riesgo; lo reducimos con una revisión, análisis y monitorización."],
+  ["Please read this consent form and sign here if you are happy to proceed.","Lea este consentimiento y firme aquí si está de acuerdo en continuar."],
+  ["Which phone number is best to reach you on today? We will call if anything changes.","¿En qué teléfono le localizamos hoy? Le llamaremos si hay cambios."],
+  ["Would you like us to attempt resuscitation if his heart were to stop?","¿Quiere que intentemos reanimarlo si se le para el corazón?"]]},
+ {title:"Treatment and going home",icon:"🏠",items:[
+  ["I'd like to keep her in hospital on a drip for the day.","Me gustaría dejarla ingresada hoy con suero."],
+  ["Give one tablet twice a day with food for seven days, and finish the course.","Un comprimido dos veces al día con comida durante siete días; termine el tratamiento."],
+  ["Don't give any human painkillers; some are poisonous to dogs and cats.","No le dé analgésicos de personas; algunos son tóxicos para perros y gatos."],
+  ["Keep the cone on at all times so he can't lick the wound.","Déjele el collar isabelino siempre puesto para que no se lama la herida."],
+  ["Short lead walks only for two weeks: no running, jumping or stairs.","Solo paseos cortos con correa dos semanas: sin correr, saltar ni escaleras."],
+  ["Offer small amounts of bland food little and often.","Ofrézcale poca cantidad de dieta blanda, varias veces."],
+  ["Come back in three days so that I can check the wound.","Vuelva en tres días para revisar la herida."],
+  ["Call us straight away if she stops eating, vomits, or seems worse.","Llámenos enseguida si deja de comer, vomita o empeora."],
+  ["Do you have any questions? Would it help if I wrote this down?","¿Tiene alguna pregunta? ¿Le ayuda si se lo dejo por escrito?"]]},
+ {title:"Bad news and euthanasia",icon:"🕊️",items:[
+  ["I'm afraid I have some difficult news.","Me temo que tengo malas noticias."],
+  ["The tests show that the kidneys are failing, and this cannot be cured.","Las pruebas muestran que los riñones están fallando y no tiene cura."],
+  ["I'm so sorry. I know this is not what you were hoping to hear.","Lo siento mucho. Sé que no es lo que esperaba oír."],
+  ["Take all the time you need. I'm here for any questions.","Tómese el tiempo que necesite. Estoy aquí para cualquier pregunta."],
+  ["We can keep him comfortable, but we cannot make him better.","Podemos mantenerlo cómodo, pero no curarlo."],
+  ["I think the kindest thing now would be to let her go peacefully.","Creo que lo más compasivo ahora sería dejarla ir en paz."],
+  ["I will give an injection into the vein; he will fall asleep within seconds and will not feel any pain.","Le pondré una inyección en la vena; se dormirá en segundos y no sentirá dolor."],
+  ["He may take a deep breath or his muscles may twitch afterwards; that is normal and he is not aware of it.","Puede que respire hondo o tenga espasmos después; es normal y no es consciente."],
+  ["Would you like to stay with her? Either choice is fine.","¿Quiere quedarse con ella? Cualquiera de las dos opciones está bien."],
+  ["You have looked after him so well. This was not your fault.","Lo ha cuidado muy bien. No ha sido culpa suya."]]},
+ {title:"Phone and triage",icon:"📞",items:[
+  ["Is he breathing normally? What colour are his gums?","¿Respira con normalidad? ¿De qué color tiene las encías?"],
+  ["Is she able to stand and walk?","¿Puede levantarse y andar?"],
+  ["That needs to be seen straight away. Please come in now.","Eso hay que verlo ya. Venga ahora, por favor."],
+  ["Bring the packaging of whatever he ate, and don't try to make him vomit at home.","Traiga el envase de lo que haya comido y no intente hacerle vomitar en casa."],
+  ["Keep her cool and calm in the car; wet her coat with water and keep the air conditioning on.","Manténgala fresca y tranquila en el coche; mójele el pelo y deje el aire puesto."],
+  ["A male cat that cannot pass urine is an emergency.","Un gato macho que no puede orinar es una urgencia."],
+  ["It doesn't sound urgent, but I'd like to see him today or tomorrow.","No parece urgente, pero me gustaría verlo hoy o mañana."]]},
+ {title:"Working with the team",icon:"🤝",items:[
+  ["Could you place an IV catheter and take bloods, please?","¿Puedes poner una vía y sacar sangre, por favor?"],
+  ["Can I have a hand with this one? He is a bit wriggly.","¿Me echas una mano con este? Se mueve bastante."],
+  ["I'm not sure about this case. Could you have a look with me?","No estoy seguro con este caso. ¿Lo ves conmigo?"],
+  ["What's the usual protocol here for this?","¿Cuál es el protocolo habitual aquí para esto?"],
+  ["Handover: this is Bella, a four-year-old spayed Labrador admitted for vomiting.","Relevo: esta es Bella, labradora esterilizada de cuatro años, ingresada por vómitos."],
+  ["She is stable, on fluids at 60 mL/h, last vomited at ten, and bloods are pending.","Está estable, con suero a 60 mL/h, último vómito a las diez y análisis pendientes."],
+  ["Please recheck her temperature at two and call me if it is above 39.5.","Por favor, vuelve a tomarle la temperatura a las dos y avísame si pasa de 39,5."],
+  ["Can you double-check this dose with me before I give it?","¿Compruebas esta dosis conmigo antes de ponerla?"],
+  ["I need help in consult two, please: it's an emergency.","Necesito ayuda en la consulta dos, por favor: es una urgencia."]]},
+ {title:"What owners say, and what it means",icon:"🗣️",items:[
+  ["He's been sick / throwing up","Vómitos (ojo: en inglés británico 'sick' = vomitar)"],
+  ["He brings his food back up","Regurgitación (o vómito: hay que preguntar)"],
+  ["She's got the runs / loose stools / an upset tummy","Diarrea"],
+  ["He's off his food / not himself / a bit flat","Inapetencia / apatía, decaído"],
+  ["She's having accidents in the house","Se orina o defeca en casa (incontinencia o poliuria)"],
+  ["He's scooting","Arrastra el trasero (sacos anales)"],
+  ["Has she been fixed / done / desexed?","¿Está esterilizada? (spayed = hembra; neutered o castrated = macho)"],
+  ["Shots / jabs / boosters","Vacunas / dosis de recuerdo"],
+  ["She had a fit","Tuvo una convulsión (seizure)"],
+  ["Put to sleep / put down","Eutanasia. Para anestesia diga siempre 'anesthetize' o 'sedate', nunca 'put to sleep'"],
+  ["She's in season / in heat","Está en celo"],
+  ["A lump / a bump","Un bulto, una masa"],
+  ["The cone / the collar of shame","Collar isabelino (Elizabethan collar, e-collar)"],
+  ["Bloods / blood work","Análisis de sangre"],
+  ["A scan","Ecografía (o TAC / resonancia: aclarar)"],
+  ["A drip","Suero intravenoso (IV fluids)"],
+  ["Stitches","Puntos de sutura"],
+  ["Hot spot","Dermatitis húmeda aguda"],
+  ["He's limping / favouring a leg","Cojea"],
+  ["Wormer / flea treatment","Antiparasitario interno / tratamiento antipulgas"]]}
+];
+// ===== TOOLS: daily review (spaced repetition), dose / CRI calculator, emergency sheet, quick reference, clinical English, saved items and notes =====
+// Loaded before app.js: only declarations here; everything that touches `store` or the DOM runs later, from render() and act().
+const TOOL_VIEWS=["tools","daily","calc","ref","phrases","saved"];
+const SRS_INT=[1,3,7], DAILY_N=20, SRS_MODES=["quiz","drugs","anat","basic"];
+function dayNum(){ const d=new Date(); return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/864e5); }
+function freshX(){ return {srs:{},daily:{last:0,streak:0},marks:{},notes:{}}; }
+function xs(){ if(!store.x) store.x=freshX(); const X=store.x; if(!X.srs) X.srs={}; if(!X.daily) X.daily={last:0,streak:0}; if(!X.marks) X.marks={}; if(!X.notes) X.notes={}; return X; }
+// merge of the extras from two devices: the most recently changed entry wins (removals are kept as tombstones)
+function mergeX(a,b){ a=a||{}; b=b||{}; const out=freshX();
+  [a.srs||{},b.srs||{}].forEach(S=>Object.keys(S).forEach(k=>{ const e=S[k]; if(!e) return; if(!out.srs[k]||(e.u||0)>(out.srs[k].u||0)) out.srs[k]=e; }));
+  [a.marks||{},b.marks||{}].forEach(S=>Object.keys(S).forEach(k=>{ const v=+S[k]||0; if(out.marks[k]===undefined||Math.abs(v)>Math.abs(out.marks[k])) out.marks[k]=v; }));
+  [a.notes||{},b.notes||{}].forEach(S=>Object.keys(S).forEach(k=>{ const e=S[k]; if(!e) return; if(!out.notes[k]||(e.u||0)>(out.notes[k].u||0)) out.notes[k]=e; }));
+  const da=a.daily||{}, db=b.daily||{}; out.daily=(db.last||0)>(da.last||0)? {last:db.last||0,streak:db.streak||0} : {last:da.last||0,streak:da.streak||0};
+  return out; }
+function backTo(v){ const b=$("topbar").querySelector('[data-act="home"]'); if(b){ b.setAttribute("data-act","go"); b.setAttribute("data-v",v); } }
+function segTabs(on){ return `<div class="seg"><button class="${on==="home"?"on":""}" data-act="go" data-v="home">🎯 Practice</button><button class="${on==="theory"?"on":""}" data-act="go" data-v="theory">📖 Theory</button><button class="${on==="tools"?"on":""}" data-act="go" data-v="tools">🧰 Tools</button></div>`; }
+function searchBind(id,set,rerender){ const inp=$(id); if(!inp) return; inp.addEventListener("input", e=>{ set(e.target.value); const pos=inp.selectionStart; rerender(); const n=$(id); if(n){ n.focus(); try{ n.setSelectionRange(pos,pos); }catch(err){} } }); }
+
+// ---------- spaced repetition ----------
+const _kidx={};
+function kidx(m){ if(_kidx[m]) return _kidx[m]; const o={}; MCQ[m].data().forEach((q,i)=>{ o[mkey(q)]=i; }); return _kidx[m]=o; }
+// wrong -> back tomorrow; right when due -> next interval (1, 3, 7 days), then it leaves the review list
+function srsMark(m,k,ok){ if(SRS_MODES.indexOf(m)<0) return; const X=xs(), id=m+":"+k, e=X.srs[id], t=dayNum(), now=Date.now();
+  if(!ok){ X.srs[id]={d:t+1,s:0,u:now}; return; }
+  if(!e||e.s<0||e.d>t) return;
+  const s=e.s+1; X.srs[id]= s>=SRS_INT.length? {d:0,s:-1,u:now} : {d:t+SRS_INT[s],s:s,u:now}; }
+// mistakes made before this feature existed enter the review list as due today
+function srsSeed(){ const X=xs(), t=dayNum(); let ch=false; SRS_MODES.forEach(m=>{ const w=store[m].wrong||{}, ix=kidx(m); Object.keys(w).forEach(k=>{ const id=m+":"+k; if(w[k] && ix[k]!==undefined && !X.srs[id]){ X.srs[id]={d:t,s:0,u:0}; ch=true; } }); }); return ch; }
+function srsList(){ const X=xs(), out=[]; Object.keys(X.srs).forEach(id=>{ const e=X.srs[id]; if(!e||e.s<0) return; const p=id.indexOf(":"), m=id.slice(0,p), k=id.slice(p+1); if(!MCQ[m]) return; const i=kidx(m)[k]; if(i===undefined) return; out.push({m:m,i:i,d:e.d,s:e.s}); }); return out; }
+function srsDue(){ const t=dayNum(); return srsList().filter(x=>x.d<=t).sort((a,b)=>a.d-b.d); }
+const DY={items:[],pos:0,perm:null,answered:null,ok:0,n:0,active:false};
+function dailyNew(n,have){ if(n<=0) return []; const taken=new Set(have.map(x=>x.m+":"+x.i)), fresh=[], seen=[];
+  ["quiz","drugs","anat"].forEach(m=>{ MCQ[m].data().forEach((q,i)=>{ if(taken.has(m+":"+i)) return; (store[m].done[mkey(q)]?seen:fresh).push({m:m,i:i}); }); });
+  let pick=shuffle(fresh).slice(0,n); if(pick.length<n) pick=pick.concat(shuffle(seen).slice(0,n-pick.length)); return pick; }
+function dailyStart(){ if(srsSeed()) save(); const due=srsDue().slice(0,DAILY_N).map(x=>({m:x.m,i:x.i,due:true}));
+  const fill=dailyNew(DAILY_N-due.length,due).map(x=>({m:x.m,i:x.i,due:false}));
+  DY.items=shuffle(due.concat(fill)); DY.pos=0; DY.perm=null; DY.answered=null; DY.ok=0; DY.n=0; DY.active=true; }
+function dailyDoneToday(){ return xs().daily.last===dayNum(); }
+function dailyStreak(){ const D=xs().daily, t=dayNum(); return (D.last===t||D.last===t-1)? (D.streak||0) : 0; }
+function dailyFinish(){ const D=xs().daily, t=dayNum(); if(D.last!==t){ D.streak=(D.last===t-1? (D.streak||0)+1 : 1); D.last=t; } save(); }
+function dailyCard(){ srsSeed(); const due=srsDue().length, st=dailyStreak(), done=dailyDoneToday();
+  return `<button class="mode c-tools" data-act="go" data-v="daily"><div class="ic">📅</div><div class="t"><b>Daily review</b><span>${due?`${due} question${due>1?"s":""} due for review today`:"Nothing due: 20 new questions"}${st?` · ${st}-day streak 🔥`:""}${done?" · done today ✓":""}</span></div><div class="pct">${done&&!due?"✓":due||DAILY_N}</div></button>`; }
+function dailyStatsCard(){ const all=srsList(), due=srsDue().length, t=dayNum(), tom=all.filter(x=>x.d===t+1).length;
+  return `<div class="card c-tools"><div class="row space"><div><h3 style="margin:0">📅 Daily review</h3><p class="muted" style="margin:4px 0 0;font-size:13.5px">${dailyStreak()}-day streak · ${all.length} question${all.length===1?"":"s"} in spaced review · ${due} due today · ${tom} tomorrow</p></div><button class="btn small" data-act="go" data-v="daily">Open</button></div></div>`; }
+function renderDaily(){
+  topbar("Daily review"); $("topprog").innerHTML="";
+  if(!DY.active){ if(srsSeed()) save(); const all=srsList(), due=srsDue().length, t=dayNum(), st=dailyStreak();
+    const fc=[1,2,3,4,5,6,7].map(k=>all.filter(x=>x.d===t+k).length);
+    $("main").innerHTML=`<div class="hero"><h2>Daily review</h2><p class="muted" style="margin:6px 0 0">One mixed session of ${DAILY_N} questions a day. Every question you get wrong, in any mode, comes back the next day, then after 3 days, then after 7. Answer it right each time and it leaves the list.</p></div>
+      <div class="card c-tools"><div class="kpis"><div class="kpi"><b>${due}</b><small>due today</small></div><div class="kpi"><b>${all.length}</b><small>in spaced review</small></div><div class="kpi"><b>${st}</b><small>day streak</small></div></div>
+        <p class="muted" style="font-size:13.5px;margin:12px 0 0">${due>=DAILY_N?`Today's session is all review (${due} due; the oldest ${DAILY_N} first).`:due?`Today: ${due} due for review plus ${DAILY_N-due} new questions from Quiz, Drugs and Anatomy.`:`Nothing is due, so today's session is ${DAILY_N} new questions from Quiz, Drugs and Anatomy.`}${dailyDoneToday()?" You have already completed a session today.":""}</p>
+        <div class="actions"><button class="btn" data-act="dstart">${dailyDoneToday()?"Start another session":"Start today's session"}</button></div></div>
+      <div class="card"><h3>Coming up</h3><p class="muted" style="font-size:13px">Questions returning over the next 7 days.</p>${fc.map((n,k)=>barRow(k===0?"Tomorrow":"In "+(k+1)+" days", n, Math.max(1,...fc), "var(--mc,var(--teal))", String(n))).join("")}</div>`;
+    return; }
+  if(DY.pos>=DY.items.length){ const due=srsDue().length;
+    $("main").innerHTML=`<div class="card c-tools done-banner"><div class="big">${DY.ok===DY.n?"🏆":"📅"}</div><h2>Session complete</h2><p class="muted">${DY.ok}/${DY.n} correct · ${dailyStreak()}-day streak. ${DY.n-DY.ok?`The ones you missed come back tomorrow.`:"Nothing new for tomorrow."}</p>
+      <div class="actions" style="justify-content:center"><button class="btn" data-act="dstart">${due?`Another session (${due} still due)`:"Another session (new questions)"}</button><button class="btn ghost" data-act="home">Home</button></div></div>`;
+    return; }
+  const it=DY.items[DY.pos], M=MCQ[it.m], q=M.data()[it.i]; if(!DY.perm) DY.perm=shuffle(range(4));
+  const p=Math.round(DY.pos/DY.items.length*100);
+  $("topprog").innerHTML=`<div class="c-tools"><div class="row space" style="font-size:12.5px;color:var(--muted);margin-top:6px"><span>Session</span><span><b style="color:var(--ink)">${DY.pos}/${DY.items.length}</b> · ${DY.ok} correct</span></div><div class="prog"><div style="width:${p}%"></div></div></div>`;
+  const opts=DY.perm.map((oi,k)=>{ let cls="opt"; if(DY.answered!==null){ if(oi===0) cls+=" correct"; else if(k===DY.answered) cls+=" wrong"; else cls+=" dim"; }
+    return `<button class="${cls}" data-act="dans" data-k="${k}" ${DY.answered!==null?"disabled":""}>${q.fig&&q.o[0].length===1?"":String.fromCharCode(65+k)+". "}${esc(q.o[oi])}</button>`; }).join("");
+  let fb="";
+  if(DY.answered!==null){ const ok=DY.perm[DY.answered]===0, e=xs().srs[it.m+":"+mkey(q)], t=dayNum();
+    const when= e&&e.s>=0? (e.d-t<=1?"tomorrow":"in "+(e.d-t)+" days") : "";
+    fb=`<div class="fb ${ok?"ok":"bad"}"><b>${ok?"✅ Correct":"❌ Not quite - the correct answer is "+(q.fig?esc(q.o[0]):String.fromCharCode(65+DY.perm.indexOf(0)))}</b>${esc(q.e)}</div>
+      <p class="muted" style="font-size:13px;margin:8px 0 0">${when?`📅 Back for review ${when}.`:(it.due?"📅 Review finished for this question.":"")}</p>
+      <div class="actions"><button class="btn" data-act="dnext">Next →</button>${theoryBtn(it.m,q)}</div>`; }
+  $("main").innerHTML=`<div class="card ${M.cls}">
+      <div class="row space" style="margin-bottom:8px"><span><span class="chip mode-chip">${esc(M.title)} · ${esc(q.c)}</span> <span class="chip gray">${it.again?"again":it.due?"review":"new"}</span></span>${starBtn("q:"+it.m+":"+mkey(q))}</div>
+      <h3 style="font-size:17px;line-height:1.45">${esc(q.q)}</h3>${figHtml(q,DY.answered!==null)}${opts}${fb}</div>
+    <div class="actions" style="justify-content:center"><button class="btn ghost small" data-act="dquit">End session</button></div>`;
+}
+function dailyAnswer(k){ if(DY.answered!==null) return; const it=DY.items[DY.pos], q=MCQ[it.m].data()[it.i], kk=mkey(q), ok=DY.perm[k]===0;
+  DY.answered=k; DY.n++; if(ok) DY.ok++;
+  store[it.m].done[kk]=true; store[it.m].correct[kk]=ok; markWrong(store[it.m],kk,ok); srsMark(it.m,kk,ok);
+  if(!ok && !it.again) DY.items.push({m:it.m,i:it.i,due:it.due,again:true});
+  save(); render(); }
+
+// ---------- saved items and notes ----------
+function isMarked(k){ return (xs().marks[k]||0)>0; }
+function starBtn(k){ const on=isMarked(k); return `<button class="btn icon star${on?" on":""}" data-act="star" data-k="${esc(k)}" title="${on?"Remove from saved":"Save for later"}" aria-label="${on?"Remove from saved":"Save for later"}">${on?"★":"☆"}</button>`; }
+function savedQs(m){ const D=MCQ[m].data(); return range(D.length).filter(i=>isMarked("q:"+m+":"+mkey(D[i]))); }
+function noteOf(id){ const e=xs().notes[id]; return e&&e.t? e.t : ""; }
+let noteTimer=null;
+function noteHtml(id){ return `<div class="tnote"><div class="section-label">📝 My notes</div><textarea id="tnote" rows="3" placeholder="Your own notes for this topic (saved with your progress)">${esc(noteOf(id))}</textarea><div class="muted" id="tnote_s" style="font-size:12px;min-height:16px"></div></div>`; }
+function noteBind(id){ const el=$("tnote"); if(!el) return; el.addEventListener("input",()=>{ xs().notes[id]={t:el.value.slice(0,4000),u:Date.now()}; clearTimeout(noteTimer); const s=$("tnote_s"); if(s) s.textContent="Saving…";
+  noteTimer=setTimeout(()=>{ save(); const s2=$("tnote_s"); if(s2) s2.textContent="Saved"; },700); }); }
+function renderSaved(){
+  topbar("Saved & notes"); backTo("tools"); $("topprog").innerHTML="";
+  const topics=THEORY.filter(t=>isMarked("t:"+t.id)), notes=THEORY.filter(t=>noteOf(t.id).trim());
+  const qcards=SRS_MODES.map(m=>{ const qs=savedQs(m); if(!qs.length) return ""; const D=MCQ[m].data();
+    return `<div class="card ${MCQ[m].cls}"><div class="row space"><h3 style="margin:0">${esc(MCQ[m].title)} · ${qs.length}</h3><button class="btn small" style="background:${MCQ[m].color}" data-act="msaved" data-m="${m}">Practise</button></div>
+      ${qs.map(i=>`<div class="srow"><span>${esc(D[i].q.length>110?D[i].q.slice(0,110)+"…":D[i].q)}</span>${starBtn("q:"+m+":"+mkey(D[i]))}</div>`).join("")}</div>`; }).join("");
+  $("main").innerHTML=`<div class="hero"><h2>Saved &amp; notes</h2><p class="muted" style="margin:6px 0 0">Tap ☆ on any question or theory topic to keep it here. Notes are written at the end of each theory topic.</p></div>
+    <div class="section-label">Saved topics</div>${topics.length?`<div class="modes">${topics.map(t=>`<button class="mode c-theory" data-act="topic" data-id="${t.id}" data-ret="saved"><div class="ic">⭐</div><div class="t"><b>${esc(t.title)}</b><span>${esc(t.area)}</span></div></button>`).join("")}</div>`:`<p class="muted">No saved topics yet.</p>`}
+    <div class="section-label">Saved questions</div>${qcards||`<p class="muted">No saved questions yet.</p>`}
+    <div class="section-label">My notes</div>${notes.length?notes.map(t=>`<div class="card" style="padding:12px 14px"><div class="row space"><b>${esc(t.title)}</b><button class="btn ghost small" data-act="topic" data-id="${t.id}" data-ret="saved">Open</button></div><p style="white-space:pre-wrap;margin:8px 0 0;font-size:14.5px">${esc(noteOf(t.id))}</p></div>`).join(""):`<p class="muted">No notes yet.</p>`}`;
+}
+
+// ---------- dose calculator ----------
+const K={tab:"dose",w:"",sp:"dog",di:0,conc:null,ci:0,cdose:"",cconc:null,cvol:"50",crate:""};
+function nf(x){ if(!isFinite(x)) return "-"; const a=Math.abs(x); const d= a>=100?0 : a>=10?1 : a>=1?2 : a>=0.1?2 : 3; return String(+x.toFixed(d)); }
+function mgt(x){ return Math.abs(x)<0.1? nf(x*1000)+" mcg" : nf(x)+" mg"; }
+function rng(lo,hi,u){ return (lo===hi? nf(lo) : nf(lo)+"-"+nf(hi))+(u?" "+u:""); }
+function mass(lo,hi,u){ if(u==="mg" && lo>=1000) return rng(lo/1000,hi/1000,"g"); if(u==="mcg" && lo>=1000) return rng(lo/1000,hi/1000,"mg"); return rng(lo,hi,u); }
+const CALC_WARN=`<p class="muted" style="font-size:12.5px;margin-top:10px">Study and double-check aid. Concentrations differ between brands and countries: confirm the dose, the concentration on the vial and the route against your clinic's formulary before giving anything.</p>`;
+function doseOut(){ const d=DOSES[K.di], w=parseFloat(K.w)||0, r=d[K.sp], sp=K.sp==="cat"?"cats":"dogs";
+  if(!r) return `<div class="fb bad"><b>⛔ ${esc(d.n)}: not for ${sp}</b>${esc(d.note)}</div>`;
+  const per=d.u==="mg"&&r[0]>=1000? rng(r[0]/1000,r[1]/1000,"g/kg") : rng(r[0],r[1],d.u+"/kg");
+  const conc= d.u==="mL"? null : parseFloat(K.conc!==null?K.conc:(d.conc||""))||0;
+  let big="", sub="";
+  if(!w){ big=per; sub="Enter the body weight to calculate."; }
+  else { const lo=r[0]*w, hi=r[1]*w;
+    if(d.u==="mL"){ big=rng(lo,hi,"mL"); sub=per; }
+    else if(conc){ const f=d.u==="mcg"?1000:1; big=rng(lo/f/conc,hi/f/conc,"mL"); sub=`= ${mass(lo,hi,d.u)} · ${per} · at ${nf(conc)} ${d.u==="U"?"U":"mg"}/mL`;
+      if(hi/f/conc<0.05) sub+=`<br><b style="color:var(--bad)">Volume too small to measure: dilute 1:10 and give 10 times this volume.</b>`; }
+    else { big=mass(lo,hi,d.u); sub=per+(d.cv?`<br><b style="color:var(--bad)">Several strengths exist (${esc(d.cv)} mg/mL): enter the one on your vial to get mL.</b>`:d.conc===null?" · oral or variable strength: enter a concentration above for mL":""); } }
+  return `<div class="bigout"><b>${big}</b><span>${sub}</span></div>
+    <table class="rt" style="margin-top:10px"><tr><td>Route</td><td>${esc(d.route)}</td></tr><tr><td>Frequency</td><td>${esc(d.freq)}</td></tr>${d.note?`<tr><td>Notes</td><td>${esc(d.note)}</td></tr>`:""}<tr><td>Other species</td><td>${(()=>{ const o=K.sp==="cat"?"dog":"cat", ro=d[o]; return ro? (o==="cat"?"Cat: ":"Dog: ")+(d.u==="mg"&&ro[0]>=1000? rng(ro[0]/1000,ro[1]/1000,"g/kg") : rng(ro[0],ro[1],d.u+"/kg")) : "Not for "+(o==="cat"?"cats":"dogs"); })()}</td></tr></table>`; }
+const CRI_F={"mcg/kg/min":0.06,"mcg/kg/h":0.001,"mg/kg/h":1,"mg/kg/min":60};
+function criOut(){ const c=CRIS[K.ci], w=parseFloat(K.w)||0, r=c[K.sp];
+  if(!r) return `<div class="fb bad"><b>⛔ ${esc(c.n)} infusion: not for ${K.sp==="cat"?"cats":"dogs"}</b>${esc(c.note)}</div>`;
+  const dose=parseFloat(K.cdose)||r[0], conc=parseFloat(K.cconc!==null?K.cconc:(c.conc||""))||0, f=CRI_F[c.u];
+  if(!w||!conc) return `<div class="bigout"><b>${rng(r[0],r[1],c.u)}</b><span>Enter ${!w&&!conc?"the body weight and the concentration":!w?"the body weight":"the concentration on the vial"} to calculate.</span></div><p class="muted" style="font-size:13.5px">${esc(c.note)}</p>`;
+  const mgh=dose*w*f, mlh=mgh/conc, V=parseFloat(K.cvol)||0, R=parseFloat(K.crate)||0;
+  let dil="";
+  if(V&&R){ const hrs=V/R, mg=mgh*hrs, ml=mg/conc;
+    dil= ml>V? `<div class="fb warn"><b>Not possible at this rate</b>The drug alone (${nf(ml)} mL) is more than the ${nf(V)} mL container. Use a slower rate, a larger volume, or run it undiluted.</div>` :
+      `<div class="fb info"><b>Add ${nf(ml)} mL of drug to ${nf(V-ml)} mL of diluent</b>Total ${nf(V)} mL at ${mgt(mg/V)}/mL (${mgt(mg)} in total). Run at ${nf(R)} mL/h: lasts ${nf(hrs)} h. Label the syringe or bag with drug, amount, date and time.</div>`; }
+  const out=K.cdose&&(dose<r[0]*0.999||dose>r[1]*1.001)? `<div class="fb warn"><b>Outside the usual range</b>Usual range for ${K.sp==="cat"?"cats":"dogs"}: ${rng(r[0],r[1],c.u)}.</div>` : "";
+  return `<div class="bigout"><b>${nf(mlh)} mL/h</b><span>undiluted (${nf(conc)} mg/mL) · = ${mgt(mgh)}/h · ${nf(dose)} ${c.u}</span></div>${out}
+    <p class="muted" style="font-size:13.5px">Usual range ${rng(r[0],r[1],c.u)} = ${rng(r[0]*w*f/conc,r[1]*w*f/conc,"mL/h")} undiluted. ${esc(c.note)}</p>${dil}`; }
+function erOut(){ const w=parseFloat(K.w)||0;
+  return `<div class="fb warn" style="margin-top:0"><b>Volumes assume the strength written beside each drug</b>If your vial is different, use the Dose tab with the real concentration.</div>`+ERSHEET.map(G=>`<div class="section-label">${esc(G.g)}</div><div class="tblwrap"><table class="rt"><tr><th>Drug</th><th>Dose</th><th>${w?nf(w)+" kg "+K.sp:"Give"}</th></tr>${G.rows.filter(r=>!r.sp||r.sp===K.sp).map(r=>{
+      const per=rng(r.d[0],r.d[1],r.u+"/kg"); let give="-";
+      if(w){ const lo=r.d[0]*w, hi=r.d[1]*w; give= r.conc? `<b>${rng(lo/r.conc,hi/r.conc,"mL")}</b><br><small>${rng(lo,hi,r.u)}</small>` : `<b>${rng(lo,hi,r.u)}</b>`; }
+      return `<tr><td>${esc(r.n)}<br><small>${esc(r.txt)}</small></td><td>${per}</td><td>${give}</td></tr>`; }).join("")}</table></div>`).join(""); }
+function calcOut(){ const el=$("k_out"); if(!el) return; el.innerHTML= K.tab==="dose"? doseOut() : K.tab==="cri"? criOut() : erOut(); }
+function renderCalc(){
+  topbar("Dose calculator"); backTo("tools"); $("topprog").innerHTML="";
+  const tabs=`<div class="tabs">${[["dose","Dose"],["cri","CRI"],["er","Emergency sheet"]].map(t=>`<button class="${K.tab===t[0]?"on":""}" data-act="ktab" data-t="${t[0]}">${t[1]}</button>`).join("")}</div>`;
+  const pat=`<div class="grid2"><div class="field"><label>Body weight (kg)</label><input id="k_w" type="number" inputmode="decimal" min="0" step="0.1" value="${esc(K.w)}" placeholder="e.g. 12.5"></div>
+      <div class="field"><label>Species</label><select id="k_sp"><option value="dog" ${K.sp==="dog"?"selected":""}>Dog</option><option value="cat" ${K.sp==="cat"?"selected":""}>Cat</option></select></div></div>`;
+  let body="";
+  if(K.tab==="dose"){ const d=DOSES[K.di], classes=Array.from(new Set(DOSES.map(x=>x.cls)));
+    body=`<div class="field" style="margin-top:10px"><label>Drug</label><select id="k_drug">${classes.map(c=>`<optgroup label="${esc(c)}">${DOSES.map((x,i)=>x.cls===c?`<option value="${i}" ${i===K.di?"selected":""}>${esc(x.n)}</option>`:"").join("")}</optgroup>`).join("")}</select></div>
+      ${d.u==="mL"?"":`<div class="field" style="margin-top:10px"><label>Concentration on the vial (${d.u==="U"?"U":"mg"}/mL)${d.conc?" · usual "+nf(d.conc):d.cv?" · common vials: "+esc(d.cv):""}</label><input id="k_conc" type="number" inputmode="decimal" min="0" step="any" value="${esc(K.conc!==null?K.conc:(d.conc||""))}" placeholder="${d.conc?"":d.cv?"read it on the vial":"tablets: leave empty"}"></div>`}`; }
+  else if(K.tab==="cri"){ const c=CRIS[K.ci], r=c[K.sp]||c.dog;
+    body=`<div class="field" style="margin-top:10px"><label>Drug</label><select id="k_cri">${CRIS.map((x,i)=>`<option value="${i}" ${i===K.ci?"selected":""}>${esc(x.n)} (${x.u})</option>`).join("")}</select></div>
+      <div class="grid2" style="margin-top:10px"><div class="field"><label>Dose (${c.u})</label><input id="k_cdose" type="number" inputmode="decimal" min="0" step="any" value="${esc(K.cdose)}" placeholder="${nf(r[0])} (range ${rng(r[0],r[1])})"></div>
+        <div class="field"><label>Concentration (mg/mL)${c.cv?" · vials: "+esc(c.cv):""}</label><input id="k_cconc" type="number" inputmode="decimal" min="0" step="any" value="${esc(K.cconc!==null?K.cconc:(c.conc||""))}" placeholder="${c.cv?"read it on the vial":""}"></div>
+        <div class="field"><label>Syringe or bag volume (mL)</label><input id="k_cvol" type="number" inputmode="decimal" min="0" step="any" value="${esc(K.cvol)}" placeholder="e.g. 50"></div>
+        <div class="field"><label>Run it at (mL/h)</label><input id="k_crate" type="number" inputmode="decimal" min="0" step="any" value="${esc(K.crate)}" placeholder="for a diluted infusion"></div></div>`; }
+  $("main").innerHTML=`${tabs}<div class="card c-tools">${pat}${body}<div id="k_out" style="margin-top:14px"></div>${CALC_WARN}</div>`;
+  const bind=(id,key,ev,full)=>{ const el=$(id); if(!el) return; el.addEventListener(ev||"input",e=>{ K[key]=e.target.value; if(full) render(); else calcOut(); }); };
+  bind("k_w","w"); bind("k_sp","sp","change",true); bind("k_conc","conc"); bind("k_cdose","cdose"); bind("k_cconc","cconc"); bind("k_cvol","cvol"); bind("k_crate","crate");
+  const dr=$("k_drug"); if(dr) dr.addEventListener("change",e=>{ K.di=+e.target.value; K.conc=null; render(); });
+  const cr=$("k_cri"); if(cr) cr.addEventListener("change",e=>{ K.ci=+e.target.value; K.cconc=null; K.cdose=""; render(); });
+  calcOut();
+}
+
+// ---------- quick reference ----------
+const RF={q:"",sec:"all"};
+function renderRef(){
+  topbar("Quick reference"); backTo("tools"); $("topprog").innerHTML="";
+  const q=RF.q.trim().toLowerCase();
+  const secs=REF.filter(s=>RF.sec==="all"||q||s.id===RF.sec).map(s=>{ const hitTitle=q&&s.title.toLowerCase().indexOf(q)>=0;
+    const rows=s.rows.filter(r=>!q||hitTitle||r.join(" ").toLowerCase().indexOf(q)>=0); if(!rows.length) return "";
+    return `<div class="card" style="padding:12px 12px 8px"><h3 style="margin:0 0 8px">${s.icon} ${esc(s.title)}</h3><div class="tblwrap"><table class="rt"><tr>${s.cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</table></div>${s.note&&!q?`<p class="muted" style="font-size:12.5px;margin:8px 0 0">${esc(s.note)}</p>`:""}</div>`; }).join("");
+  $("main").innerHTML=`<div class="card" style="padding:10px 12px"><input id="rsearch" class="sel" style="width:100%" placeholder="Search: potassium, catheter, chocolate, IRIS…" value="${esc(RF.q)}">
+      <div class="basictabs" style="margin-top:8px;padding-bottom:2px">${[{id:"all",title:"All",icon:""}].concat(REF).map(s=>`<button class="${s.id===RF.sec&&!q?"on":""}" data-act="rsec" data-s="${s.id}">${s.icon} ${esc(s.title.split(":")[0])}</button>`).join("")}</div></div>
+    ${secs||`<p class="muted">Nothing matches.</p>`}
+    <p class="muted" style="font-size:12.5px;text-align:center">Reference values for study. Laboratory ranges and local protocols at your clinic take priority.</p>`;
+  searchBind("rsearch", v=>{ RF.q=v; }, renderRef);
+}
+
+// ---------- clinical English ----------
+const PH={q:"",sec:-1};
+function renderPhrases(){
+  topbar("Clinical English"); backTo("tools"); $("topprog").innerHTML="";
+  const q=PH.q.trim().toLowerCase(), can=typeof window!=="undefined" && "speechSynthesis" in window;
+  const secs=PHRASES.map((s,si)=>{ if(!q && PH.sec>=0 && PH.sec!==si) return ""; const items=s.items.filter(p=>!q||(p[0]+" "+p[1]).toLowerCase().indexOf(q)>=0); if(!items.length) return "";
+    return `<div class="card" style="padding:12px 14px"><h3 style="margin:0 0 6px">${s.icon} ${esc(s.title)}</h3>${items.map(p=>`<div class="phr"><div><b>${esc(p[0])}</b><span>${esc(p[1])}</span></div>${can?`<button class="btn icon" data-act="say" data-t="${esc(p[0]).replace(/"/g,"&quot;")}" aria-label="Listen">🔊</button>`:""}</div>`).join("")}</div>`; }).join("");
+  $("main").innerHTML=`<div class="hero"><h2>Clinical English</h2><p class="muted" style="margin:6px 0 0">Phrases for the consulting room, the phone and the team, with a Spanish gloss. ${can?"Tap 🔊 to hear one.":""}</p></div>
+    <div class="card" style="padding:10px 12px"><input id="psearch" class="sel" style="width:100%" placeholder="Search in English or Spanish…" value="${esc(PH.q)}">
+      <div class="basictabs" style="margin-top:8px;padding-bottom:2px"><button class="${PH.sec<0&&!q?"on":""}" data-act="psec" data-s="-1">All</button>${PHRASES.map((s,i)=>`<button class="${PH.sec===i&&!q?"on":""}" data-act="psec" data-s="${i}">${s.icon} ${esc(s.title)}</button>`).join("")}</div></div>
+    ${secs||`<p class="muted">Nothing matches.</p>`}`;
+  searchBind("psearch", v=>{ PH.q=v; }, renderPhrases);
+}
+
+// ---------- tools hub ----------
+function renderTools(){
+  topbar("Tools"); $("topprog").innerHTML="";
+  const X=xs(), nSaved=Object.keys(X.marks).filter(k=>X.marks[k]>0).length, nNotes=THEORY.filter(t=>noteOf(t.id).trim()).length;
+  $("main").innerHTML=`${segTabs("tools")}
+    <div class="hero"><h2>Tools</h2><p class="muted" style="margin:6px 0 0">For studying every day and for looking things up at work.</p></div>
+    <div class="modes">${dailyCard()}
+      <button class="mode c-tools" data-act="go" data-v="calc"><div class="ic">🧮</div><div class="t"><b>Dose calculator</b><span>mg and mL by weight for ${DOSES.length} drugs, CRI rates and dilutions, emergency sheet</span></div></button>
+      <button class="mode c-tools" data-act="go" data-v="ref"><div class="ic">📋</div><div class="t"><b>Quick reference</b><span>Vital signs, lab ranges, tubes, catheters, poisons, scores, formulas</span></div></button>
+      <button class="mode c-tools" data-act="go" data-v="phrases"><div class="ic">💬</div><div class="t"><b>Clinical English</b><span>${PHRASES.reduce((a,s)=>a+s.items.length,0)} phrases for owners, the phone and the team</span></div></button>
+      <button class="mode c-tools" data-act="go" data-v="saved"><div class="ic">⭐</div><div class="t"><b>Saved &amp; notes</b><span>${nSaved} saved item${nSaved===1?"":"s"} · ${nNotes} note${nNotes===1?"":"s"}</span></div></button></div>`;
+}
+function renderTool(v){ if(v==="tools") renderTools(); else if(v==="daily") renderDaily(); else if(v==="calc") renderCalc(); else if(v==="ref") renderRef(); else if(v==="phrases") renderPhrases(); else if(v==="saved") renderSaved(); }
+function toolsAct(a,d){
+  switch(a){
+    case "dstart": dailyStart(); window.scrollTo(0,0); render(); break;
+    case "dans": dailyAnswer(+d.k); break;
+    case "dnext": DY.pos++; DY.perm=null; DY.answered=null; if(DY.pos>=DY.items.length) dailyFinish(); window.scrollTo(0,0); render(); break;
+    case "dquit": if(DY.n>=DAILY_N) dailyFinish(); DY.active=false; window.scrollTo(0,0); render(); break;
+    case "star": { const X=xs(), on=isMarked(d.k); X.marks[d.k]= on? -Date.now() : Date.now(); save(); const y=window.scrollY; render(); try{ window.scrollTo(0,y); }catch(e){} break; }
+    case "msaved": MCQ[d.m].st.cat="__saved"; mcqStart(d.m,false); MCQ[d.m].st.pos=0; if(d.m==="basic") B.tab="questions"; go(d.m); break;
+    case "ktab": K.tab=d.t; render(); break;
+    case "rsec": RF.sec=d.s; RF.q=""; render(); break;
+    case "psec": PH.sec=+d.s; PH.q=""; render(); break;
+    case "say": try{ const u=new SpeechSynthesisUtterance(String(d.t).replace(/\s\/\s/g,". ")); u.lang="en-GB"; u.rate=0.95; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); }catch(e){} break;
+  }
+}
 // ===== APP LOGIC =====
 const KEY = "vetprep_uae_v1";
 const $ = (id) => document.getElementById(id);
@@ -9547,6 +10390,7 @@ function mergeStore(a, b){
   // union of progress from two sources (local + cloud, or import)
   const out = freshStore();
   Object.keys(out).forEach(m=>{
+    if(m==="x"){ out.x=mergeX(a.x,b.x); return; }
     out[m].done = Object.assign({}, (a[m]||{}).done||{}, (b[m]||{}).done||{});
     if(out[m].correct!==undefined) out[m].correct = Object.assign({}, (a[m]||{}).correct||{}, (b[m]||{}).correct||{});
     if(out[m].result!==undefined) out[m].result = Object.assign({}, (a[m]||{}).result||{}, (b[m]||{}).result||{});
@@ -9557,7 +10401,7 @@ function mergeStore(a, b){
   return out;
 }
 function freshStore(){ return {quiz:{done:{},correct:{},wrong:{},best:0,exams:[]},drugs:{done:{},correct:{},wrong:{},best:0,exams:[]},anat:{done:{},correct:{},wrong:{},best:0,exams:[]},cyto:{done:{},correct:{},wrong:{}},cases:{done:{},result:{}},lab:{done:{},result:{}},fluids:{done:{},result:{}},
-  basic:{done:{},correct:{},wrong:{},best:0,exams:[]},bcases:{done:{},result:{}},blab:{done:{},result:{}},bfluids:{done:{},result:{}},bcyto:{done:{},correct:{},wrong:{}},theory:{done:{}}}; }
+  basic:{done:{},correct:{},wrong:{},best:0,exams:[]},bcases:{done:{},result:{}},blab:{done:{},result:{}},bfluids:{done:{},result:{}},bcyto:{done:{},correct:{},wrong:{}},theory:{done:{}},x:freshX()}; }
 let store = freshStore();
 function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s && s.quiz && s.cases && s.lab && s.fluids){ store=s; if(!store.drugs) store.drugs={done:{},correct:{},best:0,exams:[]}; ["quiz","drugs"].forEach(m=>{ if(!store[m].exams) store[m].exams=[]; }); ["cases","lab","fluids"].forEach(m=>{ if(!store[m].result) store[m].result={}; }); if(!store.cyto) store.cyto={done:{},correct:{}}; if(!store.basic) store.basic={done:{},correct:{},best:0,exams:[]}; if(!store.basic.exams) store.basic.exams=[]; ["bcases","blab","bfluids"].forEach(k=>{ if(!store[k]) store[k]={done:{},result:{}}; }); if(!store.bcyto) store.bcyto={done:{},correct:{}}; if(!store.anat) store.anat={done:{},correct:{},wrong:{},best:0,exams:[]}; if(!store.theory) store.theory={done:{}}; migrateStore(store); ["quiz","drugs","basic","anat","cyto","bcyto"].forEach(m=>{ if(!store[m].wrong){ store[m].wrong={}; Object.keys(store[m].done).forEach(k=>{ if(store[m].correct[k]===false) store[m].wrong[k]=1; }); } }); } }catch(e){} }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} cloudSave(); }
@@ -9679,7 +10523,7 @@ function go(v){ if(v==="theory" && view==="home") T.topic=null;
   window.scrollTo(0,0);
   render();
 }
-window.addEventListener("hashchange", ()=>{ const h=location.hash.replace("#",""); if(MODES[h]||h==="home"||h==="stats"||h==="review"||h==="theory"){ view=h||"home"; render(); } });
+window.addEventListener("hashchange", ()=>{ const h=location.hash.replace("#",""); if(MODES[h]||h==="home"||h==="stats"||h==="review"||h==="theory"||TOOL_VIEWS.indexOf(h)>=0){ view=h||"home"; render(); } });
 
 // ---------- shell ----------
 function topbar(title, extra=""){
@@ -9704,6 +10548,7 @@ function render(){
   else if(view==="fluids") renderFluids();
   else if(view==="stats") renderStats();
   else if(view==="cyto") renderCyto();
+  else if(TOOL_VIEWS.indexOf(view)>=0) renderTool(view);
 }
 
 // ---------- HOME ----------
@@ -9719,12 +10564,12 @@ function renderHome(){
   const totalDone = Object.keys(MODES).reduce((a,m)=>a+doneCount(m),0);
   const totalAll = Object.keys(MODES).reduce((a,m)=>a+MODES[m].total(),0);
   $("main").innerHTML = `
-    <div class="seg"><button class="on" data-act="go" data-v="home">🎯 Practice</button><button data-act="go" data-v="theory">📖 Theory</button></div>
+    ${segTabs("home")}
     <div class="hero"><div class="row" style="gap:14px;align-items:center"><img src="${LOGO}" alt="VetPrep logo" style="width:64px;height:64px;border-radius:50%;flex:0 0 auto;box-shadow:var(--shadow)"><h2 style="margin:0">Small Animal Clinical Trainer</h2></div>
       <p class="muted">Preparation for small-animal practice in Abu Dhabi and the MOCCAE licensing exam. Content in English. Pick a mode to start.</p>
       <div class="stats"><span>Overall: <b>${totalDone}/${totalAll}</b> items completed</span>${store.quiz.best?`<span>Best quiz streak: <b>${store.quiz.best}</b></span>`:""}</div>
     </div>
-    <div class="modes">${cards}</div>
+    <div class="modes">${dailyCard()}${cards}</div>
     <button class="mode" data-act="go" data-v="review" style="margin-top:2px"><div class="ic" style="background:var(--bad-bg);color:var(--ink)">❌</div><div class="t"><b>Review mistakes</b><span>${(()=>{ const n=mistakesTotal(); return n?`${n} item${n>1?"s":""} answered wrong, waiting to be corrected`:"No pending mistakes"; })()}</span></div><div class="pct">${mistakesTotal()}</div></button>
     <button class="mode" data-act="go" data-v="stats" style="margin-top:2px"><div class="ic" style="background:var(--soft);color:var(--ink)">📊</div><div class="t"><b>Statistics</b><span>Accuracy by category, weak areas, streaks</span></div></button>
     <div class="row space" style="margin-top:6px"><span class="muted">${BASIC_TOTAL()} basic items · ${QUIZ.length} quiz questions · ${DRUGS.length} drug questions · ${CYTO.length} cytology fields · ${CASES.length} cases · ${LAB.length} lab panels · ${FLUIDS.length} fluid exercises</span></div>
@@ -9742,7 +10587,7 @@ function renderHome(){
 }
 
 // ---------- MCQ ENGINE (Quiz + Drug Formulary) ----------
-function mcqList(m){ const M=MCQ[m], D=M.data(); if(M.st.cat==="__mistakes") return mistakes(m); if(M.st.cat==="__topic") return topicQs(m, T.quiz?T.quiz.ids:[]); return range(D.length).filter(i=>M.st.cat==="All"||D[i].c===M.st.cat); }
+function mcqList(m){ const M=MCQ[m], D=M.data(); if(M.st.cat==="__mistakes") return mistakes(m); if(M.st.cat==="__saved") return savedQs(m); if(M.st.cat==="__topic") return topicQs(m, T.quiz?T.quiz.ids:[]); return range(D.length).filter(i=>M.st.cat==="All"||D[i].c===M.st.cat); }
 function mcqStart(m, shuf){
   const M=MCQ[m], D=M.data(); M.st.screen="play"; let list = mcqList(m);
   if(shuf) list = shuffle(list);
@@ -9806,7 +10651,7 @@ function renderExam(m){
 function examAnswer(m,k){
   const S=MCQ[m].st, E=S.exam, D=MCQ[m].data(); if(!E||E.end!==null) return;
   E.ans.push(k); const qi=E.qs[E.i]; const kk=mkey(D[qi]); const ok=E.perms[E.i][k]===0;
-  if(!store[m].done[kk] || ok) { store[m].done[kk]=true; store[m].correct[kk]=ok; } markWrong(store[m],kk,ok);
+  if(!store[m].done[kk] || ok) { store[m].done[kk]=true; store[m].correct[kk]=ok; } markWrong(store[m],kk,ok); srsMark(m,kk,ok);
   E.i++;
   if(E.i>=E.qs.length){ E.end=Date.now(); const nOk=E.ans.filter((a,i)=>E.perms[i][a]===0).length; store[m].exams=(store[m].exams||[]).concat([{t:E.end,n:E.qs.length,ok:nOk,sec:Math.round((E.end-E.start)/1000)}]).slice(-50); }
   save(); window.scrollTo(0,0); render();
@@ -9817,14 +10662,14 @@ function renderMcq(m){
   if(S.screen==="exam" && S.exam){ renderExam(m); return; }
   stopExamTimer();
   if(!S.order.length) mcqStart(m,false);
-  const cats = ["All", ...Array.from(new Set(D.map(q=>q.c))), "__mistakes"]; if(S.cat==="__topic") cats.push("__topic");
+  const cats = ["All", ...Array.from(new Set(D.map(q=>q.c))), "__mistakes"]; if(S.cat==="__topic") cats.push("__topic"); if(S.cat==="__saved") cats.push("__saved");
   topbar(M.title, `<button class="btn icon" data-act="mshuffle" data-m="${m}" title="Shuffle">🔀</button>`);
   $("topbar").querySelector('[data-act="home"]').setAttribute("data-act","mmenu"); $("topbar").querySelector('[data-act="mmenu"]').setAttribute("data-m",m);
   const list = mcqList(m);
   progBar(m, list.filter(i=>store[m].done[mkey(D[i])]).length, list.length);
   if(S.cat==="__mistakes" && !S.order.length){ $("main").innerHTML = `<div class="card done-banner"><div class="big">🎉</div><h2>No mistakes to review</h2><p class="muted">Every question you got wrong has since been answered correctly.</p><div class="actions" style="justify-content:center"><button class="btn ghost" data-act="mmenu" data-m="${m}">Blocks</button></div></div>`; return; }
   if(S.pos >= S.order.length){
-    $("main").innerHTML = `<div class="card done-banner"><div class="big">🎉</div><h2>${S.cat==="__mistakes"?"Mistakes reviewed":S.cat==="__topic"?"Topic quiz complete":"Set complete"}</h2><p class="muted">Session: ${S.sessC}/${S.sessA} correct. Best streak: ${store[m].best}.</p>
+    $("main").innerHTML = `<div class="card done-banner"><div class="big">🎉</div><h2>${S.cat==="__mistakes"?"Mistakes reviewed":S.cat==="__topic"?"Topic quiz complete":S.cat==="__saved"?"Saved questions complete":"Set complete"}</h2><p class="muted">Session: ${S.sessC}/${S.sessA} correct. Best streak: ${store[m].best}.</p>
       <div class="actions" style="justify-content:center"><button class="btn" style="background:${M.color}" data-act="mshuffle" data-m="${m}">Shuffle &amp; repeat</button><button class="btn ghost" data-act="mrestart" data-m="${m}">Restart in order</button>${S.cat==="__topic"?`<button class="btn ghost" data-act="tquizback">📖 Back to the theory</button>`:""}<button class="btn ghost" data-act="mmenu" data-m="${m}">Blocks</button></div></div>`;
     return;
   }
@@ -9842,10 +10687,10 @@ function renderMcq(m){
           <div class="actions"><button class="btn" style="background:${M.color}" data-act="mnext" data-m="${m}">Next →</button>${theoryBtn(m,q)}</div>`;
   }
   $("main").innerHTML = `
-    <div class="row space"><select class="sel" id="mcat">${cats.map(c=>`<option value="${esc(c)}" ${c===S.cat?"selected":""}>${c==="__mistakes"?"❌ Mistakes ("+mistakes(m).length+")":c==="__topic"?"📖 "+esc(T.quiz?T.quiz.label:"Topic")+" ("+S.order.length+")":esc(c)}</option>`).join("")}</select>
+    <div class="row space"><select class="sel" id="mcat">${cats.map(c=>`<option value="${esc(c)}" ${c===S.cat?"selected":""}>${c==="__mistakes"?"❌ Mistakes ("+mistakes(m).length+")":c==="__topic"?"📖 "+esc(T.quiz?T.quiz.label:"Topic")+" ("+S.order.length+")":c==="__saved"?"⭐ Saved ("+S.order.length+")":esc(c)}</option>`).join("")}</select>
       <div class="stats"><span>Score <b>${S.sessC}/${S.sessA}</b></span><span>Streak <b>${S.streak}</b> 🔥</span><span>Best <b>${store[m].best}</b></span></div></div>
     <div class="card ${M.cls}">
-      <div class="row space" style="margin-bottom:8px"><span class="chip mode-chip">${esc(q.c)}</span><span class="muted">Question ${S.pos+1} of ${S.order.length}${store[m].done[mkey(q)]?" · seen":""}</span></div>
+      <div class="row space" style="margin-bottom:8px"><span class="chip mode-chip">${esc(q.c)}</span><span class="row" style="gap:8px"><span class="muted">Question ${S.pos+1} of ${S.order.length}${store[m].done[mkey(q)]?" · seen":""}</span>${starBtn("q:"+m+":"+mkey(q))}</span></div>
       <h3 style="font-size:17px;line-height:1.45">${esc(q.q)}</h3>${figHtml(q,S.answered!==null)}
       ${opts}${fb}
     </div>${S.cat==="__topic"?`<div class="actions" style="justify-content:center"><button class="btn ghost small" data-act="tquizback">📖 Back to the theory${T.quiz?": "+esc(T.quiz.label):""}</button></div>`:""}`;
@@ -9855,7 +10700,7 @@ function mcqAnswer(m,k){
   const S=MCQ[m].st, D=MCQ[m].data(); if(S.answered!==null) return;
   S.answered=k; const qi=S.order[S.pos]; const ok = S.perm[k]===0;
   S.sessA++; if(ok){ S.sessC++; S.streak++; if(S.streak>store[m].best) store[m].best=S.streak; } else S.streak=0;
-  const kk=mkey(D[qi]); store[m].done[kk]=true; store[m].correct[kk]=ok; markWrong(store[m],kk,ok); save(); render();
+  const kk=mkey(D[qi]); store[m].done[kk]=true; store[m].correct[kk]=ok; markWrong(store[m],kk,ok); srsMark(m,kk,ok); save(); render();
 }
 
 // ---------- cData() ----------
@@ -10154,7 +10999,7 @@ function renderTheory(){
   const areas=theoryAreas();
   const list=THEORY.filter(t=>(T.area==="All"||t.area===T.area) && theoryMatches(t,T.q));
   const groups=areas.filter(a=>list.some(t=>t.area===a)).map(a=>`<div class="section-label">${esc(a)}</div>`+list.filter(t=>t.area===a).map(t=>{ const done=store.theory.done[tkey(t)]; return `<button class="mode c-theory" data-act="topic" data-id="${t.id}"><div class="ic">${done?"✅":"📄"}</div><div class="t"><b>${esc(t.title)}</b><span>${esc(t.summary)}</span></div><div class="pct tsec">${t.sections.length}<small>sections</small></div></button>`; }).join("")).join("");
-  $("main").innerHTML=`<div class="seg"><button data-act="go" data-v="home">🎯 Practice</button><button class="on" data-act="go" data-v="theory">📖 Theory</button></div>
+  $("main").innerHTML=`${segTabs("theory")}
     <div class="hero"><h2>Theory notes</h2><p class="muted" style="margin:6px 0 0">${THEORY.length} topics · ${readN} marked as read. Condensed from the clinical notes (USC) and the Merck Veterinary Manual; each topic ends with its own quiz, and each block has one too (pick a block below).</p></div>
     <div class="card" style="padding:10px 12px"><input id="tsearch" class="sel" style="width:100%" placeholder="Search topics, drugs, signs…" value="${esc(T.q)}">
       <div class="basictabs" style="margin-top:8px;padding-bottom:2px">${["All",...areas].map(a=>{ const ts=THEORY.filter(t=>a==="All"||t.area===a), rd=ts.filter(t=>store.theory.done[tkey(t)]).length; return `<button class="${a===T.area?"on":""}" data-act="tarea" data-a="${esc(a)}">${esc(a.replace(/^.*· /,""))} <small>${rd}/${ts.length}</small></button>`; }).join("")}</div></div>
@@ -10164,7 +11009,7 @@ function renderTheory(){
   const inp=$("tsearch"); inp.addEventListener("input", e=>{ T.q=e.target.value; const pos=inp.selectionStart; renderTheory(); const n=$("tsearch"); n.focus(); n.setSelectionRange(pos,pos); });
 }
 function renderTopic(t){
-  topbar(t.title, `<button class="btn ghost small" data-act="tback">${T.ret?"← Back to question":"Topics"}</button>`); $("topprog").innerHTML="";
+  topbar(t.title, `${starBtn("t:"+t.id)}<button class="btn ghost small" data-act="tback">${T.ret==="saved"?"← Saved":T.ret?"← Back to question":"Topics"}</button>`); $("topprog").innerHTML="";
   const done=!!store.theory.done[tkey(t)];
   const idx=THEORY.indexOf(t), prev=THEORY[idx-1], next=THEORY[idx+1];
   const practice=(t.practice||[]).map(p=>`<button class="btn ghost small" data-act="mpractice" data-m="${p.m}" data-c="${esc(p.cat)}">${MODES[p.m]?MODES[p.m].icon:""} ${esc(p.label||p.cat)}</button>`).join(" ");
@@ -10173,12 +11018,12 @@ function renderTopic(t){
       <h2 style="margin:10px 0 4px">${esc(t.title)}</h2><p class="muted" style="margin:0 0 12px">${esc(t.summary)}</p>
       ${t.sections.map((s,i)=>`<details ${i<2||t.sections.length<=4?"open":""}><summary>${esc(s.h)}</summary><div class="sec">${md(s.b)}</div></details>`).join("")}
       ${t.sources?`<p class="muted src"><b>Sources:</b> ${t.sources.map(esc).join(" · ")}</p>`:""}
-      <div class="actions" style="flex-wrap:wrap"><button class="btn ${done?"ghost":""}" data-act="tread" data-id="${t.id}">${done?"✓ Marked as read":"Mark as read"}</button></div>
+      ${noteHtml(t.id)}<div class="actions" style="flex-wrap:wrap"><button class="btn ${done?"ghost":""}" data-act="tread" data-id="${t.id}">${done?"✓ Marked as read":"Mark as read"}</button></div>
     </div>
     ${tquizCard([t.id], t.title, "Test yourself on this topic")}
     ${practice?`<div class="card" style="padding:12px 14px"><div class="section-label" style="margin-top:0">Or practise the whole block</div><div class="actions" style="flex-wrap:wrap;margin-top:6px">${practice}</div></div>`:""}
     <div class="row space" style="margin-top:10px">${prev?`<button class="btn ghost small" data-act="topic" data-id="${prev.id}">← ${esc(prev.title)}</button>`:"<span></span>"}${next?`<button class="btn ghost small" data-act="topic" data-id="${next.id}">${esc(next.title)} →</button>`:""}</div>`;
-  window.scrollTo(0,0);
+  window.scrollTo(0,0); noteBind(t.id);
 }
 
 // ---------- STATS ----------
@@ -10213,6 +11058,7 @@ function renderStats(){
     </div>
     <div class="card c-theory"><div class="row space"><div><h3 style="margin:0">📖 Theory</h3><p class="muted" style="margin:4px 0 0;font-size:13.5px">${tRead}/${THEORY.length} topics marked as read</p></div><button class="btn small" data-act="go" data-v="theory">Open</button></div></div>
     <div class="card"><div class="row space"><div><h3 style="margin:0">❌ Mistakes to review</h3><p class="muted" style="margin:4px 0 0;font-size:13.5px">${nMis?`${nMis} pending across all modes`:"No pending mistakes"}</p></div><button class="btn small" data-act="go" data-v="review">Open</button></div></div>
+    ${dailyStatsCard()}
     ${weak.length?`<div class="card"><h3>Areas to review</h3><p class="muted" style="font-size:13.5px">Categories with at least 3 answers and accuracy below 75%. Tap to practice.</p>
       <div class="weak">${weak.slice(0,6).map(w=>`<button data-act="mpractice" data-m="${w.m}" data-c="${esc(w.c)}">${esc(w.c)} · ${Math.round(w.p*100)}%</button>`).join("")}</div></div>`:
       (allA>=10?`<div class="card"><h3>Areas to review</h3><p class="muted">No weak categories yet - keep going.</p></div>`:"")}
@@ -10304,6 +11150,7 @@ function act(a, d){
     case "fnext": F.pos++; fluidReset(); window.scrollTo(0,0); render(); break;
     case "fshuffle": fluidsStart(true); F.pos=0; F.tab="practice"; render(); break;
     case "frestart": fluidsStart(false); F.pos=0; render(); break;
+    default: toolsAct(a,d);
   }
 }
 document.addEventListener("click", e=>{
@@ -10312,7 +11159,7 @@ document.addEventListener("click", e=>{
 });
 
 // ---------- boot ----------
-(function(){ try{ const l=document.createElement("link"); l.rel="icon"; l.type="image/png"; l.href=FAVICON; document.head.appendChild(l); }catch(e){} const h=location.hash.replace("#",""); if(MODES[h]||h==="stats"||h==="review"||h==="theory") view=h; render(); cloudInit(); })();
+(function(){ try{ const l=document.createElement("link"); l.rel="icon"; l.type="image/png"; l.href=FAVICON; document.head.appendChild(l); }catch(e){} const h=location.hash.replace("#",""); if(MODES[h]||h==="stats"||h==="review"||h==="theory"||TOOL_VIEWS.indexOf(h)>=0) view=h; render(); cloudInit(); })();
 </script>
 <script>
 if("serviceWorker" in navigator){ window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").then(reg=>{
