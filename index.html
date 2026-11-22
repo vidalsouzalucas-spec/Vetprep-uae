@@ -211,6 +211,7 @@ textarea{background:var(--soft2);color:var(--ink)}
 .tlink{white-space:normal;text-align:left;line-height:1.3}
 .tq{border:1.5px solid var(--mc)}
 .tq .btn{white-space:normal;text-align:left}
+.figlegend{font-size:12.5px;color:var(--muted);margin:-6px 2px 12px;line-height:1.45}
 </style>
 </head>
 <body>
@@ -8515,6 +8516,118 @@ Until your licence is issued you work under the supervision of a licensed veteri
 - **Brucella canis:** infertility, swollen epididymis and testis, abortion in bitches; zoonotic and reportable.`}
 ]}
 );
+// ===== FIGURES part 2: ECG rhythm strips, coagulation scheme, figure legends, figures inside theory, image questions =====
+(function(){
+  const ink="var(--ink)", mut="var(--muted)", line="var(--line)", mc="var(--mc)", mcb="var(--mcb)";
+  const g=(d,s)=>Math.exp(-(d*d)/(2*s*s));
+  // beat shapes as sums of gaussians (negative = upward deflection)
+  const SH={
+    n:(d,o)=>(o.p===false?0:-5*g(d+(o.pr||16),3.2)) + 3*g(d+3,1.1) - 30*g(d,1.5) + 7*g(d-3,1.4) - 8*g(d-(o.to||22),o.ts||6),
+    w:(d)=>-26*g(d,4) + 17*g(d-10,4.5) + 9*g(d-28,7),
+    k:(d)=>-13*g(d,3.5) + 8*g(d-8,3.6) - 30*g(d-22,3.4),
+    p:(d)=>-5*g(d,3.2)
+  };
+  function strip(name, beats, noise){
+    const W=360,H=124,base=74; let pts="";
+    for(let x=0;x<=W;x++){ let y=base+(noise?noise(x):0); for(let i=0;i<beats.length;i++){ const b=beats[i], d=x-b.x; if(d>-45&&d<60) y+=SH[b.k](d,b); } pts+=(x?" ":"")+x+","+y.toFixed(1); }
+    let grid=""; for(let x=0;x<=W;x+=10) grid+=`<line x1="${x}" y1="18" x2="${x}" y2="${H}" stroke="${line}" stroke-width="${x%50===0?1:0.4}"/>`;
+    for(let y=24;y<=H;y+=10) grid+=`<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="${line}" stroke-width="${(y-24)%50===0?1:0.4}"/>`;
+    return (t,r)=>`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:system-ui,sans-serif">${grid}<text x="6" y="13" font-size="10.5" fill="${mut}">Lead II · schematic strip</text>${r?`<text x="${W-6}" y="13" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ok)">${name}</text>`:""}<polyline points="${pts}" fill="none" stroke="${ink}" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
+  }
+  const every=(from,step,k,extra)=>{ const a=[]; for(let x=from;x<380;x+=step) a.push(Object.assign({x:x,k:k},extra||{})); return a; };
+  AFIG.ecg_sinus=strip("Normal sinus rhythm", every(30,60,"n"));
+  AFIG.ecg_sinusarr=strip("Respiratory sinus arrhythmia", [22,66,118,186,256,312,358].map(x=>({x:x,k:"n"})));
+  AFIG.ecg_af=strip("Atrial fibrillation", [16,50,108,134,190,232,296,326].map(x=>({x:x,k:"n",p:false,to:16,ts:4})), x=>1.7*Math.sin(x/2.3)+1.2*Math.sin(x/1.3+1));
+  AFIG.ecg_svt=strip("Supraventricular tachycardia", every(10,25,"n",{p:false,to:12,ts:3.4}));
+  AFIG.ecg_avb1=strip("First-degree AV block", every(50,82,"n",{pr:32}));
+  AFIG.ecg_avb2=strip("Second-degree AV block", [0,1,2,3,4,5,6].map(i=>{ const p=14+52*i; return (i===2||i===5)?{x:p,k:"p"}:{x:p+16,k:"n"}; }));
+  AFIG.ecg_avb3=strip("Third-degree AV block", every(8,43,"p").concat([{x:52,k:"w"},{x:186,k:"w"},{x:320,k:"w"}]));
+  AFIG.ecg_vpc=strip("Ventricular premature complex", [{x:30,k:"n"},{x:90,k:"n"},{x:126,k:"w"},{x:210,k:"n"},{x:270,k:"n"},{x:330,k:"n"}]);
+  AFIG.ecg_vt=strip("Ventricular tachycardia", every(12,36,"w"));
+  AFIG.ecg_vf=strip("Ventricular fibrillation", [], x=>11*Math.sin(x/4.3)*Math.sin(x/31+1)+7*Math.sin(x/2.9+2)*Math.cos(x/17)+3*Math.sin(x/1.7));
+  AFIG.ecg_hyperk=strip("Hyperkalemia: atrial standstill", every(40,96,"k"));
+  // coagulation scheme
+  AFIG.coag=(t,r)=>{ const box=(x,y,w,h,title,sub,letter,test)=>{ const hit=r&&letter===t; return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${hit?"var(--ok-bg)":mcb}" stroke="${hit?"var(--ok)":ink}" stroke-width="${hit?2.5:1.2}"/><text x="${x+w/2}" y="${y+18}" text-anchor="middle" font-size="11.5" font-weight="700" fill="${ink}">${title}</text><text x="${x+w/2}" y="${y+33}" text-anchor="middle" font-size="10.5" fill="${ink}">${sub}</text>${r?`<text x="${x+w/2}" y="${y+47}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ok)">${test}</text>`:""}<circle cx="${x+13}" cy="${y+13}" r="10" fill="${hit?"var(--ok)":"var(--card)"}" stroke="${hit?"var(--ok)":ink}" stroke-width="1.5"/><text x="${x+13}" y="${y+17}" text-anchor="middle" font-size="11.5" font-weight="700" fill="${hit?"#fff":ink}">${letter}</text>`; };
+    const arrow=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${ink}" stroke-width="1.5"/><circle cx="${x2}" cy="${y2}" r="2.6" fill="${ink}"/>`;
+    return `<svg viewBox="0 0 360 232" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:system-ui,sans-serif">
+      ${box(90,4,180,52,"Platelet plug","platelets + von Willebrand factor","D","count, smear, bleeding time")}
+      ${box(6,74,166,52,"Intrinsic pathway","XII, XI, IX, VIII","A","aPTT, ACT")}
+      ${box(188,74,166,52,"Extrinsic pathway","tissue factor + VII","B","PT")}
+      ${arrow(89,126,140,150)}${arrow(271,126,220,150)}
+      ${box(70,150,220,52,"Common pathway","X, V, II (thrombin), I (fibrinogen)","C","both PT and aPTT; fibrinogen, TT")}
+      <text x="180" y="222" text-anchor="middle" font-size="10.5" fill="${mut}">fibrin clot, then fibrinolysis (D-dimers, FDPs)</text></svg>`; };
+})();
+
+const FIG_LEGEND={
+  nodes:"A mandibular · B superficial cervical (prescapular) · C axillary · D superficial inguinal · E popliteal",
+  veins:"A external jugular vein · B cephalic vein · C lateral saphenous vein · D femoral artery and vein · E dorsal pedal artery",
+  thorax:"A pulmonic valve (3rd space) · B aortic valve (4th) · C mitral valve (5th) · D thoracocentesis for fluid (7th-8th space, ventral) · E thoracocentesis for air (dorsal)",
+  cord:"A C1-C5 · B C6-T2 (cervical intumescence) · C T3-L3 · D L4-S3 (lumbosacral intumescence)",
+  eye:"A cornea · B iris · C lens · D ciliary body · E retina · F optic nerve",
+  lungs:"A right cranial · B right middle · C right caudal · D left cranial (two parts) · E left caudal · F accessory lobe",
+  teeth:"A canine (104) · B fourth premolar, carnassial (108) · C first molar (109) · D first incisor (101)",
+  stifle:"A cranial cruciate ligament · B caudal cruciate ligament · C meniscus · D patella · E tibial tuberosity",
+  ear:"A vertical canal · B horizontal canal · C tympanic membrane · D tympanic bulla (middle ear) · E inner ear",
+  abdomen:"A liver · B stomach · C spleen · D right kidney · E left kidney · F urinary bladder",
+  heart:"A right atrium · B right ventricle · C left atrium · D left ventricle · E tricuspid valve · F mitral valve",
+  forelimb:"A scapula · B humerus · C radius · D ulna (olecranon) · E carpus · F metacarpals and digits",
+  hindlimb:"A ilium · B femur · C tibia · D calcaneus · E patella · F greater trochanter",
+  urinary:"A ureter · B bladder · C prostate · D os penis (where stones lodge)",
+  vertebrae:"A cervical (7) · B thoracic (13) · C lumbar (7) · D sacrum (3 fused) · E thoracolumbar junction · F lumbosacral junction",
+  coag:"The 'two-pathway' model is how the tests are read: A is screened by aPTT and ACT, B by PT, C by both, D by platelet count and bleeding time.",
+  ecg_sinus:"A P wave before every QRS, a QRS after every P, regular rhythm, narrow complexes.",
+  ecg_sinusarr:"Every beat is sinus (P-QRS-T), but the rate speeds up on inspiration and slows on expiration. Normal in dogs.",
+  ecg_af:"No P waves, a fine wavy baseline, narrow QRS complexes at completely irregular intervals.",
+  ecg_svt:"Very fast, perfectly regular, narrow complexes; P waves buried in the preceding T wave.",
+  ecg_avb1:"Every P wave is conducted, but the PR interval is long.",
+  ecg_avb2:"Regular P waves; some are not followed by a QRS (dropped beats).",
+  ecg_avb3:"P waves march through at their own rate with no relation to the slow, wide ventricular escape complexes.",
+  ecg_vpc:"The third beat comes early, is wide and bizarre, has no P wave and is followed by a pause.",
+  ecg_vt:"A run of wide, bizarre complexes at a fast, regular rate; no P waves related to them.",
+  ecg_vf:"Chaotic baseline with no recognizable complexes: no cardiac output. Defibrillate.",
+  ecg_hyperk:"No P waves, slow rate, widened QRS and tall, tented T waves."
+};
+
+// ---- place figures inside theory sections ----
+(function(){
+  const put=(id,head,figs)=>{ const t=THEORY.find(x=>x.id===id); if(!t) return; const s=t.sections.find(x=>x.h.indexOf(head)===0)||t.sections[0]; s.b+="\n\n"+figs.map(f=>"{{fig:"+f+"}}").join("\n\n"); };
+  put("anat-neuro-vessels","Spinal cord",["cord","vertebrae"]); put("anat-neuro-vessels","Vessels",["veins"]);
+  put("anat-topography","Lymph nodes",["nodes"]); put("anat-topography","Thorax",["thorax"]); put("anat-topography","Abdomen",["abdomen"]);
+  put("anat-topography","Head, teeth",["teeth"]); put("anat-topography","Bones, joints",["forelimb","hindlimb"]); put("anat-topography","Urogenital",["urinary"]);
+  put("anat-heart-airway","The heart in the chest",["heart","thorax"]); put("anat-heart-airway","Lungs, pleura",["lungs"]);
+  put("anat-limbs","Forelimb",["forelimb"]); put("anat-limbs","Hindlimb",["hindlimb"]); put("anat-limbs","Key muscles",["stifle"]);
+  put("anat-senses-skin","The eye",["eye"]); put("anat-senses-skin","The ear",["ear"]);
+  put("cardio-ecg","Murmurs",["thorax"]); put("cardio-ecg","Recording",["ecg_sinus"]); put("cardio-ecg","Rhythms originating",["ecg_sinusarr","ecg_af","ecg_svt"]);
+  put("cardio-ecg","Conduction blocks",["ecg_avb1","ecg_avb2","ecg_avb3"]); put("cardio-ecg","Ventricular arrhythmias",["ecg_vpc","ecg_vt","ecg_vf"]); put("cardio-ecg","ECG clues",["ecg_hyperk"]);
+  put("cardio-mmvd","Recognizing",["heart"]);
+  put("neuro","Neurolocalization",["cord"]); put("neuro-spinal-brain","Intervertebral disc",["vertebrae"]);
+  put("ophtho","The exam",["eye"]); put("derm-ears-alopecia","Otitis: work-up",["ear"]); put("ortho","Cranial cruciate",["stifle"]);
+  put("gi-oral-colon","Periodontal",["teeth"]); put("renal-uti-stones","Urolithiasis",["urinary"]);
+  put("resp-distress","Pleural space",["thorax"]); put("resp-distress","Aspiration",["lungs"]);
+  put("hemostasis","How a clot forms",["coag"]); put("procedures","Needles",["veins"]); put("exam-vitals","The routine",["nodes"]);
+  put("imaging","Reading the abdomen",["abdomen"]); put("emerg","CPR",["ecg_vf"]);
+})();
+
+// ---- image questions ----
+QUIZ.push(
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_sinus",q:"Which description fits this trace from a calm dog?",o:["Normal sinus rhythm","First-degree AV block","Atrial fibrillation","Idioventricular rhythm"],e:"A P wave precedes every QRS, every P is conducted, the rhythm is regular and the complexes are narrow."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_sinusarr",q:"A healthy, relaxed Labrador: the heart rate rises and falls with breathing. Which rhythm is this?",o:["Respiratory sinus arrhythmia","Atrial fibrillation, fast response","Second-degree AV block, Mobitz II","Sick sinus syndrome with pauses"],e:"Every complex is a normal sinus beat; only the intervals change with respiration. It reflects vagal tone and is normal in dogs (it disappears with excitement or atropine)."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_af",q:"A Great Dane is weak, with a fast, chaotic pulse. Which rhythm is shown?",o:["Atrial fibrillation","Sinus arrhythmia","Ventricular tachycardia","Second-degree AV block"],e:"No P waves, an undulating baseline and narrow QRS complexes at totally irregular intervals. Typical of giant breeds with dilated cardiomyopathy; treatment aims at rate control."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_svt",q:"A Labrador has a heart rate near 280 per minute with weakness. Which rhythm is shown?",o:["Supraventricular tachycardia","Sustained ventricular tachycardia","Atrial fibrillation, fast response","Respiratory sinus arrhythmia"],e:"Fast, perfectly regular and narrow: the impulse starts above the ventricles. Try a vagal maneuver, then diltiazem. Ventricular tachycardia would be wide; atrial fibrillation irregular."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_avb1",q:"A dog sedated with an alpha-2 agonist shows this trace. What is it?",o:["First-degree AV block","Second-degree AV block","Third-degree AV block","Atrial standstill"],e:"Each P wave is followed by a QRS, but after a prolonged PR interval. It is caused by vagal tone or drugs and needs no treatment by itself."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_avb2",q:"Some P waves in this strip are not followed by a QRS complex. Which rhythm is it?",o:["Second-degree AV block","Third-degree AV block","Atrial fibrillation","Ventricular escape rhythm"],e:"Intermittent failure of conduction: the conducted beats keep a constant relationship to their P waves, unlike complete block where P and QRS are unrelated."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_avb3",q:"An old Cocker Spaniel faints on exercise; heart rate 35 per minute. Which rhythm is shown?",o:["Third-degree AV block","First-degree AV block","Sinus bradycardia, vagal","Atrial standstill, no P waves"],e:"P waves occur regularly but none is conducted; the ventricles beat slowly under a wide escape focus. P waves are present, which excludes atrial standstill."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_avb3",q:"What is the definitive treatment for the rhythm in this strip in a dog with syncope?",o:["Pacemaker implantation","Lidocaine infusion","Oral diltiazem","Furosemide injection"],e:"Complete AV block with clinical signs needs an artificial pacemaker. Lidocaine would suppress the escape rhythm that is keeping the dog alive."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_vpc",q:"A dog hit by a car yesterday shows this trace. What is the abnormal third beat?",o:["Ventricular premature complex","Atrial premature complex, aberrant","Non-conducted P wave with a pause","Movement artifact on the lead"],e:"It arrives early, is wide and bizarre with a T wave in the opposite direction, has no P wave and is followed by a pause. Traumatic myocarditis appears 12-48 hours after the accident."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_vt",q:"A Boxer collapses; pulses are weak and very fast. Which rhythm is shown?",o:["Ventricular tachycardia","Sinus tachycardia","Atrial fibrillation","Third-degree AV block"],e:"A sustained run of wide, bizarre complexes at a rapid regular rate. With signs of poor perfusion it is treated at once with IV lidocaine."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_vf",q:"During CPR the monitor shows this. Which rhythm is it?",o:["Ventricular fibrillation","Asystole (flat line)","Pulseless electrical activity","Ventricular tachycardia"],e:"Chaotic electrical activity with no organized complexes. It is a shockable rhythm, unlike asystole and pulseless electrical activity."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_vf",q:"What is the correct response to this rhythm during CPR?",o:["Defibrillate, then resume compressions","Give atropine and reassess in 2 minutes","Stop CPR: the rhythm is terminal","Check for a pulse for one full minute"],e:"Deliver one shock and immediately continue chest compressions for a full 2-minute cycle before looking at the ECG again."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_hyperk",q:"A blocked male cat is collapsed and bradycardic. What does this trace indicate?",o:["Severe hyperkalemia","Severe hypokalemia","Normal sinus rhythm","Ventricular fibrillation"],e:"Absent P waves, wide QRS complexes and tall tented T waves at a slow rate are the changes of high potassium."},
+{t:"cardio-ecg",c:"Cardiorespiratory",fig:"ecg_hyperk",q:"Which drug is given first to protect the heart of the patient with this trace?",o:["Calcium gluconate IV","Lidocaine IV, 2 mg/kg bolus","Atropine IV, 0.04 mg/kg","Furosemide IV"],e:"10% calcium gluconate, slowly with ECG monitoring, restores cardiac excitability within minutes; insulin with dextrose and fluids then lower the potassium while the obstruction is relieved."},
+{t:"hemostasis",c:"Hematology/Oncology",fig:"coag",hl:"B",q:"Anticoagulant rodenticide prolongs FIRST the test of which labelled part?",o:["B","A","D","C"],e:"B: the extrinsic pathway (factor VII, the vitamin K-dependent factor with the shortest half-life), tested by PT. A is screened by aPTT, C by both, D by platelet count and bleeding time."},
+{t:"hemostasis",c:"Hematology/Oncology",fig:"coag",hl:"A",q:"Hemophilia A (factor VIII deficiency) is a defect of which labelled part?",o:["A","B","C","D"],e:"A: the intrinsic pathway (XII, XI, IX, VIII). The aPTT is prolonged while the PT stays normal."},
+{t:"hemostasis",c:"Hematology/Oncology",fig:"coag",hl:"D",q:"The buccal mucosal bleeding time evaluates which labelled step?",o:["D","C","A","B"],e:"D: primary hemostasis, the platelet plug that depends on platelet number and function and on von Willebrand factor. Clotting times (A, B, C) are normal in these disorders."}
+);
 // ===== THEORY: final ordering by area =====
 (function(){
   const ADD={"Hematology/Oncology":["hemato","onco","hemostasis","transfusion","lymphoma-chemo"],"Nutrition/Preventive":["nutrition","preventive"],"Clinical Skills":["wounds","urinalysis-cyto","lab-electrolytes","comm-records"]};
@@ -8788,7 +8901,7 @@ function renderExam(m){
     $("main").innerHTML = `<div class="card ${M.cls}">
       <div class="row space" style="margin-bottom:8px"><span class="chip mode-chip">${esc(q.c)}</span><span class="muted">Question ${E.i+1} of ${E.qs.length}</span></div>
       <h3 style="font-size:17px;line-height:1.45">${esc(q.q)}</h3>${figHtml(q,false)}
-      ${perm.map((oi,k)=>`<button class="opt" data-act="mexans" data-m="${m}" data-k="${k}">${q.fig?"":String.fromCharCode(65+k)+". "}${esc(q.o[oi])}</button>`).join("")}
+      ${perm.map((oi,k)=>`<button class="opt" data-act="mexans" data-m="${m}" data-k="${k}">${q.fig&&q.o[0].length===1?"":String.fromCharCode(65+k)+". "}${esc(q.o[oi])}</button>`).join("")}
       <div class="actions"><button class="btn ghost small" data-act="mexquit" data-m="${m}">Abandon exam</button></div></div>`;
     return;
   }
@@ -8835,12 +8948,12 @@ function renderMcq(m){
   const opts = S.perm.map((oi,k)=>{
     let cls="opt";
     if(S.answered!==null){ if(oi===0) cls+=" correct"; else if(k===S.answered) cls+=" wrong"; else cls+=" dim"; }
-    return `<button class="${cls}" data-act="mans" data-m="${m}" data-k="${k}" ${S.answered!==null?"disabled":""}>${q.fig?"":String.fromCharCode(65+k)+". "}${esc(q.o[oi])}</button>`;
+    return `<button class="${cls}" data-act="mans" data-m="${m}" data-k="${k}" ${S.answered!==null?"disabled":""}>${q.fig&&q.o[0].length===1?"":String.fromCharCode(65+k)+". "}${esc(q.o[oi])}</button>`;
   }).join("");
   let fb="";
   if(S.answered!==null){
     const ok = S.perm[S.answered]===0;
-    fb = `<div class="fb ${ok?"ok":"bad"}"><b>${ok?"✅ Correct":"❌ Not quite - the correct answer is "+String.fromCharCode(65+S.perm.indexOf(0))}</b>${esc(q.e)}</div>
+    fb = `<div class="fb ${ok?"ok":"bad"}"><b>${ok?"✅ Correct":"❌ Not quite - the correct answer is "+(q.fig?esc(q.o[0]):String.fromCharCode(65+S.perm.indexOf(0)))}</b>${esc(q.e)}</div>
           <div class="actions"><button class="btn" style="background:${M.color}" data-act="mnext" data-m="${m}">Next →</button>${theoryBtn(m,q)}</div>`;
   }
   $("main").innerHTML = `
@@ -9105,6 +9218,7 @@ function md(text){
     if(!l){ flushP(); flushL(); flushT(); return; }
     if(/^\|/.test(l)){ flushP(); flushL(); if(/^\|\s*-+/.test(l)) return; (table=table||[]).push(l); return; }
     if(/^- /.test(l)){ flushP(); flushT(); (list=list||[]).push(l.slice(2)); return; }
+    { const fm=l.match(/^\{\{fig:([a-z0-9_]+)\}\}$/); if(fm){ flushP(); flushL(); flushT(); if(typeof AFIG!=="undefined"&&AFIG[fm[1]]) html+=`<div class="fig">${AFIG[fm[1]](null,true)}</div>`+((typeof FIG_LEGEND!=="undefined"&&FIG_LEGEND[fm[1]])?`<p class="figlegend">${esc(FIG_LEGEND[fm[1]])}</p>`:""); return; } }
     if(/^### /.test(l)){ flushP(); flushL(); flushT(); html+=`<h4>${mdInline(l.slice(4))}</h4>`; return; }
     if(/^> /.test(l)){ flushP(); flushL(); flushT(); html+=`<div class="callout">${mdInline(l.slice(2))}</div>`; return; }
     flushL(); flushT(); para.push(l); });
