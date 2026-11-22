@@ -1972,7 +1972,7 @@ const O4 = {
 20:["Generally none; treat in specific situations","Always 2 weeks of antibiotics","Fluoroquinolone for 10 days","Lifelong low-dose antibiotic"],
 21:["Amoxicillin (or TMS), 3-5 days","Enrofloxacin, 14 days, then culture","Cephalexin, 4 weeks, then culture","Doxycycline, 21 days, then culture"],
 22:["7-14 days guided, look for a nidus, culture after","3 days of amoxicillin again, without a new culture","Switch to a fluoroquinolone empirically, without culture","Alkalinize the urine with potassium citrate for a month"],
-23:["Culture, antibiotics now, 7-14 d, recheck","Wait for the culture first","Amoxicillin for 3 days","Antibiotics only if pyelectasia"],
+23:["Culture, antibiotics now, 10-14 d, recheck","Wait for the culture first","Amoxicillin for 3 days","Antibiotics only if pyelectasia"],
 24:["Not indicated; culture if signs persist after removal","Always, for the whole time the catheter remains in place","Cephalexin for 5 days starting on removal of the catheter","Only in females, where ascending infection is more common"],
 25:["Alkaline pH, struvite, bacteriuria","Acidic pH with calcium oxalate crystals","Specific gravity below 1.010 with glucose","Bilirubinuria with dark orange urine"],
 26:["Prostatitis: 4-6 wk TMS/quinolone, castrate","A 3-day course of amoxicillin, as in females","Vaginitis or abnormal vulvar conformation","Nothing different: treat as sporadic cystitis"],
@@ -5853,8 +5853,8 @@ BASIC_QUIZ.push(
  e:"Penrose drains work by gravity and capillarity (exit at the lowest point, covered, removed at 3-5 days when discharge is minimal); active suction drains work in any position and allow measurement. Both are removed as early as possible: they are a route for infection."},
 {c:"Surgery Basics", q:"How should a surgical wound look at the 3-day recheck?", o:["Edges apposed, mild swelling and redness, no discharge; itch starting","Gaping with purulent discharge","Black necrotic edges","Hot, painful, with fluid pocket"],
  e:"Normal healing: slight redness and firmness for 3-5 days. Warning signs: discharge, dehiscence, hot swelling, fever, pain out of proportion, a fluid pocket (seroma vs abscess: aspirate), or the animal licking. Seromas are usually left alone or aspirated once under sterile conditions."},
-{c:"Surgery Basics", q:"What is the classification of a routine ovariohysterectomy wound?", o:["Clean-contaminated (a hollow viscus is entered under controlled conditions)","Clean","Contaminated","Dirty"],
- e:"Clean: no viscus opened (castration, mass removal); clean-contaminated: GI, urogenital or respiratory tract opened under control (spay, cystotomy, enterotomy without spillage); contaminated: spillage, open fresh trauma, major break in asepsis; dirty: pus, perforation, old wounds. Classification drives the antibiotic decision."},
+{c:"Surgery Basics", q:"What is the wound classification of an enterotomy performed without spillage?", o:["Clean-contaminated (a hollow viscus is entered under controlled conditions)","Clean","Contaminated","Dirty"],
+ e:"Clean: no viscus opened (castration, elective spay, mass removal); clean-contaminated: GI, urinary or respiratory tract opened under control (cystotomy, enterotomy without spillage); contaminated: spillage, open fresh trauma, major break in asepsis; dirty: pus, perforation, old wounds. Classification drives the antibiotic decision."},
 {c:"Surgery Basics", q:"How is a dog positioned for an abdominal surgery and what is checked before draping?", o:["Dorsal recumbency on a V-trough or ties, padded, limbs not overstretched, eyes lubricated, bladder expressed","Lateral recumbency without padding","Standing","Dorsal with the legs tied tightly over the head"],
  e:"Padding and neutral limb positions prevent nerve injury (brachial plexus) and pressure sores; ocular lubricant every 30-60 min; expressing the bladder gives room and reduces leakage; a warm-air blanket under the drape; check the ET tube and lines after every repositioning."},
 {c:"Surgery Basics", q:"What is the order for opening a sterile pack and gloving the surgeon as a non-sterile assistant?", o:["Open the outer wrap away from you by the corners, hand items by dropping them onto the sterile field, open the glove packet without touching the inner wrapper","Hand instruments directly with your bare hands","Touch the inner wrap to flatten it","Open the pack towards you"],
@@ -6443,9 +6443,9 @@ const AFIG = (function(){
     <path d="M282 100 C 310 80, 320 60, 300 50" fill="none" stroke-width="3" stroke-linecap="round"/>
   </g>`; }
   const F={};
-  F.nodes=(t,r)=>wrap(360,220, cap("Dog, left lateral view: palpable lymph nodes")+dog()+
+  F.nodes=(t,r)=>wrap(360,232, cap("Dog, left lateral view: palpable lymph nodes")+dog()+
     pin(92,104,70,150)+L(70,150,"A",t,r)+ pin(138,96,130,60)+L(130,60,"B",t,r)+ pin(150,140,150,210)+L(150,210,"C",t,r)+ pin(232,150,215,205)+L(215,205,"D",t,r)+ pin(262,162,300,180)+L(300,180,"E",t,r));
-  F.veins=(t,r)=>wrap(360,220, cap("Dog, left lateral view: vascular access sites")+dog()+
+  F.veins=(t,r)=>wrap(360,232, cap("Dog, left lateral view: vascular access sites")+dog()+
     pin(104,100,110,50)+L(110,50,"A",t,r)+ pin(126,172,100,180)+L(100,180,"B",t,r)+ pin(274,178,316,200)+L(316,200,"C",t,r)+ pin(246,150,300,120)+L(300,120,"D",t,r)+ pin(270,196,250,214)+L(250,214,"E",t,r));
   F.thorax=(t,r)=>{ let ribs=""; for(let i=0;i<13;i++){ const x=70+i*20; ribs+=`<path d="M${x} 40 C ${x-6} 90, ${x-4} 150, ${x+8} 190" fill="none" stroke="${line}" stroke-width="2"/><text x="${x-2}" y="34" font-size="8" fill="${mut}">${i+1}</text>`; }
     return wrap(360,220, cap("Dog thorax, left lateral: rib numbers along the top")+ribs+`<ellipse cx="128" cy="130" rx="40" ry="48" fill="${mcb}" stroke="${ink}" stroke-width="1.5"/><path d="M60 192 Q 180 170 320 192" fill="none" stroke="${ink}" stroke-width="1.5"/><line x1="40" y1="60" x2="330" y2="60" stroke="${mut}" stroke-width="2"/><text x="300" y="56" font-size="9" fill="${mut}">spine</text><text x="300" y="206" font-size="9" fill="${mut}">sternum</text>`+
@@ -6475,7 +6475,7 @@ const AFIG = (function(){
     L(105,72,"A",t,r)+L(105,126,"B",t,r)+L(105,176,"C",t,r)+L(255,76,"D",t,r)+L(255,160,"E",t,r)+L(166,180,"F",t,r));
   F.teeth=(t,r)=>{ const teeth=[["101","I"],["102","I"],["103","I"],["104","C"],["105","P"],["106","P"],["107","P"],["108","P"],["109","M"],["110","M"]];
     let g=""; teeth.forEach((th,i)=>{ const x=30+i*32; const h=th[1]==="C"?44:th[1]==="I"?22:th[0]==="108"?40:30; g+=`<rect x="${x}" y="${120-h}" width="24" height="${h}" rx="6" fill="${mcb}" stroke="${ink}"/><text x="${x+12}" y="140" text-anchor="middle" font-size="9" fill="${ink}">${th[0]}</text>`; });
-    return wrap(360,220, cap("Dog, right upper arcade (rostral on the left), modified Triadan numbers")+`<line x1="20" y1="122" x2="350" y2="122" stroke="${ink}"/>`+g+ L(138,60,"A",t,r)+L(266,66,"B",t,r)+L(298,76,"C",t,r)+L(42,88,"D",t,r)+`<text x="180" y="190" text-anchor="middle" font-size="10" fill="${mut}">I = incisors, C = canine, P = premolars, M = molars</text>`); };
+    return wrap(360,220, cap("Right upper teeth, rostral on the left · Triadan numbers")+`<line x1="20" y1="122" x2="350" y2="122" stroke="${ink}"/>`+g+ L(138,60,"A",t,r)+L(266,66,"B",t,r)+L(298,76,"C",t,r)+L(42,88,"D",t,r)+`<text x="180" y="190" text-anchor="middle" font-size="10" fill="${mut}">I = incisors, C = canine, P = premolars, M = molars</text>`); };
   F.stifle=(t,r)=>wrap(360,220, cap("Stifle, lateral view (cranial on the left)")+
     `<g fill="${mcb}" stroke="${ink}" stroke-width="1.5">
      <path d="M150 20 L210 20 L214 90 Q 180 118 150 90 Z"/>
@@ -6485,7 +6485,7 @@ const AFIG = (function(){
      <path d="M160 100 L200 128" stroke="var(--coral)" stroke-width="3"/><path d="M204 102 L166 128" stroke="var(--blue)" stroke-width="3"/>
      <path d="M150 122 Q 182 112 214 122" stroke="${ink}" stroke-width="5" fill="none"/>
      <circle cx="150" cy="136" r="4" fill="${ink}"/>
-    </g>`+ L(176,78,"A",t,r)+L(230,112,"B",t,r)+L(182,150,"C",t,r)+L(104,86,"D",t,r)+L(130,160,"E",t,r)+`<text x="120" y="208" font-size="9" fill="${mut}">tibia</text><text x="222" y="30" font-size="9" fill="${mut}">femur</text>`);
+    </g>`+ pin(251,86,207,102)+L(262,84,"A",t,r)+pin(251,148,203,129)+L(262,150,"B",t,r)+pin(103,124,150,122)+L(92,124,"C",t,r)+L(104,86,"D",t,r)+L(130,160,"E",t,r)+`<text x="120" y="208" font-size="9" fill="${mut}">tibia</text><text x="222" y="30" font-size="9" fill="${mut}">femur</text>`);
   F.ear=(t,r)=>wrap(360,220, cap("Ear, frontal section (external canal on the left)")+
     `<g fill="${mcb}" stroke="${ink}" stroke-width="1.5">
      <path d="M30 40 Q 70 20 100 50 L100 130 Q 100 160 140 160 L220 160 L220 140 L140 140 Q 120 140 120 120 L120 60 Q 90 40 30 40 Z"/>
@@ -6495,7 +6495,7 @@ const AFIG = (function(){
      <rect x="228" y="60" width="90" height="30" rx="6" fill="${soft}" opacity="0.6"/>
     </g><text x="240" y="80" font-size="9" fill="${mut}">skull</text>`+
     L(110,90,"A",t,r)+L(180,150,"B",t,r)+L(220,190,"C",t,r)+L(258,150,"D",t,r)+L(300,120,"E",t,r));
-  F.abdomen=(t,r)=>wrap(360,220, cap("Abdomen, ventral view (cranial at the top; patient's right on the viewer's left)")+
+  F.abdomen=(t,r)=>wrap(360,220, cap("Abdomen, ventral view: cranial up, patient's right at left")+
     `<g fill="${mcb}" stroke="${ink}" stroke-width="1.2">
      <path d="M60 30 Q 180 10 300 30 L300 60 Q 180 80 60 60 Z"/>
      <ellipse cx="200" cy="80" rx="60" ry="22"/>
@@ -6505,14 +6505,14 @@ const AFIG = (function(){
      <ellipse cx="180" cy="186" rx="34" ry="22"/>
      <path d="M110 118 Q 150 170 170 176 M248 138 Q 210 170 190 176" fill="none" stroke-dasharray="3 2"/>
     </g>`+ L(60,46,"A",t,r)+L(200,80,"B",t,r)+L(296,130,"C",t,r)+L(110,92,"D",t,r)+L(248,112,"E",t,r)+L(180,186,"F",t,r));
-  F.heart=(t,r)=>wrap(360,220, cap("Heart, schematic frontal section (right side of the heart on the viewer's left)")+
+  F.heart=(t,r)=>wrap(360,220, cap("Heart, frontal section")+`<text x="354" y="14" text-anchor="end" font-size="10" fill="${mut}">right heart on the left</text>`+
     `<g fill="${mcb}" stroke="${ink}" stroke-width="1.5">
      <path d="M90 60 Q 180 20 270 60 L270 120 Q 270 200 180 210 Q 90 200 90 120 Z"/>
      <line x1="180" y1="48" x2="180" y2="206"/><line x1="90" y1="110" x2="270" y2="110"/>
      <rect x="150" y="10" width="18" height="40" fill="${soft}"/><rect x="192" y="10" width="18" height="40" fill="var(--coral)" opacity="0.5"/>
      <path d="M120 110 L150 110" stroke="var(--coral)" stroke-width="5"/><path d="M210 110 L240 110" stroke="var(--coral)" stroke-width="5"/>
     </g>`+ L(130,86,"A",t,r)+L(130,160,"B",t,r)+L(230,86,"C",t,r)+L(230,160,"D",t,r)+L(135,126,"E",t,r)+L(225,126,"F",t,r)+`<text x="130" y="30" font-size="9" fill="${mut}">pulm. a.</text><text x="214" y="30" font-size="9" fill="${mut}">aorta</text>`);
-  F.forelimb=(t,r)=>wrap(360,220, cap("Forelimb bones, lateral view")+
+  F.forelimb=(t,r)=>wrap(360,220, cap("Forelimb, lateral")+
     `<g fill="${mcb}" stroke="${ink}" stroke-width="1.5">
      <path d="M110 10 L170 10 L150 70 L130 70 Z"/>
      <path d="M132 72 Q 160 90 150 130 L128 132 Q 118 100 132 72 Z"/>
@@ -6537,7 +6537,7 @@ const AFIG = (function(){
      <path d="M180 198 L180 210 Q 180 216 150 216 L60 216" fill="none" stroke-width="4"/>
      <rect x="70" y="210" width="36" height="12" rx="6" fill="${soft}"/>
     </g>`+ L(200,110,"A",t,r)+L(180,166,"B",t,r)+L(214,186,"C",t,r)+L(88,200,"D",t,r)+L(110,50,"E",t,r)+L(250,66,"F",t,r));
-  F.vertebrae=(t,r)=>{ let g=""; const segs=[["C",7,12],["T",13,10],["L",7,14],["S",3,8],["Cd",5,6]]; let x=14; const pts={}, ends={}; segs.forEach(([n,c,w])=>{ const x0=x; for(let i=0;i<c;i++){ g+=`<rect x="${x}" y="100" width="${w-2}" height="22" rx="3" fill="${mcb}" stroke="${ink}"/>`; x+=w; } pts[n]=(x0+x)/2; ends[n]=x; g+=`<text x="${(x0+x)/2}" y="140" text-anchor="middle" font-size="10" fill="${ink}">${n}${c}</text>`; });
+  F.vertebrae=(t,r)=>{ let g=""; const segs=[["C",7,12],["T",13,10],["L",7,14],["S",3,8],["Cd",5,6]]; let x=14; const pts={}, ends={}; segs.forEach(([n,c,w])=>{ const x0=x; for(let i=0;i<c;i++){ g+=`<rect x="${x}" y="100" width="${w-2}" height="22" rx="3" fill="${mcb}" stroke="${ink}"/>`; x+=w; } pts[n]=(x0+x)/2; ends[n]=x; g+=`<text x="${(x0+x)/2}" y="140" text-anchor="middle" font-size="10" fill="${ink}">${n==="Cd"?"Cd":n+"1-"+n+c}</text>`; });
     const tl=ends.T-1, ls=ends.L-1;
     return wrap(390,220, cap("Vertebral column, dorsal view (cranial on the left)")+g+ L(pts.C,76,"A",t,r)+L(pts.T,76,"B",t,r)+L(pts.L,76,"C",t,r)+L(pts.S,76,"D",t,r)+L(tl,172,"E",t,r)+pin(tl,160,tl,124)+L(ls,172,"F",t,r)+pin(ls,160,ls,124)); };
   return F;
@@ -6567,7 +6567,7 @@ ANAT.push(
 {c:"Diagrams", fig:"stifle", hl:"A", q:"Which structure is the cranial cruciate ligament?", o:["A","B","C","D"], e:"A (running from the caudal femur cranially down to the tibia) is the cranial cruciate; B the caudal cruciate; C the meniscus; D the patella; E the tibial tuberosity (TTA site). Rupture of A causes cranial drawer."},
 {c:"Diagrams", fig:"stifle", hl:"C", q:"Which labelled structure is torn secondarily in about half of chronic cruciate ruptures?", o:["C","B","D","E"], e:"C: the medial meniscus, trapped between femur and tibia when the cranial cruciate fails; it is inspected and partially removed at surgery. D is the patella, E the tibial tuberosity."},
 {c:"Diagrams", fig:"ear", hl:"C", q:"Which letter marks the tympanic membrane?", o:["C","B","D","E"], e:"C: tympanum at the end of the horizontal canal (B). A vertical canal, D tympanic bulla (middle ear), E inner ear (cochlea/vestibule). Otitis media is behind C, otitis interna in E."},
-{c:"Diagrams", fig:"ear", hl:"B", q:"From which labelled part is the swab taken for ear cytology?", o:["B","A","C","D"], e:"B: the horizontal canal, reached by pulling the pinna caudodorsally; the vertical canal (A) and pinna carry surface contamination. Never push a swab against C."},
+{c:"Diagrams", fig:"ear", hl:"B", q:"From which labelled part is the swab taken for ear cytology?", o:["B","A","C","D"], e:"B: the horizontal canal, reached by lifting the pinna up and out to straighten the canal; the vertical canal (A) and pinna carry surface contamination. Never push a swab against C."},
 {c:"Diagrams", fig:"ear", hl:"D", q:"Which labelled structure is opened in a bulla osteotomy?", o:["D","E","C","A"], e:"D: the tympanic bulla (middle ear), approached ventrally or with a total ear canal ablation; in cats it has two compartments. The facial nerve and sympathetic fibers run nearby (facial paralysis, Horner's)."},
 {c:"Diagrams", fig:"abdomen", hl:"C", q:"Which letter marks the spleen?", o:["C","B","D","A"], e:"C: spleen on the left, along the greater curvature of the stomach (B). A liver, D right kidney (more cranial), E left kidney, F urinary bladder."},
 {c:"Diagrams", fig:"abdomen", hl:"D", q:"Which letter marks the right kidney?", o:["D","E","A","C"], e:"D: the right kidney lies more cranially, in the renal fossa of the caudate liver lobe; E is the left kidney, more caudal and mobile. Remember the ventral view: the patient's right is on the viewer's left."},
@@ -7142,7 +7142,7 @@ Ventilate 10-15 breaths/min, 10 mL/kg if apneic or EtCO2 high. Treat hypotension
  sections:[
  {h:"Asepsis and preparation", b:`Patient: clip widely with a 40 blade in the prep room, gross clean, bladder expressed, position padded with limbs neutral, eyes lubricated, warm-air blanket; scrub chlorhexidine 2-4% alternating with alcohol/saline from the incision outward (≥3 cycles or until clean), final solution left to dry; avoid alcohol near eyes/open wounds; drape with four quarter drapes and towel clamps. Surgeon: mask and cap, nails short, 3-5 min scrub or alcohol-based rub, hands above elbows, dry from fingers to elbows, gown without touching the outside, closed gloving; anything below the waist or out of sight is contaminated. Instruments: autoclave 121-134 C with internal indicators, packs intact, dry and in date; cold sterilization rinsed with sterile saline. Checklists before induction, incision and closure; swab and instrument counts aloud before closing each cavity.`},
  {h:"Instruments and sutures", b:`Blades 10 (skin), 15 (small/cat), 11 (stab), 20-22 on no. 4 handle (large). Scissors: Metzenbaum (tissue), Mayo (fascia, sutures). Thumb forceps: DeBakey/Adson-Brown (tissue), rat-tooth (skin, fascia). Hemostats: mosquito (small vessels), Kelly/Crile, Rochester-Carmalt (pedicles), Allis (only tissue being removed). Needle holders: Mayo-Hegar, Olsen-Hegar (with scissors). Retractors: Gelpi, Balfour. Sutures: absorbable polyglactin 910 (braided, 2-3 weeks), poliglecaprone 25 (monofilament, 1-2 weeks, subcutis/intradermal), polydioxanone (monofilament, 6 weeks, linea alba, large dogs); non-absorbable nylon/polypropylene (skin, vascular). Sizes: 3-0 cats/small dogs, 2-0 medium, 0 linea alba large dogs. Knots: 4-5 throws monofilament (6-7 ending a continuous line), 3-4 braided, square not granny, ends 3 mm. Patterns: simple interrupted/continuous (linea alba, fascia), intradermal (skin, no removal), cruciate, Lembert/Cushing (hollow organs: inverting), transfixing ligatures for pedicles.`},
- {h:"Halsted's principles and wound classification", b:`Gentle handling, meticulous hemostasis, asepsis, preserve blood supply, no tension, obliterate dead space, accurate apposition. Classification: clean (no viscus opened; castration, mass removal: usually no antibiotics if <90 min and healthy), clean-contaminated (GI/urogenital/respiratory opened under control: spay, cystotomy, enterotomy), contaminated (spillage, fresh trauma, major break), dirty (pus, perforation, old wounds: therapeutic antibiotics). Prophylaxis when indicated: cefazolin 22 mg/kg IV 30-60 min before incision, repeated every 90-120 min, stopped within 24 h; post-operative courses do not reduce infection and select resistance.`},
+ {h:"Halsted's principles and wound classification", b:`Gentle handling, meticulous hemostasis, asepsis, preserve blood supply, no tension, obliterate dead space, accurate apposition. Classification: clean (no viscus opened; castration, elective spay, mass removal: usually no antibiotics if <90 min and healthy), clean-contaminated (GI/urinary/respiratory tract opened under control: cystotomy, enterotomy), contaminated (spillage, fresh trauma, major break), dirty (pus, perforation, old wounds: therapeutic antibiotics). Prophylaxis when indicated: cefazolin 22 mg/kg IV 30-60 min before incision, repeated every 90-120 min, stopped within 24 h; post-operative courses do not reduce infection and select resistance.`},
  {h:"Ovariohysterectomy (dog) step by step", b:`Ventral midline from umbilicus caudally (1/3 for cats, longer for deep-chested bitches), through linea alba, spay hook or finger to find the uterine horn, follow to the ovary, break or stretch the suspensory ligament, window in the broad ligament, three-clamp technique on the ovarian pedicle (ligature in the crush of the proximal clamp, transfixing ligature second; double ligate in large/in-heat bitches), check the pedicle for bleeding before release, same on the other side, tear or ligate the broad ligament (ligate uterine vessels in large/pregnant animals), clamp and double-ligate the uterine body cranial to the cervix (uterine arteries individually), check both pedicles and the stump (the left pedicle hides near the left kidney), close linea alba (holding layer: external rectus sheath), subcutis, intradermal skin. Flank approach in cats where preferred. Complications: hemorrhage (pedicle, uterine stump), ovarian remnant, ureteral ligation, stump pyometra, incisional dehiscence/seroma, incontinence later.`},
  {h:"Castration", b:`Dog: pre-scrotal incision, push the testis forward, open or closed technique (closed: ligate cord with tunic; open: incise tunic, ligate vessels and ductus separately, then tunic/cremaster), double ligatures in large dogs, check for bleeding, close subcutis and skin (intradermal); no scrotal ablation unless indicated (scrotal hematoma, pendulous scrotum). Cat: scrotal incisions, open technique with the cord tied on itself or with the ductus, left open. Cryptorchid: inguinal or abdominal (near the kidney/inguinal ring; retained testes become neoplastic; remove). Post-op: e-collar, no licking, rest 10-14 days.`},
  {h:"Post-operative care and complications", b:`Recovery monitoring, pain scores, warmth, incision check (slight redness/firmness normal 3-5 days; discharge, gaping, heat, fluid pocket, fever = recheck: seroma vs abscess vs dehiscence), e-collar until suture removal (10-14 days), restricted activity, written instructions. Dehiscence of the linea alba (vomiting, straining, poor technique) = emergency; evisceration = cover with moist sterile dressing and go to surgery. Surgical site infection risk rises with duration >90 min, clipping before anesthesia, breaks in asepsis, propofol handling, endocrinopathies, obesity. Submit every excised mass for histopathology in 10:1 formalin with margins marked.`}
@@ -7350,7 +7350,7 @@ Local anesthetics: lidocaine 2% (keep under about 6-8 mg/kg in dogs and 2-4 mg/k
 | Ticks | Isoxazolines, permethrin/flumethrin collars (dogs only; **permethrin kills cats**), amitraz |
 | Sandflies (Leishmania) | Deltamethrin collar, permethrin-imidacloprid spot-on (dogs) |
 | Mites (Sarcoptes, Demodex, Otodectes) | Isoxazolines (first line), selamectin, moxidectin, lime sulfur; ivermectin extra-label (never MDR1 untested) |
-| Roundworms, hookworms, whipworms | Fenbendazole 50 mg/kg x3-5 d, pyrantel, milbemycin, moxidectin; puppies from 2 weeks q2 weeks to 12 weeks, then monthly to 6 months, adults 1-4x/year by risk |
+| Roundworms, hookworms, whipworms | Fenbendazole 50 mg/kg x3-5 d, pyrantel, milbemycin, moxidectin; puppies from 2 weeks q2 weeks to 8 weeks, then monthly to 6 months, adults 1-4x/year by risk |
 | Tapeworms | Praziquantel 5 mg/kg (Echinococcus: monthly in endemic areas), epsiprantel |
 | Giardia | Fenbendazole 50 mg/kg 5 days (± metronidazole), bathing, environment |
 | Heartworm prevention | Ivermectin, milbemycin, moxidectin, selamectin monthly from 8 weeks; test annually |
@@ -8210,7 +8210,7 @@ Each stage is sub-classified **a** (no systemic signs) or **b** (systemic signs)
 | COP (cyclophosphamide, vincristine, prednisolone) | About 80% | 8-9 months |
 | CHOP, 19-week protocol | About 85% complete in high-grade B-cell | About 12 months; around 20% alive at 2 years |
 
-High-grade T-cell lymphoma: complete remission in only about 40% with CHOP and survival of roughly 5-9 months.
+High-grade T-cell lymphoma: remissions with CHOP are less complete and much shorter, with survival of roughly 5-9 months.
 
 > Warn owners **before** starting prednisolone alone: it can induce multidrug resistance, so later chemotherapy works less well. Do not start steroids before the diagnosis is confirmed either.
 
@@ -9469,7 +9469,7 @@ Opioid side effects and what to do: slow heart rate with normal pressure (monito
   const SH={
     n:(d,o)=>(o.p===false?0:-5*g(d+(o.pr||16),3.2)) + 3*g(d+3,1.1) - 30*g(d,1.5) + 7*g(d-3,1.4) - 8*g(d-(o.to||22),o.ts||6),
     w:(d)=>-26*g(d,4) + 17*g(d-10,4.5) + 9*g(d-28,7),
-    k:(d)=>-13*g(d,3.5) + 8*g(d-8,3.6) - 30*g(d-22,3.4),
+    k:(d)=>-15*g(d,5) + 15*g(d-13,6.5) - 27*g(d-33,4.2),
     p:(d)=>-5*g(d,3.2)
   };
   function strip(name, beats, noise){
@@ -9517,7 +9517,7 @@ const FIG_LEGEND={
   heart:"A right atrium · B right ventricle · C left atrium · D left ventricle · E tricuspid valve · F mitral valve",
   forelimb:"A scapula · B humerus · C radius · D ulna (olecranon) · E carpus · F metacarpals and digits",
   hindlimb:"A ilium · B femur · C tibia · D calcaneus · E patella · F greater trochanter",
-  urinary:"A ureter · B bladder · C prostate · D os penis (where stones lodge)",
+  urinary:"A ureter · B bladder · C prostate · D os penis (where stones lodge) · E and F kidneys",
   vertebrae:"A cervical (7) · B thoracic (13) · C lumbar (7) · D sacrum (3 fused) · E thoracolumbar junction · F lumbosacral junction",
   coag:"The 'two-pathway' model is how the tests are read: A is screened by aPTT and ACT, B by PT, C by both, D by platelet count and bleeding time.",
   ecg_sinus:"A P wave before every QRS, a QRS after every P, regular rhythm, narrow complexes.",
@@ -10028,7 +10028,7 @@ const REF=[
   ["Puberty","6-12 months (later in giant breeds)","4-10 months; season-dependent"],["Estrous cycle","one or two heats a year; ovulates spontaneously","repeated heats in the long-day season; ovulation induced by mating"],
   ["Newborn temperature","35.5-36.5 C in week 1; never feed a cold neonate","same"],["Newborn weight gain","5-10% of birth weight per day","about 10-15 g per day"],
   ["Eyes open","10-14 days","7-10 days"],["Core vaccine series","from 6-8 weeks, every 2-4 weeks until 16 weeks or older; booster at 6-12 months","same"],
-  ["Deworming","every 2 weeks from 2 weeks to 12 weeks, then monthly to 6 months","from 3 weeks, same pattern"]]},
+  ["Deworming","every 2 weeks from 2 to 8 weeks, then monthly to 6 months","from 3 weeks, same pattern"]]},
  {id:"conv",icon:"🧮",title:"Conversions and formulas",cols:["Item","Formula","Example"],rows:[
   ["Percent solution","1% = 10 mg/mL","2% lidocaine = 20 mg/mL; 50% dextrose = 500 mg/mL"],["Dose volume","mL = kg x mg/kg / (mg/mL)","20 kg x 0.2 / 5 = 0.8 mL"],
   ["Dilution","C1 x V1 = C2 x V2","5% dextrose in 500 mL: 50 mL of 50% + 450 mL fluid"],["Drip rate","drops/min = mL/h x drops per mL / 60","60 mL/h with a 20-drop set = 20 drops/min"],
