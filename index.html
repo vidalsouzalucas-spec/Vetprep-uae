@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f7f6">
 <title>VetPrep UAE - Small Animal Clinical Trainer</title>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#2a9d8f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="VetPrep UAE">
@@ -237,6 +237,35 @@ table.rt small{color:var(--muted);font-weight:400}
 .tnote textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:14.5px;resize:vertical}
 .srow{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:14px;margin-top:8px}
 .seg button{font-size:13.5px;padding:10px 4px}
+
+/* ---- interface polish: touch, motion, safe areas, bottom navigation ---- */
+button,a,summary,label{touch-action:manipulation}
+button{-webkit-user-select:none;user-select:none}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+h1,h2,h3{text-wrap:balance}
+.app{min-height:100dvh}
+header.top{-webkit-backdrop-filter:blur(8px);padding-top:max(12px,env(safe-area-inset-top))}
+.topbar h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.mode,.opt,.chip{transition:transform .08s ease,background-color .15s ease,box-shadow .15s ease,border-color .15s ease}
+.mode:active{transform:scale(.985);box-shadow:0 1px 2px rgba(20,40,45,.08)}
+.opt:not(:disabled):active{transform:scale(.99)}
+.seg .si{margin-right:5px}
+@keyframes enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+#main.enter > :not(.seg){animation:enter .18s ease-out both}
+@media (max-width:640px){
+  .seg.nav{position:fixed;left:0;right:0;bottom:0;z-index:6;margin:0;border-radius:0;gap:4px;padding:6px 10px calc(6px + env(safe-area-inset-bottom));background:var(--bg-t);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+  .seg.nav button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 4px;font-size:12px;border-radius:12px}
+  .seg.nav button.on{background:var(--teal-bg);color:var(--teal-ink);box-shadow:none}
+  .seg.nav .si{margin:0;font-size:19px;line-height:1.2}
+  #main:has(.seg.nav){padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+  .hero{padding:8px 4px 2px}
+  .hero h2{font-size:22px;line-height:1.2}
+  .hero img{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  #main.enter > :not(.seg){animation:none}
+  *{transition:none!important}
+}
 </style>
 </head>
 <body>
@@ -10237,7 +10266,7 @@ function mergeX(a,b){ a=a||{}; b=b||{}; const out=freshX();
   { const seen={}; out.mock=[].concat(a.mock||[],b.mock||[]).filter(e=>e&&e.t&&!seen[e.t]&&(seen[e.t]=true)).sort((x,y)=>x.t-y.t).slice(-30); }
   return out; }
 function backTo(v){ const b=$("topbar").querySelector('[data-act="home"]'); if(b){ b.setAttribute("data-act","go"); b.setAttribute("data-v",v); } }
-function segTabs(on){ return `<div class="seg"><button class="${on==="home"?"on":""}" data-act="go" data-v="home">🎯 Practice</button><button class="${on==="theory"?"on":""}" data-act="go" data-v="theory">📖 Theory</button><button class="${on==="tools"?"on":""}" data-act="go" data-v="tools">🧰 Tools</button></div>`; }
+function segTabs(on){ return `<nav class="seg nav" aria-label="Sections"><button class="${on==="home"?"on":""}" data-act="go" data-v="home"><span class="si">🎯</span><span>Practice</span></button><button class="${on==="theory"?"on":""}" data-act="go" data-v="theory"><span class="si">📖</span><span>Theory</span></button><button class="${on==="tools"?"on":""}" data-act="go" data-v="tools"><span class="si">🧰</span><span>Tools</span></button></nav>`; }
 function searchBind(id,set,rerender){ const inp=$(id); if(!inp) return; inp.addEventListener("input", e=>{ set(e.target.value); const pos=inp.selectionStart; rerender(); const n=$(id); if(n){ n.focus(); try{ n.setSelectionRange(pos,pos); }catch(err){} } }); }
 
 // ---------- spaced repetition ----------
@@ -10645,7 +10674,7 @@ const pm=(m)=>isBasic()?"basic":m;
 const THEME_KEY="vetprep_theme"; let themePref="auto";
 try{ themePref = localStorage.getItem(THEME_KEY)||"auto"; }catch(e){}
 const mq = window.matchMedia? window.matchMedia("(prefers-color-scheme: dark)") : null;
-function applyTheme(){ const dark = themePref==="dark" || (themePref==="auto" && mq && mq.matches); document.documentElement.setAttribute("data-theme", dark?"dark":"light"); }
+function applyTheme(){ const dark = themePref==="dark" || (themePref==="auto" && mq && mq.matches); document.documentElement.setAttribute("data-theme", dark?"dark":"light"); const tcm=document.querySelector('meta[name="theme-color"]'); if(tcm) tcm.setAttribute("content", dark?"#111a1d":"#f4f7f6"); }
 function cycleTheme(){ themePref = themePref==="auto"? (mq&&mq.matches?"light":"dark") : themePref==="dark"? "light" : "dark"; try{ localStorage.setItem(THEME_KEY,themePref); }catch(e){} applyTheme(); render(); }
 if(mq && mq.addEventListener) mq.addEventListener("change", ()=>{ if(themePref==="auto") applyTheme(); });
 applyTheme();
@@ -10697,12 +10726,13 @@ function importCode(code){
 let backupOpen=false, backupMsg="";
 
 // ---------- routing ----------
-function go(v){ if(v==="theory" && view==="home") T.topic=null;
+const SCR={}; const scrKey=()=>view+"|"+(view==="theory"?(T.topic||""):"");
+function go(v){ SCR[scrKey()]=window.scrollY; if(v==="theory" && view==="home") T.topic=null;
   if((v==="quiz"||v==="drugs"||v==="basic"||v==="anat") && view!==v && MCQ[v].st.screen!=="play") { MCQ[v].st.screen="menu"; MCQ[v].st.exam=null; }
   view = v; resetArmed=false;
   try{ if(location.hash !== "#"+v) history.replaceState(null,"","#"+v); }catch(e){}
-  window.scrollTo(0,0);
   render();
+  window.scrollTo(0, (v==="home"||v==="tools")?(SCR[scrKey()]||0):0);
 }
 window.addEventListener("hashchange", ()=>{ const h=location.hash.replace("#",""); if(MODES[h]||h==="home"||h==="stats"||h==="review"||h==="theory"||TOOL_VIEWS.indexOf(h)>=0){ view=h||"home"; render(); } });
 
@@ -10717,7 +10747,9 @@ function progBar(m, done, total){
 }
 
 function syncEngines(){ const b=isBasic(); C=b?C_B:C_M; L=b?L_B:L_M; CYS=b?Y_B:Y_M; F=b?F_B:F_M; }
-function render(){
+let _rk="";
+function render(){ renderView(); const k=scrKey(); if(k!==_rk){ _rk=k; const m=$("main"); if(m){ m.classList.remove("enter"); (window.requestAnimationFrame||setTimeout)(()=>m.classList.add("enter")); } } }
+function renderView(){
   syncEngines();
   if(view==="home") renderHome();
   else if(view==="review") renderReview();
@@ -11200,7 +11232,7 @@ function renderTopic(t){
   $("main").innerHTML=`<div class="card c-theory theory">
       <span class="chip mode-chip">${esc(t.area)}</span>
       <h2 style="margin:10px 0 4px">${esc(t.title)}</h2><p class="muted" style="margin:0 0 12px">${esc(t.summary)}</p>
-      ${t.sections.map((s,i)=>`<details ${i<2||t.sections.length<=4?"open":""}><summary>${esc(s.h)}</summary><div class="sec">${md(s.b)}</div></details>`).join("")}
+      ${t.sections.map((s,i)=>{ const op=i<2||t.sections.length<=4; return `<details ${op?"open":""}><summary>${esc(s.h)}</summary>${op?`<div class="sec">${md(s.b)}</div>`:`<div class="sec" data-lazy="${i}"></div>`}</details>`; }).join("")}
       ${t.sources?`<p class="muted src"><b>Sources:</b> ${t.sources.map(esc).join(" · ")}</p>`:""}
       ${noteHtml(t.id)}<div class="actions" style="flex-wrap:wrap"><button class="btn ${done?"ghost":""}" data-act="tread" data-id="${t.id}">${done?"✓ Marked as read":"Mark as read"}</button></div>
     </div>
@@ -11208,6 +11240,7 @@ function renderTopic(t){
     ${practice?`<div class="card" style="padding:12px 14px"><div class="section-label" style="margin-top:0">Or practise the whole block</div><div class="actions" style="flex-wrap:wrap;margin-top:6px">${practice}</div></div>`:""}
     <div class="row space" style="margin-top:10px">${prev?`<button class="btn ghost small" data-act="topic" data-id="${prev.id}">← ${esc(prev.title)}</button>`:"<span></span>"}${next?`<button class="btn ghost small" data-act="topic" data-id="${next.id}">${esc(next.title)} →</button>`:""}</div>`;
   window.scrollTo(0,0); noteBind(t.id);
+  $("main").querySelectorAll("details").forEach(dt=>{ const fill=()=>{ const sc=dt.querySelector(".sec[data-lazy]"); if(sc){ sc.innerHTML=md(t.sections[+sc.dataset.lazy].b); sc.removeAttribute("data-lazy"); } }; const sm=dt.querySelector("summary"); if(sm) sm.addEventListener("click", fill); dt.addEventListener("toggle", ()=>{ if(dt.open) fill(); }); });
 }
 
 // ---------- STATS ----------
@@ -11266,8 +11299,8 @@ function renderStats(){
 function act(a, d){
   switch(a){
     case "home": go("home"); break;
-    case "topic": T.topic=d.id; T.ret=(d.ret&&d.ret!=="theory")?d.ret:null; view="theory"; location.hash="theory"; window.scrollTo(0,0); render(); break;
-    case "tback": T.topic=null; if(T.ret){ const r=T.ret; T.ret=null; view=r; location.hash=r; window.scrollTo(0,0); } render(); break;
+    case "topic": SCR[scrKey()]=window.scrollY; T.topic=d.id; T.ret=(d.ret&&d.ret!=="theory")?d.ret:null; view="theory"; location.hash="theory"; window.scrollTo(0,0); render(); break;
+    case "tback": T.topic=null; if(T.ret){ const r=T.ret; T.ret=null; view=r; location.hash=r; } render(); window.scrollTo(0, SCR[scrKey()]||0); break;
     case "tarea": T.area=d.a; render(); break;
     case "tread": { const t=THEORY.find(x=>x.id===d.id); if(t){ const k=tkey(t); if(store.theory.done[k]) delete store.theory.done[k]; else store.theory.done[k]=true; save(); render(); } break; }
     case "rev": { const m=d.m; const list=mistakes(m); const basic=["basic","bcases","blab","bfluids","bcyto"].includes(m);
