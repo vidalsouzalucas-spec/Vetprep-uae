@@ -10250,6 +10250,28 @@ const ANES=[
    {h:"Everyday blocks",items:["Testicular: lidocaine into each testicle until it feels firm (about 0.5-1 mL in dogs, 0.1-0.2 mL in cats), within the maximum.","Incisional line or splash block: bupivacaine along the wound edges before closing.","Dental: infraorbital and inferior alveolar (mandibular) blocks, 0.1-0.3 mL per site in cats and small dogs, up to 0.5-1 mL in large dogs.","Sacrococcygeal in cats: lidocaine 2% 0.1-0.2 mL/kg for urethral catheters, tail and perineal work.","Lumbosacral epidural: preservative-free morphine 0.1 mg/kg, alone or with bupivacaine, for hindlimb and abdominal surgery (trained staff only).","Intercostal blocks for rib fractures and thoracotomy: two spaces in front and two behind."]}],
   avoid:["Bupivacaine IV (cardiac arrest)","Exceeding the lidocaine maximum in cats","Epidural with clotting problems, skin infection at the site or shock"]}
 ];
+// ===== Quiz Mode groups: Basic Initial Knowledge questions join their subject group (no separate "Basics" blocks),
+// and radiograph questions are gathered in "Imaging". q.bc keeps the original Basic category for theory links. =====
+(function(){
+  const MAP={"Exam & Vital Signs":"Clinical Skills","Restraint & Safety":"Clinical Skills","Needles & Catheters":"Clinical Skills","Urine & Sampling":"Clinical Skills",
+    "Blood & Lab Samples":"Laboratory","Basic Lab Interpretation":"Laboratory","Drugs & Calculations":"Pharmacology","Pharmacy & Records":"Pharmacology",
+    "Fluids Basics":"Hospital Care & Fluids","Nursing & Hospital":"Hospital Care & Fluids","Inpatient Monitoring":"Hospital Care & Fluids",
+    "Anesthesia Basics":"Anesthesia & Surgery","Surgery Basics":"Anesthesia & Surgery","Imaging Basics":"Imaging","Rescued Animal":"Rescued Animals","Zoonoses & Hygiene":"Zoonoses/Rabies"};
+  const bySign=q=>{ const s=q.q.toLowerCase();
+    if(/pruritic|itch/.test(s)) return "Dermatology";
+    if(/lame|weight-bearing|head tilt|seizure/.test(s)) return "Neuro/Ophtho/Ortho";
+    if(/hematuria|strain/.test(s)) return "Renal/Urinary";
+    if(/intact female|intact bitch/.test(s)) return "Reproductive";
+    if(/cough|open-mouth|breathing/.test(s)) return "Cardiorespiratory";
+    if(/kitten/.test(s)) return "Infectious";
+    if(/vomit|retch|diarrh|losing weight|bad breath|dropping food/.test(s)) return "GI";
+    return "Clinical Skills"; };
+  QUIZ.forEach(q=>{ const m=/^Basics · (.*)$/.exec(q.c); if(m){ q.bc=m[1]; q.c = m[1]==="Common Presentations" ? bySign(q) : (MAP[m[1]]||"Clinical Skills"); }
+    else if(q.fig && /^rad_/.test(q.fig)) q.c="Imaging"; });
+  // basic imaging questions that describe a pattern now show the matching schematic radiograph
+  const FIGS=[[/typical of cardiogenic pulmonary edema/i,"rad_chf"],[/mechanical small-intestinal obstruction on radiographs/i,"rad_obstr"],[/vertebral heart score/i,"rad_thorax"],[/thorax radiographed at peak inspiration/i,"rad_thorax"]];
+  [QUIZ, (typeof BASIC_QUIZ!=="undefined"?BASIC_QUIZ:[])].forEach(D=>D.forEach(q=>{ if(q.fig) return; if(q.c!=="Imaging"&&q.c!=="Imaging Basics") return; const f=FIGS.find(x=>x[0].test(q.q)); if(f) q.fig=f[1]; }));
+})();
 // ===== TOOLS: daily review (spaced repetition), dose / CRI calculator, emergency sheet, quick reference, clinical English, saved items and notes =====
 // Loaded before app.js: only declarations here; everything that touches `store` or the DOM runs later, from render() and act().
 const TOOL_VIEWS=["tools","daily","calc","ref","phrases","saved","mock","proto","anes"];
@@ -10489,9 +10511,9 @@ const MOCK_PASS=70, MOCK_SEC=72;
 const MK={items:null,i:0,ans:[],perms:[],start:0,end:null,limit:0,confirm:false};
 let mockTimer=null;
 function stopMock(){ if(mockTimer){ clearInterval(mockTimer); mockTimer=null; } }
-function mockArea(it){ if(it.m==="drugs") return "Drug formulary"; if(it.m==="anat") return "Anatomy"; const c=MCQ[it.m].data()[it.i].c; return /^Basics · /.test(c)? "Day-one basics" : c; }
+function mockArea(it){ if(it.m==="drugs") return "Drug formulary"; if(it.m==="anat") return "Anatomy"; const q0=MCQ[it.m].data()[it.i], c=q0.c; return (q0.bc||/^Basics · /.test(c))? "Day-one basics" : c; }
 function mockBuild(n){ const inQuiz=new Set(QUIZ.map(q=>q.q)), law=[], cats={}, drugs=[], anat=[];
-  QUIZ.forEach((q,i)=>{ if(q.c==="UAE Law") law.push({m:"quiz",i:i}); else { const c=/^Basics · /.test(q.c)?"Day-one basics":q.c; (cats[c]=cats[c]||[]).push({m:"quiz",i:i}); } });
+  QUIZ.forEach((q,i)=>{ if(q.c==="UAE Law") law.push({m:"quiz",i:i}); else { const c=(q.bc||/^Basics · /.test(q.c))?"Day-one basics":q.c; (cats[c]=cats[c]||[]).push({m:"quiz",i:i}); } });
   DRUGS.forEach((q,i)=>{ if(!inQuiz.has(q.q)) drugs.push({m:"drugs",i:i}); }); ANAT.forEach((q,i)=>anat.push({m:"anat",i:i}));
   const nLaw=Math.min(law.length,Math.round(n*0.15)), nDrug=Math.min(drugs.length,Math.round(n*0.10)), nAnat=Math.min(anat.length,Math.round(n*0.05)), nClin=n-nLaw-nDrug-nAnat;
   Object.keys(cats).forEach(c=>{ cats[c]=shuffle(cats[c]); });
@@ -11181,7 +11203,7 @@ function tix(){ if(_tix) return _tix; const body=new Map(), head=new Map();
 function theoryFor(m,q){
   if(q.t){ const tt=THEORY.find(x=>x.id===q.t); if(tt) return tt; }
   let mm=m, cat=q.c||"";
-  if(/^Basics · /.test(cat)){ mm="basic"; cat=cat.replace(/^Basics · /,""); }
+  if(/^Basics · /.test(cat)){ mm="basic"; cat=cat.replace(/^Basics · /,""); } if(q&&q.bc){ mm="basic"; cat=q.bc; }
   const X=tix(), N=THEORY.length;
   let pool=[]; THEORY.forEach((t,i)=>{ if((t.practice||[]).some(p=>p.m===mm&&p.cat===cat)) pool.push(i); });
   (THEORY_EXTRA[mm+"/"+cat]||[]).forEach(id=>{ const i=X.byId[id]; if(i!==undefined && !pool.includes(i)) pool.push(i); });
