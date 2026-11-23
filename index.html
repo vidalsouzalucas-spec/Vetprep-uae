@@ -10360,9 +10360,108 @@ const PROTO=[
   steps:["Airway, breathing, circulation, in that order. Oxygen. Direct pressure on external bleeding.","IV catheter (two if large dog); blood for PCV and total solids, glucose, lactate.","Analgesia with an opioid (methadone 0.2-0.3 mg/kg).","Crystalloid bolus 10-20 mL/kg in dogs, 5-10 mL/kg in cats, over 15 minutes; reassess heart rate, pulses, refill and blood pressure after each. Aim for systolic around 90 mmHg while bleeding is uncontrolled.","Quick ultrasound of chest and abdomen for free fluid and air; tap the chest if breathing is laboured (pneumothorax is common).","Falling total solids, fluid in the abdomen and no response to fluids: tranexamic acid 10-15 mg/kg IV slowly, abdominal pressure wrap, blood products, surgery if it does not stop.","Head injury: head up 15-30 degrees, no pressure on the neck, keep blood pressure and oxygen normal; mannitol or hypertonic saline if deteriorating.","Bladder: confirm the animal can urinate. Then radiographs of the chest before any anesthetic, and fracture support below the elbow or stifle."],
   avoid:["NSAIDs or steroids in shock or head injury","Fixing the fracture before the chest and circulation","Large volumes of fluid in a patient with lung contusions"]}
 ];
+// ===== ANESTHESIA PROTOCOLS: quick plans by patient type (doses match the anesthesia theory topic and the dose calculator) =====
+const ANES=[
+ {id:"checklist",icon:"✅",title:"Before every anesthetic: checklist",topic:"anesthesia",who:"Every patient, every time. Most accidents come from a skipped check, not from the drugs.",
+  blocks:[
+   {h:"Patient",items:["Identity, procedure and side confirmed; consent signed; weight today, in kg.","Fasting: adults 6-8 h food, water until premedication. Under 8 weeks: 1-2 h only.","Examination today: heart and lungs, gum colour, pulse, temperature, hydration. Assign the ASA status (I healthy to V moribund; E for emergency).","Bloods as needed: PCV and total solids, glucose, creatinine at least in old or sick patients.","IV catheter placed and flushed before induction."]},
+   {h:"Machine and equipment",items:["Oxygen supply and backup cylinder; flowmeter works.","Vaporizer filled and closed; soda lime not exhausted; scavenging connected.","Leak test with the pop-off valve closed, then OPEN it again.","Circuit by size: non-rebreathing under 7-10 kg (200-300 mL/kg/min); circle above.","Three tube sizes, cuffs tested, laryngoscope, tie, lubricant, lidocaine spray for cats, suction.","Monitors on: pulse oximeter, capnograph, blood pressure, ECG, thermometer; warming ready."]},
+   {h:"Drugs",items:["Doses calculated and drawn up, syringes labelled; a second person checks them.","Emergency doses calculated for this weight (epinephrine, atropine, reversal agents).","Analgesia planned for before, during and after; local block chosen."]}],
+  avoid:["Inducing with the pop-off valve closed","Anesthetizing without IV access","Leaving the patient unobserved between premedication and induction"]},
+ {id:"dog-routine",icon:"🐕",title:"Healthy dog, routine surgery",topic:"anesthesia",who:"ASA I-II: neutering, lump removal, dental work.",
+  blocks:[
+   {h:"Premedication (IM, 20-30 min before)",items:["Methadone 0.2-0.5 mg/kg (painful surgery) or butorphanol 0.2-0.4 mg/kg (minor procedures), plus one sedative:","Dexmedetomidine 2-5 mcg/kg, or acepromazine 0.01-0.03 mg/kg.","Maropitant 1 mg/kg SC or IV an hour before reduces vomiting and nausea."]},
+   {h:"Induction",items:["Pre-oxygenate if the dog accepts the mask.","Propofol 2-6 mg/kg or alfaxalone 1-3 mg/kg IV, a quarter of the dose every 30 seconds, to effect. After dexmedetomidine use the low end.","Intubate, inflate the cuff just to seal, confirm with the capnograph, tie the tube."]},
+   {h:"Maintenance",items:["Isoflurane or sevoflurane in oxygen, to effect; crystalloids 5 mL/kg/h.","Targets: mean pressure above 60-70 mmHg, SpO2 95% or more, end-tidal CO2 35-45 mmHg, temperature above 37 C.","Local block: testicular or incisional lidocaine or bupivacaine."]},
+   {h:"Analgesia and recovery",items:["NSAID once blood pressure and hydration are normal (meloxicam 0.2 mg/kg SC), then orally for 3-5 days.","Repeat methadone every 4 h while pain scores require it (Glasgow 6/24 or more).","Extubate when swallowing returns; keep warm; observe until sternal and alert."]}],
+  avoid:["Acepromazine in shock, bleeding or dehydration","NSAIDs if pressure was low during surgery","Atipamezole as a routine if it leaves the dog without analgesia"]},
+ {id:"cat-routine",icon:"🐈",title:"Healthy cat, routine surgery",topic:"anesthesia",who:"ASA I-II: neutering, dental work, small masses.",
+  blocks:[
+   {h:"Before",items:["Gabapentin 50-100 mg per cat by mouth 2 hours before the visit calms most cats.","Minimal restraint; a quiet room away from dogs."]},
+   {h:"Premedication or IM anesthesia",items:["IV plan: methadone 0.2-0.3 mg/kg or buprenorphine 0.02-0.03 mg/kg with dexmedetomidine 3-5 mcg/kg IM; then induce IV.","IM plan for castration or a fractious cat: dexmedetomidine 5-10 mcg/kg + ketamine 3-5 mg/kg + butorphanol 0.2-0.4 mg/kg (or methadone) in one syringe.","Eye lubricant: cats under ketamine keep their eyes open."]},
+   {h:"Induction and airway",items:["Alfaxalone 2-5 mg/kg or propofol 4-8 mg/kg IV slowly to effect (much less after an IM combination).","Lidocaine spray on the larynx and wait 30-60 seconds; a 3.5-4.5 mm tube; never force it (tracheal tears).","Disconnect the circuit before turning the cat."]},
+   {h:"Maintenance",items:["Non-rebreathing circuit; crystalloids 3 mL/kg/h; warm from the first minute.","Same monitoring targets as in dogs; cats become hypotensive and cold quickly."]},
+   {h:"Analgesia and recovery",items:["Meloxicam 0.2 mg/kg SC once or robenacoxib 2 mg/kg SC if hydrated and normotensive.","Buprenorphine every 6-8 h; local block where possible.","Atipamezole IM (half the volume of dexmedetomidine 0.5 mg/mL given) if recovery is slow."]}],
+  avoid:["Lidocaine infusions","Over-inflating the cuff","NSAIDs in a dehydrated or azotemic cat"]},
+ {id:"sedation",icon:"💤",title:"Sedation for imaging and minor procedures",topic:"anesthesia",who:"Radiographs, ultrasound, ear cleaning, bandage changes, clipping mats.",
+  blocks:[
+   {h:"Healthy dog",items:["Dexmedetomidine 2-5 mcg/kg + butorphanol 0.2-0.4 mg/kg IM; top up with a small IV dose of propofol or alfaxalone if needed.","Reverse with atipamezole IM (same volume as the dexmedetomidine 0.5 mg/mL) when finished."]},
+   {h:"Healthy cat",items:["Dexmedetomidine 3-10 mcg/kg + butorphanol 0.2-0.4 mg/kg IM; add ketamine 2-3 mg/kg for more depth.","Alternative: alfaxalone 2-3 mg/kg + butorphanol IM (large volume)."]},
+   {h:"Old, sick, cardiac or dyspneic",items:["Butorphanol 0.2-0.4 mg/kg alone IM, or with midazolam 0.2 mg/kg. No alpha-2 agonist.","Oxygen by flow during the procedure."]},
+   {h:"Always",items:["A sedated patient is monitored like an anesthetized one: pulse oximeter at least, oxygen and a tube at hand, IV access when the sedation is deep.","Fasting as for anesthesia whenever possible."]}],
+  avoid:["Dexmedetomidine in heart disease, shock or severe systemic illness","Sedating a dyspneic animal for radiographs before giving oxygen and stabilizing it"]},
+ {id:"brachy",icon:"🐶",title:"Brachycephalic dog",topic:"anesthesia",who:"Bulldogs, Pugs, French Bulldogs and similar: the dangerous moments are induction and, above all, recovery.",
+  blocks:[
+   {h:"Before",items:["Maropitant 1 mg/kg and omeprazole 1 mg/kg beforehand: regurgitation and reflux are common.","Keep calm and cool; IV catheter with the least restraint possible.","Pre-oxygenate for 3-5 minutes."]},
+   {h:"Premedication",items:["Light: methadone 0.2 mg/kg or butorphanol 0.2 mg/kg, with acepromazine at the low end (0.01 mg/kg) if needed. Never leave the dog alone after it.","A low dose of dexmedetomidine is acceptable only with constant supervision."]},
+   {h:"Induction",items:["Fast IV induction with propofol or alfaxalone, laryngoscope in hand; tubes several sizes smaller than the weight suggests ready.","Look at the palate, tonsils and larynx while you are there."]},
+   {h:"Recovery",items:["Keep the tube in as long as possible: extubate when the dog is lifting its head and chewing.","Sternal position, head raised, tongue pulled forward, oxygen ready, someone present until fully awake.","Have propofol and a tube ready for re-intubation."]}],
+  avoid:["Heavy sedation without an airway plan","Early extubation","Sending home while still drowsy or noisy"]},
+ {id:"old-renal",icon:"👴",title:"Old patient, kidney or liver disease",topic:"anesthesia",who:"Reduced reserve: the goals are normal blood pressure, normal oxygen, short anesthesia.",
+  blocks:[
+   {h:"Before",items:["Bloods, urine, blood pressure; correct dehydration with fluids before, not during, the anesthetic.","Shorten the fast and keep water available."]},
+   {h:"Premedication",items:["Methadone 0.2 mg/kg or buprenorphine, with midazolam 0.2 mg/kg if sedation is needed. Halve usual sedative doses.","No alpha-2 agonist; acepromazine only at 0.005-0.01 mg/kg in a normotensive patient."]},
+   {h:"Induction and maintenance",items:["Alfaxalone or propofol titrated very slowly; expect to need less.","Fluids 3-5 mL/kg/h; keep mean pressure above 70 mmHg (act early: lighten, bolus, then ephedrine or dopamine).","Local blocks to reduce the inhalant; active warming."]},
+   {h:"Specific points",items:["Kidney disease: no NSAIDs; ketamine in low doses only in cats; measure urine output in long procedures.","Liver disease: check glucose and clotting; avoid benzodiazepines if there is encephalopathy; drugs last longer.","Recovery is slow: warmth, oxygen, glucose check."]}],
+  avoid:["Hypotension, even for a few minutes","NSAIDs with azotemia","Standard young-adult doses"]},
+ {id:"cardiac",icon:"❤️",title:"Heart disease",topic:"anesthesia",who:"Dogs with mitral valve disease, cats with cardiomyopathy. Stable, treated patients tolerate a careful anesthetic; decompensated ones wait.",
+  blocks:[
+   {h:"Before",items:["Give the usual heart medication (pimobendan, furosemide) on the day; many withhold the ACE inhibitor that morning.","Sleeping respiratory rate, chest radiographs or echo if not recent. Pre-oxygenate."]},
+   {h:"Premedication",items:["Methadone 0.2 mg/kg or butorphanol 0.2-0.3 mg/kg, with midazolam 0.2 mg/kg. No acepromazine in hypotension; no alpha-2 agonist in mitral disease."]},
+   {h:"Induction",items:["Alfaxalone or propofol in very small increments after fentanyl 2-3 mcg/kg and midazolam; etomidate where available for severe disease.","Cats with cardiomyopathy: avoid ketamine and anything that speeds the heart."]},
+   {h:"Maintenance",items:["Lowest inhalant possible, helped by opioids and local blocks.","Fluids restricted: 2-3 mL/kg/h. Hypotension is treated with less inhalant and drugs, not with large boluses.","Mitral disease: avoid bradycardia and high resistance. Hypertrophic cardiomyopathy: avoid tachycardia.","ECG and blood pressure throughout."]},
+   {h:"Recovery",items:["Oxygen, quiet, analgesia; count the breathing rate; furosemide ready."]}],
+  avoid:["Fluid boluses at shock rates","Ketamine in cats with hypertrophic cardiomyopathy","Elective surgery in a patient with active heart failure"]},
+ {id:"cesarean",icon:"🤰",title:"Cesarean section",topic:"anesthesia",who:"Two kinds of patient at once: every drug given to the dam before delivery reaches the newborns.",
+  blocks:[
+   {h:"Before induction",items:["IV catheter and crystalloids 10 mL/kg/h; pre-oxygenate for 3-5 minutes.","Clip and do the first skin preparation with the dam awake, standing or on her left side.","Maropitant or metoclopramide; a team ready to receive newborns with warm towels, suction and oxygen."]},
+   {h:"Anesthesia",items:["No sedative premedication, or only a low dose of opioid if she is distressed.","Induce with propofol 2-6 mg/kg or alfaxalone 1-3 mg/kg IV; intubate quickly (full stomach).","Low isoflurane or sevoflurane; lidocaine line block (up to 2 mg/kg) along the incision.","Operate fast: time from induction to delivery matters most."]},
+   {h:"After the newborns are out",items:["Methadone 0.2-0.3 mg/kg IV for the dam; one dose of NSAID is acceptable if she is stable.","Oxytocin only if the uterus does not contract."]},
+   {h:"Newborns",items:["Clear the mouth and nose, rub vigorously with a warm towel, oxygen by mask.","Naloxone under the tongue if the dam received an opioid before delivery; keep at 30-32 C; do not swing."]}],
+  avoid:["Alpha-2 agonists and ketamine before delivery","Prolonged anesthesia before the incision","Leaving the dam on her back while awake (pressure on the vena cava)"]},
+ {id:"pediatric",icon:"🍼",title:"Puppies and kittens under 12 weeks",topic:"anesthesia",who:"They become hypoglycemic and cold quickly, and their heart output depends on heart rate.",
+  blocks:[
+   {h:"Before",items:["Fast 1-2 hours only (never more than 4); check glucose.","Weigh on gram scales and dilute drugs to measure them accurately."]},
+   {h:"Drugs",items:["Opioid (buprenorphine 0.01-0.02 mg/kg or methadone 0.1-0.2 mg/kg) with or without midazolam 0.2 mg/kg.","Induce with alfaxalone or propofol to effect, or by mask after sedation.","Treat bradycardia promptly: atropine 0.02 mg/kg or glycopyrrolate."]},
+   {h:"Maintenance",items:["Non-rebreathing circuit; fluids with 2.5% dextrose at 3-5 mL/kg/h through a syringe pump.","Warmth from start to finish; small alcohol-free preparation area."]},
+   {h:"Recovery",items:["Feed as soon as they can swallow; recheck glucose if recovery is slow."]}],
+  avoid:["Alpha-2 agonists and acepromazine under 8-12 weeks","Long fasting","NSAIDs under 6 weeks"]},
+ {id:"shock",icon:"🚨",title:"Emergency surgery in an unstable patient",topic:"emerg",who:"GDV, bleeding spleen, septic abdomen, pyometra with shock. Stabilize as far as the disease allows, then anesthetize with the gentlest drugs.",
+  blocks:[
+   {h:"Before",items:["Fluids, oxygen, analgesia; blood pressure, lactate, PCV and total solids, glucose, electrolytes, ECG.","Two IV catheters; blood products considered; pre-oxygenate."]},
+   {h:"Induction",items:["Fentanyl 2-5 mcg/kg IV and midazolam 0.2 mg/kg IV, then a small dose of alfaxalone or propofol to intubate.","Alternative: ketamine 2-5 mg/kg with midazolam IV."]},
+   {h:"Maintenance",items:["Minimal inhalant, with fentanyl 2-10 mcg/kg/h; lidocaine infusion in dogs (GDV, arrhythmias).","Fluids by response; norepinephrine 0.1-1 mcg/kg/min if pressure stays low after fluids.","Arterial pressure, ECG, capnograph, temperature, glucose and lactate repeated."]},
+   {h:"Recovery",items:["Intensive monitoring for 24-48 h: pressure, urine output, pain score, ECG."]}],
+  avoid:["Alpha-2 agonists and acepromazine","NSAIDs","Waiting for a 'perfect' patient when the cause is surgical"]},
+ {id:"blocked",icon:"🚽",title:"Sedation to unblock a cat",topic:"renal-uti-stones",who:"Treat the potassium before the sedation: a hyperkalemic heart does not tolerate anesthetics.",
+  blocks:[
+   {h:"First",items:["IV catheter, fluids, ECG; calcium gluconate and insulin-dextrose if potassium is high (see the emergency protocol)."]},
+   {h:"Sedation",items:["Methadone 0.2 mg/kg or buprenorphine 0.02 mg/kg IV with midazolam 0.2 mg/kg IV.","Then alfaxalone 0.5-1 mg/kg IV in small increments, or ketamine 1-2 mg/kg IV, to effect.","Sacrococcygeal block: lidocaine 2% 0.1-0.2 mL/kg relaxes the urethra and gives analgesia for hours.","Oxygen by mask; intubate if deep."]}],
+  avoid:["Dexmedetomidine and other alpha-2 agonists","High doses of ketamine (it is cleared by the kidney in cats)","NSAIDs until creatinine is normal"]},
+ {id:"diabetic",icon:"🩸",title:"Diabetic patient",topic:"anesthesia",who:"Stable diabetics only for elective work; first case of the morning.",
+  blocks:[
+   {h:"On the day",items:["Normal meal and insulin the evening before. In the morning: half the usual insulin dose with a small meal or none, as the clinic's protocol says.","Glucose before induction, every 30-60 minutes during anesthesia, and in recovery."]},
+   {h:"Targets",items:["Keep glucose roughly 150-250 mg/dL. Below 100: add 2.5-5% dextrose to the fluids. Persistently above 300: small dose of regular insulin.","Any routine protocol suits them; keep it short. Dexmedetomidine raises glucose transiently."]},
+   {h:"Afterwards",items:["Return to normal feeding and insulin as soon as possible; antiemetic so that the patient eats."]}],
+  avoid:["A full insulin dose in a fasted patient","Anesthetizing a ketotic or unstable diabetic for elective surgery"]},
+ {id:"problems",icon:"⚠️",title:"Problems during anesthesia: what to do",topic:"anesthesia",who:"For every alarm: look at the patient first (pulse, colour, chest movement), then the machine, then the monitor.",
+  blocks:[
+   {h:"Low blood pressure (mean under 60, systolic under 90)",items:["Check depth and turn the vaporizer down; add analgesia so that less inhalant is needed.","Fluid bolus 5-10 mL/kg in dogs, 3-5 mL/kg in cats, over 10-15 minutes (not in heart disease).","Slow heart as well: atropine 0.02 mg/kg or glycopyrrolate 0.005-0.01 mg/kg IV.","Still low: ephedrine 0.05-0.1 mg/kg IV, then dopamine 5-10 mcg/kg/min or norepinephrine."]},
+   {h:"Slow heart rate",items:["Check depth, pressure and temperature. After dexmedetomidine with normal or high pressure: do nothing, or reverse with atipamezole.","With low pressure: anticholinergic as above."]},
+   {h:"Fast heart rate",items:["Pain or too light: opioid bolus (fentanyl 2-5 mcg/kg), deepen. Then think of blood loss, high CO2, low oxygen, anticholinergics."]},
+   {h:"Low oxygen saturation (under 95%)",items:["Move the probe and check the pulse; 100% oxygen; give a breath and watch the chest.","Tube: kinked, blocked, disconnected, in one bronchus (pull back), in the esophagus (no CO2 trace).","Listen to both sides of the chest: pneumothorax, fluid, collapse."]},
+   {h:"Carbon dioxide",items:["High (over 55 mmHg): ventilate (10-12 breaths per minute, peak pressure 10-15 cmH2O), lighten the anesthetic.","Baseline not returning to zero: exhausted soda lime, stuck valve, or oxygen flow too low on a non-rebreathing circuit.","Sudden fall to zero: disconnection, blocked tube, or cardiac arrest: check the pulse at once."]},
+   {h:"Other",items:["No breathing after induction: 2-4 breaths per minute by hand until it returns; check depth.","Moving or too light: propofol 0.5-1 mg/kg IV, then adjust the vaporizer.","Temperature under 36 C: forced warm air, warmed fluids, less inhalant.","Regurgitation: head down, suction, rinse the esophagus with saline, check the cuff; omeprazole afterwards.","Slow recovery: temperature, glucose, oxygen, reverse what can be reversed."]}],
+  avoid:["Treating the monitor instead of the patient","Atropine for the slow heart of dexmedetomidine when pressure is high","Leaving the pop-off valve closed after a manual breath"]},
+ {id:"blocks",icon:"💉",title:"Local blocks: quick guide",topic:"anesthesia",who:"A block is the only analgesic that stops the pain signal completely. Calculate the maximum dose first and always draw back before injecting.",
+  blocks:[
+   {h:"Maximum doses",items:["Lidocaine (fast, 1-2 h): dogs 6-8 mg/kg, cats 2-4 mg/kg.","Bupivacaine (slow, 4-8 h): dogs 2 mg/kg, cats 1-1.5 mg/kg. Never intravenously.","Small patients: dilute with saline to have enough volume."]},
+   {h:"Everyday blocks",items:["Testicular: lidocaine into each testicle until it feels firm (about 0.5-1 mL in dogs, 0.1-0.2 mL in cats), within the maximum.","Incisional line or splash block: bupivacaine along the wound edges before closing.","Dental: infraorbital and inferior alveolar (mandibular) blocks, 0.1-0.3 mL per site in cats and small dogs, up to 0.5-1 mL in large dogs.","Sacrococcygeal in cats: lidocaine 2% 0.1-0.2 mL/kg for urethral catheters, tail and perineal work.","Lumbosacral epidural: preservative-free morphine 0.1 mg/kg, alone or with bupivacaine, for hindlimb and abdominal surgery (trained staff only).","Intercostal blocks for rib fractures and thoracotomy: two spaces in front and two behind."]}],
+  avoid:["Bupivacaine IV (cardiac arrest)","Exceeding the lidocaine maximum in cats","Epidural with clotting problems, skin infection at the site or shock"]}
+];
 // ===== TOOLS: daily review (spaced repetition), dose / CRI calculator, emergency sheet, quick reference, clinical English, saved items and notes =====
 // Loaded before app.js: only declarations here; everything that touches `store` or the DOM runs later, from render() and act().
-const TOOL_VIEWS=["tools","daily","calc","ref","phrases","saved","mock","proto"];
+const TOOL_VIEWS=["tools","daily","calc","ref","phrases","saved","mock","proto","anes"];
 const SRS_INT=[1,3,7], DAILY_N=20, SRS_MODES=["quiz","drugs","anat","basic"];
 function dayNum(){ const d=new Date(); return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/864e5); }
 function freshX(){ return {srs:{},daily:{last:0,streak:0},marks:{},notes:{},mock:[]}; }
@@ -10561,12 +10660,13 @@ function renderTools(){
     <div class="hero"><h2>Tools</h2><p class="muted" style="margin:6px 0 0">For studying every day and for looking things up at work.</p></div>
     <div class="modes">${dailyCard()}${mockCard()}
       <button class="mode c-tools" data-act="go" data-v="proto"><div class="ic">🚑</div><div class="t"><b>Emergency protocols</b><span>${PROTO.length} step-by-step guides: CPR, blocked cat, GDV, seizures, breathing, poisoning, heat</span></div></button>
+      <button class="mode c-tools" data-act="go" data-v="anes"><div class="ic">😴</div><div class="t"><b>Anesthesia protocols</b><span>${ANES.length} plans by patient: routine dog and cat, brachycephalic, cardiac, cesarean, emergencies, problems during anesthesia</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="calc"><div class="ic">🧮</div><div class="t"><b>Dose calculator</b><span>mg and mL by weight for ${DOSES.length} drugs, CRI rates and dilutions, emergency sheet</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="ref"><div class="ic">📋</div><div class="t"><b>Quick reference</b><span>Vital signs, lab ranges, tubes, catheters, poisons, scores, formulas</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="phrases"><div class="ic">💬</div><div class="t"><b>Clinical English</b><span>${PHRASES.reduce((a,s)=>a+s.items.length,0)} phrases for owners, the phone and the team</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="saved"><div class="ic">⭐</div><div class="t"><b>Saved &amp; notes</b><span>${nSaved} saved item${nSaved===1?"":"s"} · ${nNotes} note${nNotes===1?"":"s"}</span></div></button></div>`;
 }
-function renderTool(v){ if(v==="mock") return renderMock(); if(v==="proto") return renderProto(); if(v==="tools") renderTools(); else if(v==="daily") renderDaily(); else if(v==="calc") renderCalc(); else if(v==="ref") renderRef(); else if(v==="phrases") renderPhrases(); else if(v==="saved") renderSaved(); }
+function renderTool(v){ if(v==="mock") return renderMock(); if(v==="proto") return renderProto(); if(v==="anes") return renderAnes(); if(v==="tools") renderTools(); else if(v==="daily") renderDaily(); else if(v==="calc") renderCalc(); else if(v==="ref") renderRef(); else if(v==="phrases") renderPhrases(); else if(v==="saved") renderSaved(); }
 function toolsAct(a,d){
   switch(a){
     case "dstart": dailyStart(); window.scrollTo(0,0); render(); break;
@@ -10586,6 +10686,9 @@ function toolsAct(a,d){
     case "popen": PR.id=d.id; window.scrollTo(0,0); render(); break;
     case "pback": PR.id=null; window.scrollTo(0,0); render(); break;
     case "per": K.tab="er"; go("calc"); break;
+    case "aopen": AN.id=d.id; window.scrollTo(0,0); render(); break;
+    case "aback": AN.id=null; window.scrollTo(0,0); render(); break;
+    case "adose": K.tab="dose"; go("calc"); break;
     case "say": try{ const u=new SpeechSynthesisUtterance(String(d.t).replace(/\s\/\s/g,". ")); u.lang="en-GB"; u.rate=0.95; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); }catch(e){} break;
   }
 }
@@ -10664,6 +10767,23 @@ function renderProto(){
       <div class="fb bad" style="margin-top:6px"><b>Do not</b><ul style="margin:0;padding-left:18px">${p.avoid.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
       <div class="actions" style="flex-wrap:wrap"><button class="btn small" data-act="per">🧮 Emergency doses by weight</button>${t?`<button class="btn ghost small tlink" data-act="topic" data-id="${t.id}" data-ret="proto">📖 Theory: ${esc(t.title)}</button>`:""}</div></div>
     <p class="muted" style="font-size:12.5px;text-align:center">Study aid. Follow your clinic's own protocols and the instructions of the veterinarian in charge.</p>`;
+}
+
+// ---------- anesthesia protocols ----------
+const AN={id:null};
+function renderAnes(){
+  $("topprog").innerHTML=""; const note=`<p class="muted" style="font-size:12.5px;text-align:center">Study aid. Doses are ranges for healthy patients unless stated: follow your clinic's protocols and the anesthetist in charge.</p>`;
+  const p=AN.id&&ANES.find(x=>x.id===AN.id);
+  if(!p){ topbar("Anesthesia protocols"); backTo("tools");
+    $("main").innerHTML=`<div class="hero"><h2>Anesthesia protocols</h2><p class="muted" style="margin:6px 0 0">A plan for each kind of patient: what to give, what to watch and what to avoid.</p></div>
+      <div class="modes">${ANES.map(x=>`<button class="mode c-tools" data-act="aopen" data-id="${x.id}"><div class="ic">${x.icon}</div><div class="t"><b>${esc(x.title)}</b><span>${esc(x.who.length>84?x.who.slice(0,84)+"…":x.who)}</span></div></button>`).join("")}</div>${note}`;
+    return; }
+  topbar(p.title); const b=$("topbar").querySelector('[data-act="home"]'); if(b) b.setAttribute("data-act","aback");
+  const t=THEORY.find(x=>x.id===p.topic);
+  $("main").innerHTML=`<div class="card c-tools"><span class="chip mode-chip">${p.icon} Anesthesia protocol</span><h2 style="margin:10px 0 6px">${esc(p.title)}</h2><p class="muted" style="margin:0 0 6px;font-size:14.5px">${esc(p.who)}</p>
+      ${p.blocks.map(B=>`<div class="section-label" style="margin-top:14px">${esc(B.h)}</div><ul style="font-size:14.5px;margin:4px 0 0;padding-left:20px">${B.items.map(x=>`<li style="margin:5px 0">${esc(x)}</li>`).join("")}</ul>`).join("")}
+      <div class="fb bad" style="margin-top:14px"><b>Avoid</b><ul style="margin:0;padding-left:18px">${p.avoid.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      <div class="actions" style="flex-wrap:wrap"><button class="btn small" data-act="adose">🧮 Dose calculator</button>${t?`<button class="btn ghost small tlink" data-act="topic" data-id="${t.id}" data-ret="anes">📖 Theory: ${esc(t.title)}</button>`:""}</div></div>${note}`;
 }
 // ===== APP LOGIC =====
 const KEY = "vetprep_uae_v1";
@@ -11308,7 +11428,7 @@ function renderTheory(){
   const inp=$("tsearch"); inp.addEventListener("input", e=>{ T.q=e.target.value; const pos=inp.selectionStart; renderTheory(); const n=$("tsearch"); n.focus(); n.setSelectionRange(pos,pos); });
 }
 function renderTopic(t){
-  topbar(t.title, `${starBtn("t:"+t.id)}<button class="btn ghost small" data-act="tback">${T.ret==="saved"?"← Saved":T.ret==="proto"?"← Protocol":T.ret?"← Back to question":"Topics"}</button>`); $("topprog").innerHTML="";
+  topbar(t.title, `${starBtn("t:"+t.id)}<button class="btn ghost small" data-act="tback">${T.ret==="saved"?"← Saved":(T.ret==="proto"||T.ret==="anes")?"← Protocol":T.ret?"← Back to question":"Topics"}</button>`); $("topprog").innerHTML="";
   const done=!!store.theory.done[tkey(t)];
   const idx=THEORY.indexOf(t), prev=THEORY[idx-1], next=THEORY[idx+1];
   const practice=(t.practice||[]).map(p=>`<button class="btn ghost small" data-act="mpractice" data-m="${p.m}" data-c="${esc(p.cat)}">${MODES[p.m]?MODES[p.m].icon:""} ${esc(p.label||p.cat)}</button>`).join(" ");
