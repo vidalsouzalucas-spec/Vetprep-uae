@@ -275,6 +275,19 @@ header.top{-webkit-backdrop-filter:blur(8px);padding-top:max(12px,env(safe-area-
 .zoomov.wide{justify-content:flex-start}
 .zoomov.wide img{max-width:none;max-height:none;height:62vh;width:auto}
 .zoomov.wide::after{content:"Swipe sideways to see both views · tap to close";position:fixed;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom));text-align:center;color:#cfd6d4;font-size:12.5px;pointer-events:none}
+/* computer layout */
+.kbhint{display:none}
+@media (min-width:1000px){
+.app{max-width:1200px}
+header.top{padding:14px 32px 10px}
+main{padding:24px 32px}
+.modes{grid-template-columns:repeat(3,minmax(0,1fr))}
+html:not([data-view=home]) main{max-width:920px;width:100%;margin:0 auto;box-sizing:border-box}
+.theory .sec{font-size:16px;line-height:1.6}
+.opt{font-size:16px}
+.kbhint{display:block}
+}
+@media (hover:hover){.mode:hover,.opt:not([disabled]):not(.correct):not(.wrong):hover{filter:brightness(.97);box-shadow:0 0 0 2px var(--line),var(--shadow)}}
 </style>
 </head>
 <body>
@@ -11087,6 +11100,10 @@ function mergeStore(a, b){
     if(out[m].exams!==undefined){ const seen={}; out[m].exams = [].concat((a[m]||{}).exams||[], (b[m]||{}).exams||[]).filter(e=>e&&e.t&&!seen[e.t]&&(seen[e.t]=true)).sort((x,y)=>x.t-y.t).slice(-50); }
     if(out[m].best!==undefined) out[m].best = Math.max((a[m]||{}).best||0, (b[m]||{}).best||0);
     if(out[m].wrong!==undefined){ const wa=(a[m]||{}).wrong||{}, wb=(b[m]||{}).wrong||{}; out[m].wrong={}; Object.keys(wa).concat(Object.keys(wb)).forEach(k=>{ out[m].wrong[k]=Math.max(wa[k]||0,wb[k]||0); }); }
+    const ta=(a[m]||{}).at||{}, tb=(b[m]||{}).at||{}; const keys=Object.keys(ta).concat(Object.keys(tb));
+    if(keys.length){ out[m].at={}; keys.forEach(k=>{ const useA=(ta[k]||0)>=(tb[k]||0); const w=useA?(a[m]||{}):(b[m]||{}); out[m].at[k]=Math.max(ta[k]||0,tb[k]||0);
+      if(out[m].correct!==undefined && w.correct && k in w.correct) out[m].correct[k]=w.correct[k];
+      if(out[m].wrong!==undefined){ if(w.wrong && w.wrong[k]) out[m].wrong[k]=w.wrong[k]; else delete out[m].wrong[k]; } }); }
   });
   return out;
 }
@@ -11094,7 +11111,7 @@ function freshStore(){ return {quiz:{done:{},correct:{},wrong:{},best:0,exams:[]
   basic:{done:{},correct:{},wrong:{},best:0,exams:[]},bcases:{done:{},result:{}},blab:{done:{},result:{}},bfluids:{done:{},result:{}},bcyto:{done:{},correct:{},wrong:{}},theory:{done:{}},x:freshX()}; }
 let store = freshStore();
 function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s && s.quiz && s.cases && s.lab && s.fluids){ store=s; if(!store.drugs) store.drugs={done:{},correct:{},best:0,exams:[]}; ["quiz","drugs"].forEach(m=>{ if(!store[m].exams) store[m].exams=[]; }); ["cases","lab","fluids"].forEach(m=>{ if(!store[m].result) store[m].result={}; }); if(!store.cyto) store.cyto={done:{},correct:{}}; if(!store.basic) store.basic={done:{},correct:{},best:0,exams:[]}; if(!store.basic.exams) store.basic.exams=[]; ["bcases","blab","bfluids"].forEach(k=>{ if(!store[k]) store[k]={done:{},result:{}}; }); if(!store.bcyto) store.bcyto={done:{},correct:{}}; if(!store.anat) store.anat={done:{},correct:{},wrong:{},best:0,exams:[]}; if(!store.theory) store.theory={done:{}}; migrateStore(store); ["quiz","drugs","basic","anat","cyto","bcyto"].forEach(m=>{ if(!store[m].wrong){ store[m].wrong={}; Object.keys(store[m].done).forEach(k=>{ if(store[m].correct[k]===false) store[m].wrong[k]=1; }); } }); } }catch(e){} }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} cloudSave(); }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} cloudSave(); gsSoon(); }
 load();
 
 const BASIC_CYTO = BASIC_CYTO_IDS.map(id=>CYTO.find(c=>c.id===id)).filter(Boolean);
@@ -11110,7 +11127,7 @@ const MODES = {
   fluids:{name:"Fluid Therapy",icon:"💧",cls:"c-fluids",desc:"Calculator + rate practice",total:()=>FLUIDS.length}
 };
 // ---- mistakes: questions answered wrong that have not yet been answered correctly again ----
-function markWrong(st,k,ok){ if(!st.wrong) st.wrong={}; if(ok) delete st.wrong[k]; else st.wrong[k]=(st.wrong[k]||0)+1; }
+function markWrong(st,k,ok){ if(!st.at) st.at={}; st.at[k]=Math.floor(Date.now()/1000); if(!st.wrong) st.wrong={}; if(ok) delete st.wrong[k]; else st.wrong[k]=(st.wrong[k]||0)+1; }
 function mistakes(m){
   if(m==="quiz"||m==="drugs"||m==="basic"||m==="anat"){ const D=MCQ[m].data(); return range(D.length).filter(i=>store[m].wrong[mkey(D[i])]); }
   if(m==="cyto"||m==="bcyto"){ const D=m==="cyto"?CYTO:BASIC_CYTO; return range(D.length).filter(i=>(store[m].wrong||{})[ykey(D[i])]); }
@@ -11196,9 +11213,84 @@ async function cloudFlush(){
   if(SYNC.dirty) cloudSave();
 }
 function syncLabel(){
+  if(typeof GS!=="undefined" && gsAvail() && GS.cfg) return gsLabel();
   return SYNC.state==="cloud"? "☁️ Progress synced to your account" : SYNC.state==="saving"? "☁️ Saving…" : SYNC.state==="error"? "⚠️ Cloud save failed - progress kept in this browser" : "📱 Progress saved in this browser only";
 }
 function refreshSyncUI(){ const el=$("syncstate"); if(el) el.textContent = syncLabel(); }
+function syncText(){ return (gsAvail() && GS.cfg)? gsLabel() : syncLabel(); }
+
+// ---------- device sync (private GitHub Gist; for the installed/offline version) ----------
+const GS={KEY:"vetprep_gist", FILE:"vetprep-progress.json", cfg:null, state:"off", busy:false, again:false, timer:null, last:0, err:"", open:false, msg:""};
+try{ GS.cfg=JSON.parse(localStorage.getItem(GS.KEY)||"null"); }catch(e){}
+const gsAvail=()=>!(window.claude && typeof window.claude.use==="function");
+function gsStore(){ try{ if(GS.cfg) localStorage.setItem(GS.KEY, JSON.stringify(GS.cfg)); else localStorage.removeItem(GS.KEY); }catch(e){} }
+async function gsReq(path, opt){
+  const r = await fetch("https://api.github.com"+path, Object.assign({cache:"no-store"}, opt||{}, {headers:{"Authorization":"Bearer "+GS.cfg.token, "Accept":"application/vnd.github+json", "Content-Type":"application/json"}}));
+  if(r.status===401) throw new Error("token rejected (expired or wrong)");
+  if(r.status===403||r.status===404) throw new Error("token has no Gist permission ("+r.status+")");
+  if(!r.ok) throw new Error("GitHub error "+r.status);
+  return r.json();
+}
+async function gsFindOrCreate(){
+  const list = await gsReq("/gists?per_page=100");
+  const hit = list.find(g=>g.files && g.files[GS.FILE]);
+  if(hit) return hit.id;
+  const g = await gsReq("/gists",{method:"POST", body:JSON.stringify({description:"VetPrep UAE progress sync (private)", public:false, files:{[GS.FILE]:{content:JSON.stringify(store)}}})});
+  return g.id;
+}
+function canon(o){ return JSON.stringify(o, (k,v)=> v && typeof v==="object" && !Array.isArray(v)? Object.keys(v).sort().reduce((r,x)=>{ r[x]=v[x]; return r; },{}) : v); }
+function gsSoon(ms){ if(!GS.cfg) return; clearTimeout(GS.timer); GS.timer=setTimeout(gsSync, ms||4000); }
+async function gsSync(){
+  if(!GS.cfg || !gsAvail()) return;
+  if(navigator.onLine===false){ GS.state="offline"; refreshSyncUI(); return; }
+  if(GS.busy){ GS.again=true; return; }
+  GS.busy=true; GS.state="syncing"; refreshSyncUI();
+  try{
+    if(!GS.cfg.id){ GS.cfg.id = await gsFindOrCreate(); gsStore(); }
+    const g = await gsReq("/gists/"+GS.cfg.id);
+    const f = g.files && g.files[GS.FILE];
+    let txt = f? f.content : "";
+    if(f && f.truncated && f.raw_url){ txt = await (await fetch(f.raw_url,{cache:"no-store"})).text(); }
+    let remote=null; try{ remote = txt? JSON.parse(txt) : null; }catch(e){}
+    const before = canon(store);
+    if(remote && remote.quiz){ store = migrateStore(mergeStore(store, remote)); }
+    const now = canon(store); store = JSON.parse(now);
+    if(now!==before){ try{ localStorage.setItem(KEY, now); }catch(e){} if(["home","stats","review"].indexOf(view)>=0) render(); }
+    if(now!==txt){ await gsReq("/gists/"+GS.cfg.id,{method:"PATCH", body:JSON.stringify({files:{[GS.FILE]:{content:now}}})}); }
+    GS.state="synced"; GS.last=Date.now(); GS.err="";
+    if(!GS.iv) GS.iv=setInterval(()=>{ if(GS.cfg && document.visibilityState==="visible") gsSync(); }, 120000);
+  }catch(e){ GS.state = navigator.onLine===false? "offline" : "error"; GS.err = String(e && e.message || e); }
+  GS.busy=false; refreshSyncUI();
+  if(GS.again){ GS.again=false; gsSoon(1500); }
+}
+async function gsConnect(token){
+  GS.cfg={token:token.trim(), id:""}; GS.msg="Connecting…"; render();
+  await gsSync();
+  if(GS.state==="synced"){ gsStore(); GS.msg="Connected. This device now syncs automatically."; }
+  else { GS.msg="Could not connect: "+GS.err; GS.cfg=null; gsStore(); GS.state="off"; }
+  render();
+}
+function gsDisconnect(){ GS.cfg=null; gsStore(); GS.state="off"; GS.msg="Sync turned off on this device. Progress stays here."; render(); }
+function gsLabel(){
+  const t = GS.last? new Date(GS.last).toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}) : "";
+  return GS.state==="synced"? "🔄 Synced between your devices · "+t : GS.state==="syncing"? "🔄 Syncing…" : GS.state==="offline"? "📴 Offline - progress saved here, will sync when back online" : GS.state==="error"? "⚠️ Sync failed ("+GS.err+") - progress kept here" : "📱 Progress saved on this device only";
+}
+function gsPanel(){
+  if(!gsAvail()) return "";
+  return `<div style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px">
+    ${GS.cfg?`<p class="muted" style="font-size:13.5px">Sync is on. Progress is merged with your other devices when the app opens, after each answer and whenever the connection comes back. For each question the most recent answer wins.</p>
+      <div class="actions" style="justify-content:flex-start"><button class="btn small" data-act="gsnow">Sync now</button><button class="btn ghost small" data-act="gsoff">Turn off on this device</button></div>`
+    :`<p class="muted" style="font-size:13.5px">Use the same progress on phone and computer. Progress is stored in a private Gist in your GitHub account. Do this once on each device:</p>
+      <ol class="muted" style="font-size:13.5px"><li>Open <a href="https://github.com/settings/tokens/new?scopes=gist&description=VetPrep%20sync" target="_blank" rel="noopener">this GitHub page</a> (signed in), choose an expiration (for example 1 year), and press <b>Generate token</b>. Only the <b>gist</b> box should be ticked.</li><li>Copy the token, paste it below and press Connect. You can use the same token on every device.</li></ol>
+      <input id="gs_tok" type="password" autocomplete="off" placeholder="Paste GitHub token (ghp_…)" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:16px">
+      <div class="actions" style="justify-content:flex-start;margin-top:6px"><button class="btn small" data-act="gson">Connect</button></div>`}
+    ${GS.msg?`<p class="muted" style="font-size:13px;margin-top:6px">${esc(GS.msg)}</p>`:""}
+  </div>`;
+}
+window.addEventListener("online", ()=>gsSoon(500));
+window.addEventListener("offline", ()=>{ if(GS.cfg){ GS.state="offline"; refreshSyncUI(); } });
+document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState==="visible") gsSoon(300); else if(GS.timer){ clearTimeout(GS.timer); gsSync(); } });
+
 // ---------- backup code (export / import) ----------
 function exportCode(){ try{ return btoa(unescape(encodeURIComponent(JSON.stringify({v:2,t:Date.now(),s:store})))); }catch(e){ return ""; } }
 function importCode(code){
@@ -11230,7 +11322,7 @@ function progBar(m, done, total){
 
 function syncEngines(){ const b=isBasic(); C=b?C_B:C_M; L=b?L_B:L_M; CYS=b?Y_B:Y_M; F=b?F_B:F_M; }
 let _rk="";
-function render(){ renderView(); const k=scrKey(); if(k!==_rk){ _rk=k; const m=$("main"); if(m){ m.classList.remove("enter"); (window.requestAnimationFrame||setTimeout)(()=>m.classList.add("enter")); } } }
+function render(){ try{ document.documentElement.dataset.view=view; }catch(e){} renderView(); const k=scrKey(); if(k!==_rk){ _rk=k; const m=$("main"); if(m){ m.classList.remove("enter"); (window.requestAnimationFrame||setTimeout)(()=>m.classList.add("enter")); } } }
 function renderView(){
   syncEngines();
   if(view==="home") renderHome();
@@ -11267,10 +11359,11 @@ function renderHome(){
     <div class="modes">${dailyCard()}${cards}${mockCard()}</div>
     <button class="mode" data-act="go" data-v="review" style="margin-top:2px"><div class="ic" style="background:var(--bad-bg);color:var(--ink)">❌</div><div class="t"><b>Review mistakes</b><span>${(()=>{ const n=mistakesTotal(); return n?`${n} item${n>1?"s":""} answered wrong, waiting to be corrected`:"No pending mistakes"; })()}</span></div><div class="pct">${mistakesTotal()}</div></button>
     <button class="mode" data-act="go" data-v="stats" style="margin-top:2px"><div class="ic" style="background:var(--soft);color:var(--ink)">📊</div><div class="t"><b>Statistics</b><span>Accuracy by category, weak areas, streaks</span></div></button>
-    <div class="row space" style="margin-top:6px"><span class="muted">${BASIC_TOTAL()} basic items · ${QUIZ.length} quiz questions · ${DRUGS.length} drug questions · ${CYTO.length} cytology fields · ${CASES.length} cases · ${LAB.length} lab panels · ${FLUIDS.length} fluid exercises</span></div>
+    <p class="muted kbhint" style="font-size:13px;margin:0">Keyboard: A-D (or 1-4) to answer, Enter or → for the next question.</p><div class="row space" style="margin-top:6px"><span class="muted">${BASIC_TOTAL()} basic items · ${QUIZ.length} quiz questions · ${DRUGS.length} drug questions · ${CYTO.length} cytology fields · ${CASES.length} cases · ${LAB.length} lab panels · ${FLUIDS.length} fluid exercises</span></div>
     <div class="card" style="padding:12px 16px">
       <div class="row space"><span id="syncstate" class="muted" style="font-size:13.5px">${syncLabel()}</span>
-        <div class="row"><button class="btn ghost small" data-act="backup">${backupOpen?"Close backup":"Backup / transfer"}</button><button class="btn ghost small" data-act="reset">${resetArmed?"Tap again to confirm reset":"Reset progress"}</button></div></div>
+        <div class="row">${gsAvail()?`<button class="btn ghost small" data-act="gspanel">${GS.open?"Close sync":"Sync devices"}</button>`:""}<button class="btn ghost small" data-act="backup">${backupOpen?"Close backup":"Backup / transfer"}</button><button class="btn ghost small" data-act="reset">${resetArmed?"Tap again to confirm reset":"Reset progress"}</button></div></div>
+      ${GS.open?gsPanel():""}
       ${backupOpen?`<div style="margin-top:10px">
         <p class="muted" style="font-size:13.5px">Progress is kept per question (not by position), so it survives app updates. To move it to another device or keep a backup, copy the code below and paste it there with <b>Import</b>.</p>
         <textarea id="bk_out" readonly rows="3" style="width:100%;font:12px monospace;padding:8px;border:1px solid var(--line);border-radius:10px">${esc(exportCode())}</textarea>
@@ -11806,6 +11899,10 @@ function act(a, d){
     case "copen": { view="cases"; syncEngines(); const i=+d.i; casesStart(false,[i].concat(range(cData().length).filter(x=>x!==i))); T.ret=null; go("cases"); render(); break; }
     case "mexams": MCQ[d.m].st.screen="menu"; go(d.m); break;
     case "backup": backupOpen=!backupOpen; backupMsg=""; render(); break;
+    case "gspanel": GS.open=!GS.open; GS.msg=""; render(); break;
+    case "gson": { const v=($("gs_tok")||{}).value||""; if(v.trim().length<20){ GS.msg="Paste the full token first."; render(); } else gsConnect(v); } break;
+    case "gsnow": GS.msg=""; gsSync().then(render); break;
+    case "gsoff": gsDisconnect(); break;
     case "bkcopy": { const code=exportCode(); const ta=$("bk_out"); const done=()=>{ backupMsg="Copied."; render(); };
         try{ navigator.clipboard.writeText(code).then(done, ()=>{ ta&&ta.select(); backupMsg="Select the code and copy it manually."; render(); }); }
         catch(e){ ta&&ta.select(); backupMsg="Select the code and copy it manually."; render(); } } break;
@@ -11863,8 +11960,17 @@ document.addEventListener("click", e=>{
   act(el.dataset.act, el.dataset);
 });
 
+
+// ---------- keyboard shortcuts (computer) ----------
+document.addEventListener("keydown", e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey) return; const t=e.target; if(t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||t.isContentEditable)) return;
+  const main=$("main"); if(!main) return; const k=e.key.toLowerCase();
+  let i="abcdef".indexOf(k); if(i<0) i="123456".indexOf(k);
+  if(i>=0){ const opts=[...main.querySelectorAll("button.opt:not([disabled])")]; if(opts[i]){ e.preventDefault(); opts[i].click(); } return; }
+  if(k==="enter"||k==="arrowright"){ const nx=[...main.querySelectorAll("button[data-act$='next']")].filter(b=>b.offsetParent!==null&&!b.disabled)[0]; if(nx){ e.preventDefault(); nx.click(); } }
+});
 // ---------- boot ----------
-(function(){ try{ const l=document.createElement("link"); l.rel="icon"; l.type="image/png"; l.href=FAVICON; document.head.appendChild(l); }catch(e){} const h=location.hash.replace("#",""); if(MODES[h]||h==="stats"||h==="review"||h==="theory"||TOOL_VIEWS.indexOf(h)>=0) view=h; render(); cloudInit(); })();
+(function(){ try{ const l=document.createElement("link"); l.rel="icon"; l.type="image/png"; l.href=FAVICON; document.head.appendChild(l); }catch(e){} const h=location.hash.replace("#",""); if(MODES[h]||h==="stats"||h==="review"||h==="theory"||TOOL_VIEWS.indexOf(h)>=0) view=h; render(); cloudInit(); gsSoon(200); })();
 </script>
 <script>
 if("serviceWorker" in navigator){ window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").then(reg=>{
