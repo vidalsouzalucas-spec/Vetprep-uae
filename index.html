@@ -11095,17 +11095,25 @@ function searchBind(id,set,rerender){ const inp=$(id); if(!inp) return; inp.addE
 const _kidx={};
 function kidx(m){ if(_kidx[m]) return _kidx[m]; const o={}; MCQ[m].data().forEach((q,i)=>{ o[mkey(q)]=i; }); return _kidx[m]=o; }
 // wrong -> back tomorrow; right when due -> next interval (1, 3, 7 days), then it leaves the review list
-function srsMark(m,k,ok){ if(SRS_MODES.indexOf(m)<0) return; const X=xs(), id=m+":"+k, e=X.srs[id], t=dayNum(), now=Date.now();
-  if(!ok){ X.srs[id]={d:t+1,s:0,u:now}; return; }
-  if(!e||e.s<0||e.d>t) return;
-  const s=e.s+1; X.srs[id]= s>=SRS_INT.length? {d:0,s:-1,u:now} : {d:t+SRS_INT[s],s:s,u:now}; }
+function srsMark(m,k,ok){ if(SRS_MODES.indexOf(m)<0) return; const X=xs(), id=m+":"+k, t=dayNum(), now=Date.now();
+  // the same question in a linked mode shares the review state: start from the most recently updated entry
+  const others=linkedModes(m,k).filter(o=>SRS_MODES.indexOf(o)>=0); let e=X.srs[id];
+  others.forEach(o=>{ const x=X.srs[o+":"+k]; if(x && (!e || (x.u||0)>(e.u||0))) e=x; });
+  let n;
+  if(!ok) n={d:t+1,s:0,u:now};
+  else if(!e||e.s<0||e.d>t) n=e||null;
+  else { const s=e.s+1; n= s>=SRS_INT.length? {d:0,s:-1,u:now} : {d:t+SRS_INT[s],s:s,u:now}; }
+  if(!n) return; X.srs[id]=n; others.forEach(o=>{ X.srs[o+":"+k]=n; }); }
 // mistakes made before this feature existed enter the review list as due today
 function srsSeed(){ const X=xs(), t=dayNum(); let ch=false; SRS_MODES.forEach(m=>{ const w=store[m].wrong||{}, ix=kidx(m); Object.keys(w).forEach(k=>{ const id=m+":"+k; if(w[k] && ix[k]!==undefined && !X.srs[id]){ X.srs[id]={d:t,s:0,u:0}; ch=true; } }); }); return ch; }
-function srsList(){ const X=xs(), out=[]; Object.keys(X.srs).forEach(id=>{ const e=X.srs[id]; if(!e||e.s<0) return; const p=id.indexOf(":"), m=id.slice(0,p), k=id.slice(p+1); if(!MCQ[m]) return; const i=kidx(m)[k]; if(i===undefined) return; out.push({m:m,i:i,d:e.d,s:e.s}); }); return out; }
+function srsList(){ const X=xs(), out=[]; Object.keys(X.srs).forEach(id=>{ const e=X.srs[id]; if(!e||e.s<0) return; const p=id.indexOf(":"), m=id.slice(0,p), k=id.slice(p+1); if(!MCQ[m]) return; const i=kidx(m)[k]; if(i===undefined) return; out.push({m:m,i:i,d:e.d,s:e.s,k:k}); });
+  // one review card per question, even when it lives in several linked modes (Quiz Mode is preferred)
+  const pref={quiz:0,drugs:1,anat:2,basic:3}, best={}; out.forEach(x=>{ const linked=linkedModes(x.m,x.k).length>0; const id=linked? "L:"+x.k : x.m+":"+x.k; const b=best[id]; if(!b || x.d<b.d || (x.d===b.d && pref[x.m]<pref[b.m])) best[id]=x; });
+  return Object.keys(best).map(id=>best[id]); }
 function srsDue(){ const t=dayNum(); return srsList().filter(x=>x.d<=t).sort((a,b)=>a.d-b.d); }
 const DY={items:[],pos:0,perm:null,answered:null,ok:0,n:0,active:false};
-function dailyNew(n,have){ if(n<=0) return []; const taken=new Set(have.map(x=>x.m+":"+x.i)), fresh=[], seen=[];
-  ["quiz","drugs","anat"].forEach(m=>{ MCQ[m].data().forEach((q,i)=>{ if(taken.has(m+":"+i)) return; (store[m].done[mkey(q)]?seen:fresh).push({m:m,i:i}); }); });
+function dailyNew(n,have){ if(n<=0) return []; const taken=new Set(have.map(x=>x.m+":"+x.i)), fresh=[], seen=[], keys=new Set(have.map(x=>mkey(MCQ[x.m].data()[x.i])));
+  ["quiz","drugs","anat"].forEach(m=>{ MCQ[m].data().forEach((q,i)=>{ const k=mkey(q); if(taken.has(m+":"+i)||keys.has(k)) return; keys.add(k); (store[m].done[k]?seen:fresh).push({m:m,i:i}); }); });
   let pick=shuffle(fresh).slice(0,n); if(pick.length<n) pick=pick.concat(shuffle(seen).slice(0,n-pick.length)); return pick; }
 function dailyStart(){ if(srsSeed()) save(); const due=srsDue().slice(0,DAILY_N).map(x=>({m:x.m,i:x.i,due:true}));
   const fill=dailyNew(DAILY_N-due.length,due).map(x=>({m:x.m,i:x.i,due:false}));
@@ -11410,6 +11418,30 @@ function fmt(n, d=1){ return (Math.round(n*Math.pow(10,d))/Math.pow(10,d)).toLoc
 function hash(str){ let h=5381; for(let i=0;i<str.length;i++){ h=((h<<5)+h+str.charCodeAt(i))|0; } return (h>>>0).toString(36); }
 const mkey = (q) => "h"+hash(q.q);
 const ckey = (c) => "c"+c.id, lkey = (l) => "l"+l.id, fkey = (f) => "f"+f.id, ykey = (y) => "y"+y.id;
+// ---- linked progress: an item that exists in Basic Initial Knowledge and in a main mode (or in Quiz Mode and the Drug Formulary) shares one state ----
+// linkIndex(): key -> the modes whose bank contains that item. linkStores(): the most recent answer (by timestamp) is copied to the other modes.
+let _lk=null;
+function linkIndex(){ if(_lk) return _lk; const g={}, seen={};
+  ["quiz","drugs","basic"].forEach(m=>{ const done={}; MCQ[m].data().forEach(q=>{ const k=mkey(q); if(done[k]) return; done[k]=true; (seen[k]=seen[k]||[]).push(m); }); });
+  Object.keys(seen).forEach(k=>{ if(seen[k].length>1) g[k]=seen[k]; });
+  [["cases","bcases",CASES,BASIC_CASES,ckey],["lab","blab",LAB,BASIC_LAB,lkey],["fluids","bfluids",FLUIDS,BASIC_FLUIDS,fkey],["cyto","bcyto",CYTO,BASIC_CYTO,ykey]].forEach(([a,b,A,B,kf])=>{
+    const sb={}; B.forEach(x=>{ sb[kf(x)]=true; }); A.forEach(x=>{ const k=kf(x); if(sb[k]) g[k]=[a,b]; }); });
+  return _lk=g; }
+function linkedModes(m,k){ try{ const ms=linkIndex()[k]; return ms&&ms.indexOf(m)>=0? ms.filter(x=>x!==m) : []; }catch(e){ return []; } }
+function stamp(st,k){ if(!st.at) st.at={}; st.at[k]=Math.floor(Date.now()/1000); }
+function linkStores(){ let ch=false; let g; try{ g=linkIndex(); }catch(e){ return false; }
+  Object.keys(g).forEach(k=>{ const ms=g[k]; let src=null, t=-1;
+    ms.forEach(m=>{ const st=store[m]; if(!st||!st.done||!st.done[k]) return; const a=(st.at&&st.at[k])||0; if(a>t){ t=a; src=m; } });
+    if(src===null) return; const S=store[src];
+    ms.forEach(m=>{ if(m===src) return; const st=store[m]; if(!st||!st.done) return;
+      if(st.done[k]){ const a=(st.at&&st.at[k])||0; if(t===0||a===t) return; }   // both answered before timestamps existed, or already in step
+      st.done[k]=true;
+      if(st.correct!==undefined && S.correct) st.correct[k]=!!S.correct[k];
+      if(st.wrong!==undefined){ if(S.wrong&&S.wrong[k]) st.wrong[k]=S.wrong[k]; else delete st.wrong[k]; }
+      if(st.result!==undefined && S.result && S.result[k]) st.result[k]=S.result[k];
+      if(t>0){ if(!st.at) st.at={}; st.at[k]=t; }
+      ch=true; }); });
+  return ch; }
 function migrateStore(st){
   // old versions keyed progress by array index; convert to stable ids
   const mig = (obj, arr, keyFn, pfx) => { if(!obj) return; Object.keys(obj).forEach(k=>{ const mm = k.match(new RegExp("^"+pfx+"(\\d+)$")); if(mm){ const i=+mm[1]; if(arr[i]) obj[keyFn(arr[i])] = obj[k]; delete obj[k]; } }); };
@@ -11432,6 +11464,7 @@ function mergeStore(a, b){
     const ta=(a[m]||{}).at||{}, tb=(b[m]||{}).at||{}; const keys=Object.keys(ta).concat(Object.keys(tb));
     if(keys.length){ out[m].at={}; keys.forEach(k=>{ const useA=(ta[k]||0)>=(tb[k]||0); const w=useA?(a[m]||{}):(b[m]||{}); out[m].at[k]=Math.max(ta[k]||0,tb[k]||0);
       if(out[m].correct!==undefined && w.correct && k in w.correct) out[m].correct[k]=w.correct[k];
+      if(out[m].result!==undefined && w.result && w.result[k]) out[m].result[k]=w.result[k];
       if(out[m].wrong!==undefined){ if(w.wrong && w.wrong[k]) out[m].wrong[k]=w.wrong[k]; else delete out[m].wrong[k]; } }); }
   });
   return out;
@@ -11440,7 +11473,7 @@ function freshStore(){ return {quiz:{done:{},correct:{},wrong:{},best:0,exams:[]
   basic:{done:{},correct:{},wrong:{},best:0,exams:[]},bcases:{done:{},result:{}},blab:{done:{},result:{}},bfluids:{done:{},result:{}},bcyto:{done:{},correct:{},wrong:{}},theory:{done:{}},x:freshX()}; }
 let store = freshStore();
 function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s && s.quiz && s.cases && s.lab && s.fluids){ store=s; if(!store.drugs) store.drugs={done:{},correct:{},best:0,exams:[]}; ["quiz","drugs"].forEach(m=>{ if(!store[m].exams) store[m].exams=[]; }); ["cases","lab","fluids"].forEach(m=>{ if(!store[m].result) store[m].result={}; }); if(!store.cyto) store.cyto={done:{},correct:{}}; if(!store.basic) store.basic={done:{},correct:{},best:0,exams:[]}; if(!store.basic.exams) store.basic.exams=[]; ["bcases","blab","bfluids"].forEach(k=>{ if(!store[k]) store[k]={done:{},result:{}}; }); if(!store.bcyto) store.bcyto={done:{},correct:{}}; if(!store.anat) store.anat={done:{},correct:{},wrong:{},best:0,exams:[]}; if(!store.theory) store.theory={done:{}}; migrateStore(store); ["quiz","drugs","basic","anat","cyto","bcyto"].forEach(m=>{ if(!store[m].wrong){ store[m].wrong={}; Object.keys(store[m].done).forEach(k=>{ if(store[m].correct[k]===false) store[m].wrong[k]=1; }); } }); } }catch(e){} }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} cloudSave(); gsSoon(); }
+function save(){ linkStores(); try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} cloudSave(); gsSoon(); }
 load();
 
 const BASIC_CYTO = BASIC_CYTO_IDS.map(id=>CYTO.find(c=>c.id===id)).filter(Boolean);
@@ -11521,7 +11554,7 @@ async function cloudInit(){
     const snap = await SYNC.doc.get();
     const cloud = snap.exists? snap.data() : null;
     const before = JSON.stringify(store);
-    if(cloud && cloud.quiz){ store = migrateStore(mergeStore(store, cloud)); try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+    if(cloud && cloud.quiz){ store = migrateStore(mergeStore(store, cloud)); linkStores(); try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
     SYNC.state="cloud"; SYNC.lastJson = cloud? JSON.stringify(cloud) : "";
     if(JSON.stringify(store)!==SYNC.lastJson) cloudSave(); // push merged/local progress up
     if(JSON.stringify(store)!==before) render(); else refreshSyncUI();
@@ -11583,6 +11616,7 @@ async function gsSync(){
     let remote=null; try{ remote = txt? JSON.parse(txt) : null; }catch(e){}
     const before = canon(store);
     if(remote && remote.quiz){ store = migrateStore(mergeStore(store, remote)); }
+    linkStores();
     const now = canon(store); store = JSON.parse(now);
     if(now!==before){ try{ localStorage.setItem(KEY, now); }catch(e){} if(["home","stats","review"].indexOf(view)>=0) render(); }
     if(now!==txt){ await gsReq("/gists/"+GS.cfg.id,{method:"PATCH", body:JSON.stringify({files:{[GS.FILE]:{content:now}}})}); }
@@ -12255,7 +12289,7 @@ function act(a, d){
     case "cstep": C.step=+d.s; window.scrollTo(0,0); render(); break;
     case "ctoggle": C.sel[d.i]=!C.sel[d.i]; render(); break;
     case "cddx": if(C.ddx===null){ C.ddx=+d.k; render(); } break;
-    case "ctx": if(C.tx===null){ C.tx=+d.k; const cs=cData()[C.order[C.pos]]; const k=ckey(cs); cSt().done[k]=true;
+    case "ctx": if(C.tx===null){ C.tx=+d.k; const cs=cData()[C.order[C.pos]]; const k=ckey(cs); cSt().done[k]=true; stamp(cSt(),k);
         cSt().result[k]={d:cs.ddx.options[C.ddxPerm[C.ddx]].ok, t:cs.tx.options[C.txPerm[C.tx]].ok, k:cs.tests.filter((t,i)=>t.key&&C.sel[i]).length, kt:cs.tests.filter(t=>t.key).length}; save(); render(); } break;
     case "cnext": C.pos++; caseReset(); window.scrollTo(0,0); render(); break;
     case "cagain": caseReset(); window.scrollTo(0,0); render(); break;
@@ -12269,14 +12303,14 @@ function act(a, d){
     case "cyrestart": cytoStart(false); CYS.pos=0; render(); break;
     case "lflag": if(!L.submitted){ L.flags[d.i]=!L.flags[d.i]; render(); } break;
     case "lchoose": if(!L.submitted){ L.choice=+d.k; render(); } break;
-    case "lsubmit": if(L.choice!==null){ L.submitted=true; const ex=lData()[L.order[L.pos]]; const k=lkey(ex); lSt().done[k]=true;
+    case "lsubmit": if(L.choice!==null){ L.submitted=true; const ex=lData()[L.order[L.pos]]; const k=lkey(ex); lSt().done[k]=true; stamp(lSt(),k);
         lSt().result[k]={ok:ex.options[L.perm[L.choice]].ok, hit:ex.panel.filter((r,i)=>rowAbn(r)&&L.flags[i]).length, n:ex.panel.filter(r=>rowAbn(r)).length}; save(); render(); } break;
     case "lnext": L.pos++; labReset(); window.scrollTo(0,0); render(); break;
     case "lshuffle": labStart(true); L.pos=0; render(); break;
     case "lrestart": labStart(false); L.pos=0; render(); break;
     // fluids
     case "ftab": F.tab=d.t; render(); break;
-    case "fcheck": if(F.input!=="" && !F.checked){ F.checked=true; const ex=fData()[F.order[F.pos]]; const k=fkey(ex); fSt().done[k]=true;
+    case "fcheck": if(F.input!=="" && !F.checked){ F.checked=true; const ex=fData()[F.order[F.pos]]; const k=fkey(ex); fSt().done[k]=true; stamp(fSt(),k);
         const v=parseFloat(F.input); const tol=Math.max(Math.abs(ex.answer*ex.tol),0.5); fSt().result[k]={ok:!isNaN(v)&&Math.abs(v-ex.answer)<=tol}; save(); render(); } break;
     case "freveal": F.revealed=true; render(); break;
     case "fnext": F.pos++; fluidReset(); window.scrollTo(0,0); render(); break;
@@ -12300,7 +12334,7 @@ document.addEventListener("keydown", e=>{
   if(k==="enter"||k==="arrowright"){ const nx=[...main.querySelectorAll("button[data-act$='next']")].filter(b=>b.offsetParent!==null&&!b.disabled)[0]; if(nx){ e.preventDefault(); nx.click(); } }
 });
 // ---------- boot ----------
-(function(){ try{ const l=document.createElement("link"); l.rel="icon"; l.type="image/png"; l.href=FAVICON; document.head.appendChild(l); }catch(e){} const h=location.hash.replace("#",""); if(MODES[h]||h==="stats"||h==="review"||h==="theory"||TOOL_VIEWS.indexOf(h)>=0) view=h; render(); cloudInit(); gsSoon(200); })();
+(function(){ try{ const l=document.createElement("link"); l.rel="icon"; l.type="image/png"; l.href=FAVICON; document.head.appendChild(l); }catch(e){} const h=location.hash.replace("#",""); if(MODES[h]||h==="stats"||h==="review"||h==="theory"||TOOL_VIEWS.indexOf(h)>=0) view=h; if(linkStores()){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} } render(); cloudInit(); gsSoon(200); })();
 </script>
 <script>
 if("serviceWorker" in navigator){ window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").then(reg=>{
