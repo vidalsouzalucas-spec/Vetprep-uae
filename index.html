@@ -217,6 +217,7 @@ textarea{background:var(--soft2);color:var(--ink)}
 .tsec{display:flex;flex-direction:column;align-items:center;line-height:1.1}
 .tsec small{font-size:9.5px;font-weight:600;letter-spacing:.02em;opacity:.8}
 .basictabs button small{font-weight:600;opacity:.7;font-size:11px}
+.pooltog{display:flex;align-items:center;gap:6px;margin:0 0 10px;font-size:13px}.pooltog button{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-weight:600;font-size:13px;white-space:nowrap}.pooltog button.on{background:var(--teal);border-color:var(--teal);color:#fff}.pooltog button small{font-weight:600;opacity:.75;font-size:11px;margin-left:3px}
 .c-tools{--mc:var(--blue);--mcb:var(--blue-bg)}
 .btn.icon.star{font-size:19px;line-height:1;color:var(--muted);flex:0 0 auto}
 .btn.icon.star.on{color:#e0a100;border-color:#e0a100}
@@ -11812,6 +11813,8 @@ const ttl=(t)=>isBasic()?"Basic · "+t:t;
 const pm=(m)=>isBasic()?"basic":m;
 // ---------- theme ----------
 const THEME_KEY="vetprep_theme"; let themePref="auto";
+const POOL_KEY="vetprep_pool"; let poolNew=false; try{ poolNew = localStorage.getItem(POOL_KEY)==="new"; }catch(e){}
+function setPool(v){ poolNew = v==="new"; try{ localStorage.setItem(POOL_KEY, poolNew?"new":"all"); }catch(e){} }
 try{ themePref = localStorage.getItem(THEME_KEY)||"auto"; }catch(e){}
 const mq = window.matchMedia? window.matchMedia("(prefers-color-scheme: dark)") : null;
 function applyTheme(){ const dark = themePref==="dark" || (themePref==="auto" && mq && mq.matches); document.documentElement.setAttribute("data-theme", dark?"dark":"light"); const tcm=document.querySelector('meta[name="theme-color"]'); if(tcm) tcm.setAttribute("content", dark?"#111a1d":"#f4f7f6"); }
@@ -12017,11 +12020,15 @@ function renderHome(){
 }
 
 // ---------- MCQ ENGINE (Quiz + Drug Formulary) ----------
-function mcqList(m){ const M=MCQ[m], D=M.data(); if(M.st.cat==="__mistakes") return mistakes(m); if(M.st.cat==="__saved") return savedQs(m); if(M.st.cat==="__topic") return topicQs(m, T.quiz?T.quiz.ids:[]); return range(D.length).filter(i=>M.st.cat==="All"||D[i].c===M.st.cat); }
+function mcqListAll(m){ const M=MCQ[m], D=M.data(); if(M.st.cat==="__mistakes") return mistakes(m); if(M.st.cat==="__saved") return savedQs(m); if(M.st.cat==="__topic") return topicQs(m, T.quiz?T.quiz.ids:[]); return range(D.length).filter(i=>M.st.cat==="All"||D[i].c===M.st.cat); }
+// "Only new" applies to the ordinary blocks, not to mistakes, saved questions or topic quizzes
+function poolOn(m){ return poolNew && MCQ[m].st.cat.slice(0,2)!=="__"; }
+function isNew(m,i){ return !store[m].done[mkey(MCQ[m].data()[i])]; }
+function mcqList(m){ const l=mcqListAll(m); return poolOn(m)? l.filter(i=>isNew(m,i)) : l; }
 function mcqStart(m, shuf){
   const M=MCQ[m], D=M.data(); M.st.screen="play"; let list = mcqList(m);
   if(shuf) list = shuffle(list);
-  M.st.order = list; M.st.perm=null; M.st.answered=null;
+  M.st.order = list; M.st.perm=null; M.st.answered=null; M.st.onlyNew=poolOn(m);
   const firstNew = shuf? 0 : list.findIndex(i=>!store[m].done[mkey(D[i])]);
   M.st.pos = firstNew<0? 0 : firstNew;
 }
@@ -12033,11 +12040,13 @@ function renderMcqMenu(m){
   topbar(M.title); progBar(m, Object.keys(store[m].done).length, D.length);
   const cats = catOrder(D);
   const catCards = cats.map(c=>{ const idx=range(D.length).filter(i=>D[i].c===c); const done=idx.filter(i=>store[m].done[mkey(D[i])]); const ok=done.filter(i=>store[m].correct[mkey(D[i])]).length; const p=Math.round(done.length/idx.length*100);
-    return `<button class="mode ${M.cls}" data-act="mcat" data-m="${m}" data-c="${esc(c)}"><div class="t"><b style="font-size:15.5px">${esc(c)}</b><span>${done.length}/${idx.length} answered${done.length?` · ${Math.round(ok/done.length*100)}% correct`:""}</span><div class="prog"><div style="width:${p}%"></div></div></div><div class="pct">${p}%</div></button>`; }).join("");
+    return `<button class="mode ${M.cls}" data-act="mcat" data-m="${m}" data-c="${esc(c)}"><div class="t"><b style="font-size:15.5px">${esc(c)}</b><span>${done.length}/${idx.length} answered${done.length?` · ${Math.round(ok/done.length*100)}% correct`:""}${poolNew?` · ${idx.length-done.length} new`:""}</span><div class="prog"><div style="width:${p}%"></div></div></div><div class="pct">${p}%</div></button>`; }).join("");
   const last = (store[m].exams||[]).slice(-1)[0];
+  const nNew = range(D.length).filter(i=>isNew(m,i)).length;
   $("main").innerHTML = `
-    <button class="mode ${M.cls}" data-act="mrandom" data-m="${m}"><div class="ic">🎲</div><div class="t"><b>Random mix</b><span>Questions from every block in random order, with instant feedback</span></div><div class="pct">${D.length}</div></button>
-    <div class="mode ${M.cls}" style="display:block;cursor:default"><div class="row" style="gap:14px"><div class="ic">🎓</div><div class="t"><b>Exam</b><span>Random questions, no feedback until the end, timed. ${last?`Last: ${last.ok}/${last.n} (${Math.round(last.ok/last.n*100)}%) in ${fmtTime(last.sec)}`:"Choose the number of questions:"}</span></div></div>
+    <div class="pooltog"><span class="muted">Questions:</span><button class="${poolNew?"":"on"}" data-act="mpool" data-v="all">All <small>${D.length}</small></button><button class="${poolNew?"on":""}" data-act="mpool" data-v="new">Only new <small>${nNew}</small></button></div>
+    <button class="mode ${M.cls}" data-act="mrandom" data-m="${m}"><div class="ic">🎲</div><div class="t"><b>Random mix</b><span>${poolNew?"Only questions you have not answered yet, in random order, with instant feedback":"Questions from every block in random order, with instant feedback"}</span></div><div class="pct">${poolNew?nNew:D.length}</div></button>
+    <div class="mode ${M.cls}" style="display:block;cursor:default"><div class="row" style="gap:14px"><div class="ic">🎓</div><div class="t"><b>Exam</b><span>Random questions, no feedback until the end, timed.${poolNew?" New questions first.":""} ${last?`Last: ${last.ok}/${last.n} (${Math.round(last.ok/last.n*100)}%) in ${fmtTime(last.sec)}`:"Choose the number of questions:"}</span></div></div>
       <div class="row" style="margin-top:10px;gap:8px">${[10,20,30,40,50].map(n=>`<button class="btn small" style="background:${M.color}" data-act="mexam" data-m="${m}" data-n="${n}">${n}</button>`).join("")}</div></div>
     ${(()=>{ const n=mistakes(m).length; return `<button class="mode ${M.cls}" data-act="rev" data-m="${m}"><div class="ic">❌</div><div class="t"><b>Review mistakes</b><span>${n?`${n} question${n>1?"s":""} answered wrong and not yet corrected`:"Nothing to review - no pending mistakes"}</span></div><div class="pct">${n}</div></button>`; })()}
     <div class="section-label" style="margin-top:6px">Practice by block</div>
@@ -12046,7 +12055,8 @@ function renderMcqMenu(m){
 }
 function examStart(m,n){
   const M=MCQ[m], S=M.st, D=M.data();
-  S.exam = {qs: shuffle(range(D.length)).slice(0,n), i:0, ans:[], perms:[], start:Date.now(), end:null};
+  const all=shuffle(range(D.length)); const pick = poolNew? all.filter(i=>isNew(m,i)).concat(all.filter(i=>!isNew(m,i))).slice(0,n) : all.slice(0,n);
+  S.exam = {qs: poolNew? shuffle(pick) : pick, i:0, ans:[], perms:[], start:Date.now(), end:null};
   S.exam.perms = S.exam.qs.map(()=>shuffle(range(4)));
   S.screen="exam"; window.scrollTo(0,0); render();
 }
@@ -12091,15 +12101,16 @@ function renderMcq(m){
   if(S.screen==="menu"){ stopExamTimer(); renderMcqMenu(m); return; }
   if(S.screen==="exam" && S.exam){ renderExam(m); return; }
   stopExamTimer();
-  if(!S.order.length) mcqStart(m,false);
+  if(!S.order.length && !S.onlyNew) mcqStart(m,false);
   const cats = ["All", ...catOrder(D), "__mistakes"]; if(S.cat==="__topic") cats.push("__topic"); if(S.cat==="__saved") cats.push("__saved");
   topbar(M.title, `<button class="btn icon" data-act="mshuffle" data-m="${m}" title="Shuffle">🔀</button>`);
   $("topbar").querySelector('[data-act="home"]').setAttribute("data-act","mmenu"); $("topbar").querySelector('[data-act="mmenu"]').setAttribute("data-m",m);
-  const list = mcqList(m);
+  const list = mcqListAll(m);
   progBar(m, list.filter(i=>store[m].done[mkey(D[i])]).length, list.length);
+  if(S.onlyNew && !S.order.length){ $("main").innerHTML = `<div class="card done-banner"><div class="big">✅</div><h2>No new questions left here</h2><p class="muted">You have already answered every question of ${S.cat==="All"?"this mode":"the block "+esc(S.cat)}. Switch to all questions to repeat them, or review your mistakes.</p><div class="actions" style="justify-content:center"><button class="btn" style="background:${M.color}" data-act="mpool" data-v="all" data-m="${m}" data-go="1">Show all questions</button><button class="btn ghost" data-act="mmenu" data-m="${m}">Blocks</button></div></div>`; return; }
   if(S.cat==="__mistakes" && !S.order.length){ $("main").innerHTML = `<div class="card done-banner"><div class="big">🎉</div><h2>No mistakes to review</h2><p class="muted">Every question you got wrong has since been answered correctly.</p><div class="actions" style="justify-content:center"><button class="btn ghost" data-act="mmenu" data-m="${m}">Blocks</button></div></div>`; return; }
   if(S.pos >= S.order.length){
-    $("main").innerHTML = `<div class="card done-banner"><div class="big">🎉</div><h2>${S.cat==="__mistakes"?"Mistakes reviewed":S.cat==="__topic"?"Topic quiz complete":S.cat==="__saved"?"Saved questions complete":"Set complete"}</h2><p class="muted">Session: ${S.sessC}/${S.sessA} correct. Best streak: ${store[m].best}.</p>
+    $("main").innerHTML = `<div class="card done-banner"><div class="big">🎉</div><h2>${S.cat==="__mistakes"?"Mistakes reviewed":S.cat==="__topic"?"Topic quiz complete":S.cat==="__saved"?"Saved questions complete":S.onlyNew?"New questions complete":"Set complete"}</h2><p class="muted">Session: ${S.sessC}/${S.sessA} correct. Best streak: ${store[m].best}.</p>
       <div class="actions" style="justify-content:center"><button class="btn" style="background:${M.color}" data-act="mshuffle" data-m="${m}">Shuffle &amp; repeat</button><button class="btn ghost" data-act="mrestart" data-m="${m}">Restart in order</button>${S.cat==="__topic"?`<button class="btn ghost" data-act="tquizback">📖 Back to the theory</button>`:""}<button class="btn ghost" data-act="mmenu" data-m="${m}">Blocks</button></div></div>`;
     return;
   }
@@ -12120,7 +12131,7 @@ function renderMcq(m){
     <div class="row space"><select class="sel" id="mcat">${cats.map(c=>`<option value="${esc(c)}" ${c===S.cat?"selected":""}>${c==="__mistakes"?"❌ Mistakes ("+mistakes(m).length+")":c==="__topic"?"📖 "+esc(T.quiz?T.quiz.label:"Topic")+" ("+S.order.length+")":c==="__saved"?"⭐ Saved ("+S.order.length+")":esc(c)}</option>`).join("")}</select>
       <div class="stats"><span>Score <b>${S.sessC}/${S.sessA}</b></span><span>Streak <b>${S.streak}</b> 🔥</span><span>Best <b>${store[m].best}</b></span></div></div>
     <div class="card ${M.cls}">
-      <div class="row space" style="margin-bottom:8px"><span class="chip mode-chip">${esc(q.c)}</span><span class="row" style="gap:8px"><span class="muted">Question ${S.pos+1} of ${S.order.length}${store[m].done[mkey(q)]?" · seen":""}</span>${starBtn("q:"+m+":"+mkey(q))}</span></div>
+      <div class="row space" style="margin-bottom:8px"><span class="chip mode-chip">${esc(q.c)}</span><span class="row" style="gap:8px"><span class="muted">${S.onlyNew?"New · ":""}Question ${S.pos+1} of ${S.order.length}${store[m].done[mkey(q)]&&S.answered===null?" · seen":""}</span>${starBtn("q:"+m+":"+mkey(q))}</span></div>
       <h3 style="font-size:17px;line-height:1.45">${esc(q.q)}</h3>${figHtml(q,S.answered!==null)}
       ${opts}${fb}
     </div>${S.cat==="__topic"?`<div class="actions" style="justify-content:center"><button class="btn ghost small" data-act="tquizback">📖 Back to the theory${T.quiz?": "+esc(T.quiz.label):""}</button></div>`:""}`;
@@ -12556,6 +12567,7 @@ function act(a, d){
     case "mmenu": MCQ[d.m].st.screen="menu"; MCQ[d.m].st.exam=null; window.scrollTo(0,0); render(); break;
     case "zoom": { const o=document.createElement("div"); o.className="zoomov"; o.innerHTML=`<img src="${QIMG[d.img]}" alt="">`; const zi=o.firstChild; const wide=()=>{ if(zi.naturalWidth>1.8*zi.naturalHeight && window.innerHeight>window.innerWidth) o.classList.add("wide"); }; if(zi.complete&&zi.naturalWidth) wide(); else zi.addEventListener("load",wide); o.addEventListener("click",()=>o.remove()); document.body.appendChild(o); } break;
     case "mcat": MCQ[d.m].st.cat=d.c; mcqStart(d.m,false); window.scrollTo(0,0); render(); break;
+    case "mpool": setPool(d.v); if(d.go&&d.m){ mcqStart(d.m,false); window.scrollTo(0,0); } render(); break;
     case "mrandom": MCQ[d.m].st.cat="All"; mcqStart(d.m,true); window.scrollTo(0,0); render(); break;
     case "mall": MCQ[d.m].st.cat="All"; mcqStart(d.m,false); window.scrollTo(0,0); render(); break;
     case "mexam": examStart(d.m,+d.n); break;
