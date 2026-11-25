@@ -12046,7 +12046,7 @@ function renderMcqMenu(m){
   $("main").innerHTML = `
     <div class="pooltog"><span class="muted">Questions:</span><button class="${poolNew?"":"on"}" data-act="mpool" data-v="all">All <small>${D.length}</small></button><button class="${poolNew?"on":""}" data-act="mpool" data-v="new">Only new <small>${nNew}</small></button></div>
     <button class="mode ${M.cls}" data-act="mrandom" data-m="${m}"><div class="ic">🎲</div><div class="t"><b>Random mix</b><span>${poolNew?"Only questions you have not answered yet, in random order, with instant feedback":"Questions from every block in random order, with instant feedback"}</span></div><div class="pct">${poolNew?nNew:D.length}</div></button>
-    <div class="mode ${M.cls}" style="display:block;cursor:default"><div class="row" style="gap:14px"><div class="ic">🎓</div><div class="t"><b>Exam</b><span>Random questions, no feedback until the end, timed.${poolNew?" New questions first.":""} ${last?`Last: ${last.ok}/${last.n} (${Math.round(last.ok/last.n*100)}%) in ${fmtTime(last.sec)}`:"Choose the number of questions:"}</span></div></div>
+    <div class="mode ${M.cls}" style="display:block;cursor:default"><div class="row" style="gap:14px"><div class="ic">🎓</div><div class="t"><b>Exam</b><span>Random questions from the whole bank, answered or not, with no feedback until the end, timed. ${last?`Last: ${last.ok}/${last.n} (${Math.round(last.ok/last.n*100)}%) in ${fmtTime(last.sec)}`:"Choose the number of questions:"}</span></div></div>
       <div class="row" style="margin-top:10px;gap:8px">${[10,20,30,40,50].map(n=>`<button class="btn small" style="background:${M.color}" data-act="mexam" data-m="${m}" data-n="${n}">${n}</button>`).join("")}</div></div>
     ${(()=>{ const n=mistakes(m).length; return `<button class="mode ${M.cls}" data-act="rev" data-m="${m}"><div class="ic">❌</div><div class="t"><b>Review mistakes</b><span>${n?`${n} question${n>1?"s":""} answered wrong and not yet corrected`:"Nothing to review - no pending mistakes"}</span></div><div class="pct">${n}</div></button>`; })()}
     <div class="section-label" style="margin-top:6px">Practice by block</div>
@@ -12055,8 +12055,7 @@ function renderMcqMenu(m){
 }
 function examStart(m,n){
   const M=MCQ[m], S=M.st, D=M.data();
-  const all=shuffle(range(D.length)); const pick = poolNew? all.filter(i=>isNew(m,i)).concat(all.filter(i=>!isNew(m,i))).slice(0,n) : all.slice(0,n);
-  S.exam = {qs: poolNew? shuffle(pick) : pick, i:0, ans:[], perms:[], start:Date.now(), end:null};
+  S.exam = {qs: shuffle(range(D.length)).slice(0,n), i:0, ans:[], perms:[], start:Date.now(), end:null};
   S.exam.perms = S.exam.qs.map(()=>shuffle(range(4)));
   S.screen="exam"; window.scrollTo(0,0); render();
 }
