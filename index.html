@@ -10720,6 +10720,64 @@ const PHRASES=[
   ["He's limping / favouring a leg","Cojea"],
   ["Wormer / flea treatment","Antiparasitario interno / tratamiento antipulgas"]]}
 ];
+// ===== VACCINATION SCHEDULES (Tools) =====
+// visits: what is given at each age. w = age in weeks used to work out a date from the date of birth (plus = extra days); w null = no fixed date.
+// vaccines: one entry per vaccine with type, start, primary course and boosters. Values agree with the theory topic 'vacc-practice'.
+const VACC=[
+ {id:"dog",icon:"🐶",title:"Dog",
+  visits:[
+   {age:"8 weeks",range:"first visit, 6-8 weeks",w:8,items:[["Core (DHP)","1st dose: distemper, adenovirus and parvovirus"],["Leptospirosis","1st dose"]],tip:"Full examination, deworming and microchip. Intranasal kennel cough vaccine can be given from 3 weeks of age if the puppy is going to board."},
+   {age:"12 weeks",range:"3-4 weeks later",w:12,items:[["Core (DHP)","2nd dose"],["Leptospirosis","2nd dose, 3-4 weeks after the first"],["Rabies","one dose, never before 12 weeks"]],tip:"Leptospirosis may instead be given at 12 and 16 weeks."},
+   {age:"16 weeks",range:"3-4 weeks later",w:16,items:[["Core (DHP)","3rd dose: the last puppy dose is given at 16 weeks or older"]],tip:"Protection is reliable about one week after this dose. Contact with dogs of unknown status waits until then."},
+   {age:"6 months",range:"26 weeks or older",w:26,items:[["Core (DHP)","booster that closes the puppy course"],["Leishmania","from 6 months, only in dogs at risk and after a negative test"]],tip:"WSAVA 2024 brings this booster forward to 26 weeks. Many clinics and data sheets still give it at 12 months."},
+   {age:"15 months",range:"1 year after the 12-week visit",w:12,plus:365,items:[["Rabies","first booster"],["Leptospirosis","yearly booster"],["Kennel cough","if the dog boards, shows or goes to day care"]]},
+   {age:"Adult",range:"examination every year",w:null,items:[["Core (DHP)","every 3 years"],["Leptospirosis","every year"],["Rabies","every 1 to 3 years, by product and by law"],["Kennel cough, Leishmania","every year while at risk"]]}],
+  vaccines:[
+   {n:"Core: distemper, adenovirus 2, parvovirus (DHP)",type:"Live, SC",start:"6-8 weeks",course:"Every 2-4 weeks until 16 weeks or older",boost:"At 6-12 months, then every 3 years",note:"Often combined with parainfluenza. Immunity about 1 week after an effective dose."},
+   {n:"Leptospirosis (four serogroups)",type:"Inactivated, SC",start:"8-9 weeks",course:"Two doses 3-4 weeks apart",boost:"Every year",note:"Immunity 3 weeks after the second dose and for about a year. Overdue by more than about 15-18 months: restart with two doses."},
+   {n:"Rabies",type:"Inactivated, SC or IM",start:"12 weeks",course:"One dose",boost:"At 1 year, then every 1-3 years by product and law",note:"Read the microchip first. Immunity in 3-4 weeks; for travel the first dose counts from 21 days after injection."},
+   {n:"Kennel cough: Bordetella with parainfluenza",type:"Live, intranasal or oral",start:"3 weeks (intranasal)",course:"One dose",boost:"Every year, timed before boarding",note:"Bordetella protects in about 72 hours, parainfluenza in 3 weeks. Never inject it. Antibiotics given at the same time can inactivate it."},
+   {n:"Leishmania",type:"Recombinant protein, SC",start:"6 months, seronegative dogs only",course:"One dose (older product: three doses 3 weeks apart)",boost:"Every year",note:"Lowers the risk of disease but does not prevent infection: repellent collars or spot-ons stay essential."}]},
+ {id:"cat",icon:"🐱",title:"Cat",
+  visits:[
+   {age:"8 weeks",range:"first visit, 8-9 weeks",w:8,items:[["Core (FVRCP)","1st dose: herpesvirus, calicivirus and panleukopenia"],["FeLV","1st dose, after a negative FeLV/FIV test"]],tip:"Full examination, deworming and FeLV/FIV test. Shelters start the core vaccine at 6 weeks."},
+   {age:"12 weeks",range:"3-4 weeks later",w:12,items:[["Core (FVRCP)","2nd dose"],["FeLV","2nd dose, 3-4 weeks after the first"],["Rabies","one dose, from 12 weeks"]]},
+   {age:"16 weeks",range:"3-4 weeks later",w:16,items:[["Core (FVRCP)","3rd dose: the last kitten dose is given at 16 weeks or older"]]},
+   {age:"6 months",range:"26 weeks or older",w:26,items:[["Core (FVRCP)","booster that closes the kitten course"]],tip:"WSAVA 2024 brings this booster forward to 26 weeks. Many clinics and data sheets still give it at 12 months."},
+   {age:"15 months",range:"1 year after the 12-week visit",w:12,plus:365,items:[["Rabies","first booster"],["FeLV","booster"]]},
+   {age:"Adult",range:"examination every year",w:null,items:[["Core (FVRCP)","every 3 years; herpesvirus and calicivirus every year in cats that board or roam"],["FeLV","every 2-3 years while at risk"],["Rabies","every 1 to 3 years, by product and by law"]]}],
+  vaccines:[
+   {n:"Core: herpesvirus, calicivirus, panleukopenia (FVRCP)",type:"Live or inactivated, SC",start:"8-9 weeks (6 in shelters)",course:"Every 2-4 weeks until 16 weeks or older",boost:"At 6-12 months, then every 3 years",note:"Herpesvirus and calicivirus every year in cats that board or roam. No live panleukopenia vaccine in pregnant queens or kittens under 4 weeks."},
+   {n:"FeLV",type:"Inactivated or canarypox recombinant, SC",start:"8 weeks",course:"Two doses 3-4 weeks apart, after a negative test",boost:"At 1 year, then every 2-3 years while at risk",note:"Recommended for all kittens, and for adults that go outdoors or live with cats that do."},
+   {n:"Rabies",type:"Inactivated, SC",start:"12 weeks",course:"One dose (some products two)",boost:"By product and law",note:"Read the microchip first and record the site."},
+   {n:"Chlamydia",type:"Live or inactivated",start:"9 weeks",course:"Two doses",boost:"Every year",note:"Only in multi-cat homes where the disease is present."},
+   {n:"FIP",type:"Live, intranasal",start:"-",course:"-",boost:"-",note:"Not recommended."}],
+  extra:"Injection sites in cats: rabies in the right hindlimb, FeLV in the left hindlimb, core vaccine in the right forelimb, as distal as possible. Never between the shoulder blades. Prefer non-adjuvanted products."},
+ {id:"ferret",icon:"🐾",title:"Ferret",
+  visits:[
+   {age:"8 weeks",range:"first visit, 6-8 weeks",w:8,items:[["Distemper","1st dose, with a vaccine suitable for ferrets"]]},
+   {age:"11 weeks",range:"3 weeks later",w:11,items:[["Distemper","2nd dose"]]},
+   {age:"14 weeks",range:"3 weeks later",w:14,items:[["Distemper","3rd dose"],["Rabies","one dose from 12 weeks, where required"]]},
+   {age:"Adult",range:"every year",w:null,items:[["Distemper","every year"],["Rabies","every year, where required"]]}],
+  vaccines:[
+   {n:"Distemper",type:"Recombinant where available, SC",start:"6-8 weeks",course:"Every 3 weeks until 14 weeks",boost:"Every year",note:"Distemper is almost always fatal in ferrets."},
+   {n:"Rabies",type:"Inactivated, SC",start:"12 weeks",course:"One dose",boost:"Every year, where required",note:""}],
+  extra:"Anaphylaxis after vaccination is not rare in ferrets: the ferret stays in the clinic for 30 minutes, and the class notes give diphenhydramine 0.5-2 mg/kg beforehand."},
+ {id:"rabbit",icon:"🐰",title:"Rabbit",
+  visits:[
+   {age:"5 weeks",range:"or older",w:5,items:[["Myxomatosis and RHD (RHDV-1 and RHDV-2)","one dose of the combined vectored vaccine"]],tip:"Immunity in 3 weeks."},
+   {age:"Adult",range:"every year",w:null,items:[["Myxomatosis and RHD","every year"]]}],
+  vaccines:[
+   {n:"Myxomatosis with rabbit hemorrhagic disease, both variants",type:"Vectored, SC",start:"5 weeks",course:"One dose",boost:"Every year",note:"Not given in the first 14 days of pregnancy."}]}
+];
+const VACC_RULES=[
+ ["The 16-week rule","The last puppy or kitten core dose falls at 16 weeks or older, because maternal antibody still blocks earlier doses in some animals."],
+ ["Intervals","Doses inside a primary course are 2 to 4 weeks apart, never less than 2 weeks."],
+ ["Started late or unknown history","Treat as unvaccinated. Over 16 weeks, one dose of a live core vaccine protects (data sheets often ask for two). Inactivated vaccines such as leptospirosis and FeLV always need two doses 3-4 weeks apart."],
+ ["Overdue adult","One dose of live core vaccine is enough whatever the gap. Leptospirosis overdue by more than about 15-18 months restarts with two doses. A lapsed rabies booster may count as a new first vaccination for travel."],
+ ["Before every vaccine","Vaccinate only healthy animals, dewormed beforehand. Record product, batch, expiry, site and route. The yearly examination stays yearly even when no core vaccine is due."],
+ ["UAE (confirm the current rule at the clinic)","In Abu Dhabi and Dubai dogs and cats must be microchipped, vaccinated and registered, and the registration is renewed every year with proof of vaccination. Follow the clinic's protocol for which boosters are given yearly."]
+];
 // ===== EMERGENCY PROTOCOLS: step-by-step quick guides (doses match the theory topics and the dose calculator) =====
 const PROTO=[
  {id:"cpr",icon:"❤️",title:"Cardiopulmonary arrest (CPR)",topic:"emerg",
@@ -11449,7 +11507,7 @@ window.__REVIEW_MISS=miss;
 })();
 // ===== TOOLS: daily review (spaced repetition), dose / CRI calculator, emergency sheet, quick reference, clinical English, saved items and notes =====
 // Loaded before app.js: only declarations here; everything that touches `store` or the DOM runs later, from render() and act().
-const TOOL_VIEWS=["tools","daily","calc","ref","phrases","saved","mock","proto","anes"];
+const TOOL_VIEWS=["tools","daily","calc","ref","phrases","saved","mock","proto","anes","vacc"];
 const SRS_INT=[1,3,7], DAILY_N=20, SRS_MODES=["quiz","drugs","anat","basic"];
 function dayNum(){ const d=new Date(); return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/864e5); }
 function freshX(){ return {srs:{},daily:{last:0,streak:0},marks:{},notes:{},mock:[]}; }
@@ -11648,6 +11706,35 @@ function renderPhrases(){
   searchBind("psearch", v=>{ PH.q=v; }, renderPhrases);
 }
 
+// ---------- vaccination schedules ----------
+const VC={sp:"dog",dob:""};
+function vcDate(days){ if(!VC.dob) return null; const p=VC.dob.split("-").map(Number); if(p.length!==3||!p[0]||!p[1]||!p[2]) return null; const dt=new Date(p[0],p[1]-1,p[2]+days); return isNaN(dt.getTime())? null : dt; }
+function vcFmt(dt){ try{ return dt.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }catch(e){ return dt.toDateString(); } }
+function vcAge(born,today){ const dd=Math.round((today-born)/864e5); if(dd<0) return ""; if(dd<182) return Math.floor(dd/7)+" weeks old"; if(dd<730) return Math.floor(dd/30.44)+" months old"; return Math.floor(dd/365.25)+" years old"; }
+function renderVacc(){
+  topbar("Vaccination schedules"); backTo("tools"); $("topprog").innerHTML="";
+  const S=VACC.find(s=>s.id===VC.sp)||VACC[0], born=vcDate(0), today=new Date(); today.setHours(0,0,0,0);
+  let nextSet=false;
+  const visits=S.visits.map(v=>{ const dt=(born&&v.w!==null)? vcDate(v.w*7+(v.plus||0)) : null; let past=false, tag="";
+    if(dt){ past=dt<today; if(!past&&!nextSet){ nextSet=true; tag=`<span class="chip" style="margin-top:4px">next</span>`; } }
+    return `<div class="vrow" style="display:flex;gap:12px;padding:11px 0;border-top:1px solid var(--line)${past?";opacity:.55":""}">
+      <div style="flex:0 0 96px"><b style="font-size:15px">${esc(v.age)}</b><div class="muted" style="font-size:12px;line-height:1.3">${esc(v.range)}</div>${dt?`<div class="vdate" style="font-size:12.5px;font-weight:700;margin-top:4px">${esc(vcFmt(dt))}</div>${past?`<div class="muted" style="font-size:11.5px">date passed</div>`:tag}`:""}</div>
+      <div style="flex:1;min-width:0">${v.items.map(it=>`<div style="margin:0 0 5px;font-size:14px;line-height:1.4"><b>${esc(it[0])}:</b> ${esc(it[1])}</div>`).join("")}${v.tip?`<div class="muted" style="font-size:12.5px;line-height:1.4;margin-top:2px">${esc(v.tip)}</div>`:""}</div></div>`; }).join("");
+  const vacs=S.vaccines.map(x=>`<div style="padding:11px 0;border-top:1px solid var(--line)"><b style="font-size:14.5px">${esc(x.n)}</b><div style="margin:4px 0 6px"><span class="chip gray">${esc(x.type)}</span></div>
+      ${[["Start",x.start],["Primary course",x.course],["Boosters",x.boost]].filter(r=>r[1]&&r[1]!=="-").map(r=>`<div style="font-size:13.5px;line-height:1.45"><span class="muted">${r[0]}:</span> ${esc(r[1])}</div>`).join("")}
+      ${x.note?`<div class="muted" style="font-size:12.5px;line-height:1.4;margin-top:4px">${esc(x.note)}</div>`:""}</div>`).join("");
+  const age=born? vcAge(born,today) : "";
+  $("main").innerHTML=`<div class="card c-tools" style="padding:10px 12px"><div class="basictabs" style="padding-bottom:2px">${VACC.map(s=>`<button class="${s.id===S.id?"on":""}" data-act="vsp" data-s="${s.id}">${s.icon} ${esc(s.title)}</button>`).join("")}</div>
+      <div class="row" style="gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center"><label for="vdob" style="font-size:13.5px;font-weight:600">Date of birth</label><input id="vdob" type="date" class="sel" value="${esc(VC.dob)}">${VC.dob?`<button class="btn ghost small" data-act="vclear">Clear</button>`:""}</div>
+      <p class="muted" style="font-size:12.5px;margin:6px 0 0">${born? (age? `${esc(S.title)} ${esc(age)}. Dates below follow the typical age for each visit.` : "That date is in the future.") : "Optional: enter it to turn the ages below into calendar dates."}</p></div>
+    <div class="card c-tools" style="padding:12px 14px 4px"><h3 style="margin:0 0 8px">${S.icon} ${esc(S.title)}: visits by age</h3>${visits}</div>
+    <div class="card c-tools" style="padding:12px 14px 4px"><h3 style="margin:0 0 8px">Vaccine by vaccine</h3>${vacs}${S.extra?`<p class="muted" style="font-size:13px;line-height:1.45;border-top:1px solid var(--line);padding-top:10px;margin:0 0 10px">${esc(S.extra)}</p>`:""}</div>
+    <div class="card c-tools" style="padding:12px 14px"><h3 style="margin:0 0 8px">Rules that apply to every schedule</h3>${VACC_RULES.map(r=>`<p style="font-size:13.5px;line-height:1.45;margin:0 0 8px"><b>${esc(r[0])}.</b> ${esc(r[1])}</p>`).join("")}
+      <div class="actions" style="flex-wrap:wrap"><button class="btn ghost small tlink" data-act="topic" data-id="vacc-practice" data-ret="vacc">📖 Theory: vaccination in practice</button></div></div>
+    <p class="muted" style="font-size:12.5px;text-align:center">Typical schedules for study, from the WSAVA 2024 guidelines and the class notes. The data sheet of the product and local law take priority.</p>`;
+  const inp=$("vdob"); if(inp) inp.addEventListener("change", e=>{ VC.dob=e.target.value||""; const y=window.scrollY; renderVacc(); try{ window.scrollTo(0,y); }catch(err){} });
+}
+
 // ---------- tools hub ----------
 function renderTools(){
   topbar("Tools"); $("topprog").innerHTML="";
@@ -11658,11 +11745,12 @@ function renderTools(){
       <button class="mode c-tools" data-act="go" data-v="proto"><div class="ic">🚑</div><div class="t"><b>Emergency protocols</b><span>${PROTO.length} step-by-step guides: CPR, blocked cat, GDV, seizures, breathing, poisoning, heat</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="anes"><div class="ic">😴</div><div class="t"><b>Anesthesia protocols</b><span>${ANES.length} plans by patient: routine dog and cat, brachycephalic, cardiac, cesarean, emergencies, problems during anesthesia</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="calc"><div class="ic">🧮</div><div class="t"><b>Dose calculator</b><span>mg and mL by weight for ${DOSES.length} drugs, CRI rates and dilutions, emergency sheet</span></div></button>
+      <button class="mode c-tools" data-act="go" data-v="vacc"><div class="ic">💉</div><div class="t"><b>Vaccination schedules</b><span>Dog, cat, ferret and rabbit: what is given at each age, boosters, and the dates worked out from the date of birth</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="ref"><div class="ic">📋</div><div class="t"><b>Quick reference</b><span>Vital signs, lab ranges, tubes, catheters, poisons, scores, formulas</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="phrases"><div class="ic">💬</div><div class="t"><b>Clinical English</b><span>${PHRASES.reduce((a,s)=>a+s.items.length,0)} phrases for owners, the phone and the team</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="saved"><div class="ic">⭐</div><div class="t"><b>Saved &amp; notes</b><span>${nSaved} saved item${nSaved===1?"":"s"} · ${nNotes} note${nNotes===1?"":"s"}</span></div></button></div>`;
 }
-function renderTool(v){ if(v==="mock") return renderMock(); if(v==="proto") return renderProto(); if(v==="anes") return renderAnes(); if(v==="tools") renderTools(); else if(v==="daily") renderDaily(); else if(v==="calc") renderCalc(); else if(v==="ref") renderRef(); else if(v==="phrases") renderPhrases(); else if(v==="saved") renderSaved(); }
+function renderTool(v){ if(v==="mock") return renderMock(); if(v==="proto") return renderProto(); if(v==="anes") return renderAnes(); if(v==="vacc") return renderVacc(); if(v==="tools") renderTools(); else if(v==="daily") renderDaily(); else if(v==="calc") renderCalc(); else if(v==="ref") renderRef(); else if(v==="phrases") renderPhrases(); else if(v==="saved") renderSaved(); }
 function toolsAct(a,d){
   switch(a){
     case "dstart": dailyStart(); window.scrollTo(0,0); render(); break;
@@ -11674,6 +11762,8 @@ function toolsAct(a,d){
     case "ktab": K.tab=d.t; render(); break;
     case "rsec": RF.sec=d.s; RF.q=""; render(); break;
     case "psec": PH.sec=+d.s; PH.q=""; render(); break;
+    case "vsp": VC.sp=d.s; render(); break;
+    case "vclear": VC.dob=""; render(); break;
     case "mkstart": mockStart(+d.n); break;
     case "mkans": mockAnswer(+d.k); break;
     case "mkquit": if(MK.items&&MK.end===null){ if(d.sure==="1"){ MK.items=null; stopMock(); render(); } else { MK.confirm=true; render(); } } else { MK.items=null; render(); } break;
@@ -12552,7 +12642,7 @@ function renderTheory(){
   const inp=$("tsearch"); inp.addEventListener("input", e=>{ T.q=e.target.value; const pos=inp.selectionStart; renderTheory(); const n=$("tsearch"); n.focus(); n.setSelectionRange(pos,pos); });
 }
 function renderTopic(t){
-  topbar(t.title, `${starBtn("t:"+t.id)}<button class="btn ghost small" data-act="tback">${T.ret==="saved"?"← Saved":(T.ret==="proto"||T.ret==="anes")?"← Protocol":T.ret?"← Back to question":"Topics"}</button>`); $("topprog").innerHTML="";
+  topbar(t.title, `${starBtn("t:"+t.id)}<button class="btn ghost small" data-act="tback">${T.ret==="saved"?"← Saved":(T.ret==="proto"||T.ret==="anes")?"← Protocol":T.ret==="vacc"?"← Vaccines":T.ret?"← Back to question":"Topics"}</button>`); $("topprog").innerHTML="";
   const done=!!store.theory.done[tkey(t)];
   const idx=THEORY.indexOf(t), prev=THEORY[idx-1], next=THEORY[idx+1];
   const practice=(t.practice||[]).map(p=>`<button class="btn ghost small" data-act="mpractice" data-m="${p.m}" data-c="${esc(p.cat)}" data-tab="${p.tab||""}">${MODES[p.m]?MODES[p.m].icon:""} ${esc(p.label||p.cat)}</button>`).join(" ");
