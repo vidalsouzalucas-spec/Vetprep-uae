@@ -10780,7 +10780,8 @@ const VACC_RULES=[
 ];
 // ===== BREED TRAINER (Tools) =====
 // Dogs: [dog.ceo key (sub-breed after "/"), English name, Spanish name]. Keys checked against https://dog.ceo/api/breeds/list/all (Nov 2026).
-// Cats: [name exactly as in TheCatAPI /v1/breeds, Spanish name]. Photos are not shipped with the app: they load from those two services.
+// Cats: [TheCatAPI breed name, Spanish name, TheCatAPI reference image id (from its /v1/breeds list, Nov 2026), English Wikipedia article].
+// Photos are not shipped with the app: dogs load from dog.ceo; cats from the lead image of the Wikipedia article, or else from TheCatAPI.
 const BREEDS=[].concat([
  ["german/shepherd","German Shepherd","Pastor Alemán"],["labrador","Labrador Retriever","Labrador Retriever"],["retriever/golden","Golden Retriever","Golden Retriever"],
  ["bulldog/french","French Bulldog","Bulldog Francés"],["bulldog/english","English Bulldog","Bulldog Inglés"],["bulldog/boston","Boston Terrier","Boston Terrier"],
@@ -10800,14 +10801,14 @@ const BREEDS=[].concat([
  ["terrier/westhighland","West Highland White Terrier","West Highland White Terrier"],["airedale","Airedale Terrier","Airedale Terrier"],["saluki","Saluki","Saluki"],
  ["hound/afghan","Afghan Hound","Galgo Afgano"],["hound/blood","Bloodhound","Sabueso (Bloodhound)"],["cattledog/australian","Australian Cattle Dog","Pastor Ganadero Australiano"]
 ].map(a=>({k:"d:"+a[0],sp:"dog",api:a[0],en:a[1],es:a[2]})),[
- ["Abyssinian","Abisinio"],["Aegean","Egeo"],["American Curl","American Curl"],["American Shorthair","Americano de Pelo Corto"],["Arabian Mau","Mau Árabe"],["Balinese","Balinés"],
- ["Bengal","Bengalí"],["Birman","Sagrado de Birmania"],["Bombay","Bombay"],["British Longhair","Británico de Pelo Largo"],["British Shorthair","Británico de Pelo Corto"],
- ["Burmese","Burmés"],["Burmilla","Burmilla"],["Chartreux","Cartujo"],["Chausie","Chausie"],["Cornish Rex","Cornish Rex"],["Devon Rex","Devon Rex"],["Egyptian Mau","Mau Egipcio"],
- ["Exotic Shorthair","Exótico de Pelo Corto"],["Havana Brown","Habana"],["Himalayan","Himalayo"],["Japanese Bobtail","Bobtail Japonés"],["Korat","Korat"],["Maine Coon","Maine Coon"],
- ["Manx","Manx"],["Norwegian Forest Cat","Bosque de Noruega"],["Ocicat","Ocicat"],["Oriental","Oriental"],["Persian","Persa"],["Ragdoll","Ragdoll"],["Russian Blue","Azul Ruso"],
- ["Savannah","Savannah"],["Scottish Fold","Scottish Fold"],["Selkirk Rex","Selkirk Rex"],["Siamese","Siamés"],["Siberian","Siberiano"],["Singapura","Singapura"],["Somali","Somalí"],
- ["Sphynx","Esfinge (Sphynx)"],["Tonkinese","Tonkinés"],["Turkish Angora","Angora Turco"],["Turkish Van","Van Turco"]
-].map(a=>({k:"c:"+a[0].toLowerCase().replace(/\s+/g,"-"),sp:"cat",api:a[0],en:a[0],es:a[1]})));
+ ["Abyssinian","Abisinio","0XYvRd7oD","Abyssinian cat"],["Aegean","Egeo","ozEvzdVM-","Aegean cat"],["American Curl","American Curl","xnsqonbjW","American Curl"],["American Shorthair","Americano de Pelo Corto","JFPROfGtQ","American Shorthair"],["Arabian Mau","Mau Árabe","k71ULYfRr","Arabian Mau"],["Balinese","Balinés","13MkvUreZ","Balinese cat"],
+ ["Bengal","Bengalí","O3btzLlsO","Bengal cat"],["Birman","Sagrado de Birmania","HOrX5gwLS","Birman"],["Bombay","Bombay","5iYq9NmT1","Bombay cat"],["British Longhair","Británico de Pelo Largo","7isAO4Cav","British Longhair"],["British Shorthair","Británico de Pelo Corto","s4wQfYoEk","British Shorthair"],
+ ["Burmese","Burmés","4lXnnfxac","Burmese cat"],["Burmilla","Burmilla","jvg3XfEdC","Burmilla"],["Chartreux","Cartujo","j6oFGLpRG","Chartreux"],["Chausie","Chausie","vJ3lEYgXr","Chausie"],["Cornish Rex","Cornish Rex","unX21IBVB","Cornish Rex"],["Devon Rex","Devon Rex","4RzEwvyzz","Devon Rex"],["Egyptian Mau","Mau Egipcio","TuSyTkt2n","Egyptian Mau"],
+ ["Exotic Shorthair","Exótico de Pelo Corto","YnPrYEmfe","Exotic Shorthair"],["Havana Brown","Habana","njK25knLH","Havana Brown"],["Himalayan","Himalayo","CDhOtM-Ig","Himalayan cat"],["Japanese Bobtail","Bobtail Japonés","-tm9-znzl","Japanese Bobtail"],["Korat","Korat","DbwiefiaY","Korat"],["Maine Coon","Maine Coon","OOD3VXAQn","Maine Coon"],
+ ["Manx","Manx","fhYh2PDcC","Manx cat"],["Norwegian Forest Cat","Bosque de Noruega","06dgGmEOV","Norwegian Forest cat"],["Ocicat","Ocicat","JAx-08Y0n","Ocicat"],["Oriental","Oriental","LutjkZJpH","Oriental Shorthair"],["Persian","Persa","-Zfz5z2jK","Persian cat"],["Ragdoll","Ragdoll","oGefY4YoG","Ragdoll"],["Russian Blue","Azul Ruso","Rhj-JsTLP","Russian Blue"],
+ ["Savannah","Savannah","a8nIYvs6S","Savannah cat"],["Scottish Fold","Scottish Fold","o9t0LDcsa","Scottish Fold"],["Selkirk Rex","Selkirk Rex","II9dOZmrw","Selkirk Rex"],["Siamese","Siamés","ai6Jps4sx","Siamese cat"],["Siberian","Siberiano","3bkZAjRh1","Siberian cat"],["Singapura","Singapura","Qtncp2nRe","Singapura cat"],["Somali","Somalí","EPF2ejNS0","Somali cat"],
+ ["Sphynx","Esfinge (Sphynx)","BDb8ZXb1v","Sphynx cat"],["Tonkinese","Tonkinés","KBroiVNCM","Tonkinese cat"],["Turkish Angora","Angora Turco","7CGV6WVXq","Turkish Angora"],["Turkish Van","Van Turco","sxIXJax6h","Turkish Van"]
+].map(a=>({k:"c:"+a[0].toLowerCase().replace(/\s+/g,"-"),sp:"cat",api:a[0],en:a[0],es:a[1],ref:a[2],wiki:a[3]})));
 // ===== EMERGENCY PROTOCOLS: step-by-step quick guides (doses match the theory topics and the dose calculator) =====
 const PROTO=[
  {id:"cpr",icon:"❤️",title:"Cardiopulmonary arrest (CPR)",topic:"emerg",
@@ -11771,7 +11772,7 @@ function renderVacc(){
 // ---------- breed trainer: guide, spaced-repetition flashcards and a photo test ----------
 // Photos load from dog.ceo and TheCatAPI. One photo per breed is remembered (localStorage) and, in the installed app,
 // saved in a cache of its own so it is there offline. Progress of the flashcards lives in store.x.br and syncs like the rest.
-const BR={tab:"guide",sp:"dog",q:"",hide:false,shown:{},mf:"all",card:null,flip:false,caught:false,curl:"",qmode:"mixed",quiz:null,qsel:null,score:0,total:0,streak:0,qfail:false,dl:null,sure:false,tok:0};
+const BR={tab:"guide",sp:"dog",q:"",hide:false,shown:{},mf:"all",card:null,flip:false,caught:false,curl:"",qmode:"mixed",quiz:null,qsel:null,score:0,total:0,streak:0,qfail:false,dl:null,sure:false,tok:0,diag:{wiki:"",err:0}};
 const BR_KEY="vetprep_breed_img_v1", BR_CACHE="vetprep-breeds", BR_MASTER=5;
 const BR_INT={1:36e5,2:6*36e5,3:864e5,4:3*864e5,5:7*864e5,6:21*864e5};
 let BR_IMG=null, BR_CATP=null;
@@ -11780,16 +11781,27 @@ function brSave(){ try{ localStorage.setItem(BR_KEY, JSON.stringify(BR_IMG)); }c
 function brBreed(k){ return BREEDS.find(b=>b.k===k); }
 function brCanFetch(){ return typeof fetch==="function"; }
 function brFetchDog(b){ if(!brCanFetch()) return Promise.reject(0); return fetch("https://dog.ceo/api/breed/"+b.api+"/images/random").then(r=>r.json()).then(j=>{ if(!j||j.status!=="success"||!j.message) throw 0; return String(j.message); }); }
-function brLoadCats(){ if(BR_CATP) return BR_CATP; if(!brCanFetch()) return Promise.resolve(false);
-  BR_CATP=fetch("https://api.thecatapi.com/v1/breeds").then(r=>r.json()).then(list=>{ const M=brImgs(); let ch=false;
-    (Array.isArray(list)?list:[]).forEach(x=>{ const b=BREEDS.find(y=>y.sp==="cat"&&y.api===x.name); if(!b||M[b.k]) return;
-      const u=(x.image&&x.image.url)||(x.reference_image_id? "https://cdn2.thecatapi.com/images/"+x.reference_image_id+".jpg" : ""); if(u){ M[b.k]=u; ch=true; } });
-    if(ch) brSave(); return true; }).catch(()=>{ BR_CATP=null; return false; });
+function brCatStatic(b){ return b&&b.ref? "https://cdn2.thecatapi.com/images/"+b.ref+".jpg" : ""; }
+// cats: one request to Wikipedia gives the lead image of every breed article; without it the fixed TheCatAPI photo is used
+function brLoadCats(){ if(BR_CATP) return BR_CATP; const cats=BREEDS.filter(b=>b.sp==="cat"), M=brImgs();
+  const fill=()=>{ let ch=false; cats.forEach(b=>{ if(!M[b.k]){ const u=brCatStatic(b); if(u){ M[b.k]=u; ch=true; } } }); if(ch) brSave(); };
+  if(!brCanFetch()||(typeof navigator!=="undefined"&&navigator.onLine===false)){ fill(); return Promise.resolve(false); }
+  const url="https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=thumbnail&pithumbsize=500&pilimit=50&redirects=1&format=json&origin=*&titles="+encodeURIComponent(cats.map(b=>b.wiki).join("|"));
+  BR_CATP=fetch(url).then(r=>r.json()).then(j=>{ const q=(j&&j.query)||{}, to={}, by={}; let n=0, ch=false;
+    (q.normalized||[]).forEach(x=>{ to[x.from]=x.to; }); (q.redirects||[]).forEach(x=>{ to[x.from]=x.to; });
+    Object.keys(q.pages||{}).forEach(id=>{ const pg=q.pages[id]; if(pg&&pg.title&&pg.thumbnail&&pg.thumbnail.source) by[pg.title]=pg.thumbnail.source; });
+    cats.forEach(b=>{ let t=b.wiki; for(let i=0;i<3&&to[t];i++) t=to[t]; const u=by[t]; if(!u) return; n++;
+      if(M[b.k]!==u&&!M[b.k+"!"]){ const old=M[b.k]; M[b.k]=u; ch=true; if(old) brDrop(old); } });
+    if(ch) brSave(); fill(); BR.diag.wiki="ok "+n+"/"+cats.length; return true;
+  }).catch(e=>{ BR_CATP=null; fill(); BR.diag.wiki="failed ("+String((e&&e.message)||e).slice(0,60)+")"; return false; });
   return BR_CATP; }
 // the remembered photo of a breed (asks the service the first time, or when fresh is set)
-function brUrl(b,fresh){ const M=brImgs(); if(M[b.k]&&!fresh) return Promise.resolve(M[b.k]);
+function brUrl(b,fresh){ const M=brImgs(); if(b.sp==="dog"&&M[b.k]&&!fresh) return Promise.resolve(M[b.k]);
   if(b.sp==="dog") return brFetchDog(b).then(u=>{ const old=M[b.k]; M[b.k]=u; brSave(); if(old&&old!==u) brDrop(old); return u; }).catch(()=>M[b.k]||"");
   return brLoadCats().then(()=>M[b.k]||""); }
+// the next photo to try when one does not load (cats only: Wikipedia, then TheCatAPI as .jpg, then as .png)
+function brNext(b,src){ if(!b||b.sp!=="cat"||!src) return ""; const st=brCatStatic(b); if(!st) return ""; if(src.indexOf("wikimedia.org")>=0) return st; if(src===st) return st.replace(/\.jpg$/,".png"); return ""; }
+function brDiag(){ const el=$("brdiag"); if(!el) return; const D=BR.diag, bad=/^failed/.test(D.wiki), t=[]; if(bad) t.push("Wikipedia photo list "+D.wiki); if(D.err) t.push(D.err+" photo"+(D.err===1?"":"s")+" did not load"); el.textContent=t.length? "Photo problems in this session: "+t.join("; ")+"." : ""; }
 // a photo for one flashcard or test question: a new random one for dogs when online, otherwise the remembered one
 function brFresh(b){ const M=brImgs(); if(b.sp!=="dog") return brUrl(b);
   return brFetchDog(b).then(u=>{ if(!M[b.k]){ M[b.k]=u; brSave(); } return u; }).catch(()=>M[b.k]||""); }
@@ -11799,15 +11811,14 @@ function brKeep(u){ try{ if(!u||typeof caches==="undefined") return Promise.reso
   }catch(e){ return Promise.resolve(false); } }
 function brDrop(u){ try{ if(u&&typeof caches!=="undefined") caches.open(BR_CACHE).then(c=>c.delete(u)).catch(()=>{}); }catch(e){} }
 function brProbe(u){ return new Promise(res=>{ try{ const im=new Image(); im.onload=()=>res(true); im.onerror=()=>res(false); im.src=u; }catch(e){ res(false); } }); }
-function brAltUrl(u){ return /\.jpg$/.test(u)&&u.indexOf("thecatapi")>=0 ? u.replace(/\.jpg$/,".png") : ""; }
 function brOffline(){ try{ return typeof caches!=="undefined" && !!(navigator.serviceWorker&&navigator.serviceWorker.controller); }catch(e){ return false; } }
 function brName(b,big){ return `<b style="font-size:${big?"19px":"13.5px"};line-height:1.25;display:block">${esc(b.en)}</b>${b.es!==b.en?`<span class="muted" style="font-size:${big?"14px":"12px"}">${esc(b.es)}</span>`:""}`; }
-function brImgHtml(b,url,extra){ return `<div style="position:relative;width:100%;height:100%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:30px"><span style="opacity:.45">🐾</span><img class="brimg" data-bk="${b.k}" alt="" ${url?`src="${esc(url)}"`:""} style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover${url?"":";display:none"}">${extra||""}</div>`; }
+function brImgHtml(b,url,extra){ return `<div style="position:relative;width:100%;height:100%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:30px"><span style="opacity:.45">🐾</span><img class="brimg" data-bk="${b.k}" alt="" loading="lazy" ${url?`src="${esc(url)}"`:""} style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover${url?"":";display:none"}">${extra||""}</div>`; }
 function brSet(img,u){ if(!img||!u) return; img.removeAttribute("data-alt"); img.style.display=""; img.src=u; }
 function brBind(){ const main=$("main"); if(!main) return;
   main.querySelectorAll("img.brimg").forEach(img=>{
-    img.addEventListener("load", ()=>{ const M=brImgs(), k=img.getAttribute("data-bk"), src=img.getAttribute("src"); if(img.getAttribute("data-alt")){ M[k]=src; brSave(); img.removeAttribute("data-alt"); } if(M[k]===src) brKeep(src); });
-    img.addEventListener("error", ()=>{ const src=img.getAttribute("src")||"", alt=img.getAttribute("data-alt")? "" : brAltUrl(src); if(alt){ img.setAttribute("data-alt","1"); img.src=alt; return; } img.style.display="none"; const w=main.querySelector("#brfail"); if(w) w.style.display=""; });
+    img.addEventListener("load", ()=>{ const M=brImgs(), k=img.getAttribute("data-bk"), src=img.getAttribute("src"); if(img.getAttribute("data-alt")){ M[k]=src; M[k+"!"]=1; brSave(); img.removeAttribute("data-alt"); } if(M[k]===src) brKeep(src); });
+    img.addEventListener("error", ()=>{ const src=img.getAttribute("src")||"", next=brNext(brBreed(img.getAttribute("data-bk")),src); if(next){ img.setAttribute("data-alt","1"); img.src=next; return; } img.style.display="none"; BR.diag.err++; brDiag(); const w=main.querySelector("#brfail"); if(w) w.style.display=""; });
   }); }
 // ----- guide -----
 function brCard(b,url){ const show=!BR.hide||BR.shown[b.k];
@@ -11818,9 +11829,10 @@ function brGuide(){ const M=brImgs(), q=BR.q.trim().toLowerCase(), nd=BREEDS.fil
       <input id="bsearch" class="sel" style="width:100%;margin-top:8px" placeholder="Search a breed in English or Spanish…" value="${esc(BR.q)}"></div>
     ${f.length? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:14px">${f.map(b=>brCard(b,M[b.k])).join("")}</div>` : `<p class="muted">Nothing matches.</p>`}`; }
 function brGuideLoad(){ const main=$("main"), M=brImgs(); if(!main) return;
-  const need=[].slice.call(main.querySelectorAll(".brcard")).filter(c=>!M[c.getAttribute("data-bk")]); if(!need.length) return;
+  const cards=[].slice.call(main.querySelectorAll(".brcard"));
+  if(BR.sp==="cat"){ brLoadCats().then(()=>{ if(view!=="breeds"||BR.tab!=="guide"||BR.sp!=="cat") return; cards.forEach(c=>{ const k=c.getAttribute("data-bk"), img=c.querySelector("img.brimg"), u=M[k]; if(img&&u&&img.getAttribute("src")!==u&&!img.getAttribute("data-alt")) brSet(img,u); }); brDiag(); }); return; }
+  const need=cards.filter(c=>!M[c.getAttribute("data-bk")]); if(!need.length) return;
   const go=c=>{ const b=brBreed(c.getAttribute("data-bk")); if(!b) return; brUrl(b).then(u=>{ const img=document.querySelector('.brcard[data-bk="'+b.k+'"] img.brimg'); if(img&&u&&!img.getAttribute("src")) brSet(img,u); }); };
-  if(BR.sp==="cat"){ brLoadCats().then(()=>need.forEach(go)); return; }
   if(typeof IntersectionObserver==="undefined"){ need.slice(0,8).forEach(go); return; }
   const ob=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ ob.unobserve(e.target); go(e.target); } }),{rootMargin:"200px"}); need.forEach(c=>ob.observe(c)); }
 // ----- flashcards with spaced repetition (Leitner levels 0 to 6) -----
@@ -11873,15 +11885,17 @@ function brQuiz(){ const Q=BR.quiz, pct=BR.total?Math.round(BR.score/BR.total*10
 // ----- saving every photo for offline use (installed app only) -----
 function brDownload(){ if(BR.dl&&!BR.dl.done) return; const list=BREEDS.slice(); BR.dl={i:0,n:list.length,ok:0,done:false};
   const show=()=>{ const el=$("brdl"); if(el) el.textContent=BR.dl.done? ("Saved "+BR.dl.ok+" of "+BR.dl.n+" photos for offline use.") : ("Saving photos: "+BR.dl.i+" of "+BR.dl.n+"…"); };
-  const one=b=>brUrl(b).then(u=>{ if(!u) return false; return brProbe(u).then(ok=>{ if(ok) return u; const alt=brAltUrl(u); if(!alt) return ""; return brProbe(alt).then(ok2=>{ if(!ok2) return ""; brImgs()[b.k]=alt; brSave(); return alt; }); }).then(v=>v? brKeep(v) : false); }).catch(()=>false);
+  const tryU=(b,u)=> !u? Promise.resolve("") : brProbe(u).then(ok=> ok? u : tryU(b,brNext(b,u)));
+  const one=b=>brUrl(b).then(u=>tryU(b,u)).then(v=>{ if(!v) return false; const M=brImgs(); if(M[b.k]!==v){ M[b.k]=v; M[b.k+"!"]=1; brSave(); } return brKeep(v); }).catch(()=>false);
   const step=()=>{ if(BR.dl.i>=list.length){ BR.dl.done=true; show(); if(view==="breeds"&&BR.tab==="guide") render(); return; } const b=list[BR.dl.i]; one(b).then(ok=>{ if(ok) BR.dl.ok++; BR.dl.i++; show(); setTimeout(step, b.sp==="dog"?120:0); }); };
   show(); step(); }
 function renderBreeds(){
   topbar("Breeds"); backTo("tools"); $("topprog").innerHTML="";
-  const nSaved=Object.keys(brImgs()).length, tabs=`<div class="basictabs">${[["guide","📖 Guide"],["memo","🗂 Flashcards"],["quiz","🧠 Photo test"]].map(x=>`<button class="${BR.tab===x[0]?"on":""}" data-act="brtab" data-s="${x[0]}">${x[1]}</button>`).join("")}</div>`;
+  const nSaved=Object.keys(brImgs()).filter(k=>k.slice(-1)!=="!").length, tabs=`<div class="basictabs">${[["guide","📖 Guide"],["memo","🗂 Flashcards"],["quiz","🧠 Photo test"]].map(x=>`<button class="${BR.tab===x[0]?"on":""}" data-act="brtab" data-s="${x[0]}">${x[1]}</button>`).join("")}</div>`;
   const body=BR.tab==="memo"? brMemo() : BR.tab==="quiz"? brQuiz() : brGuide();
   const foot=BR.tab!=="guide"? "" : `<div class="card c-tools" style="padding:12px 14px">${brOffline()? `<p style="font-size:13.5px;margin:0 0 8px">Photos are kept on this device once they have loaded. To have every breed offline, save them all now (about ${BREEDS.length} photos).</p><div class="row" style="gap:10px"><button class="btn small" data-act="brdl">Save all photos for offline</button><span id="brdl" class="muted" style="font-size:13px">${BR.dl? (BR.dl.done? "Saved "+BR.dl.ok+" of "+BR.dl.n+" photos for offline use." : "Saving photos: "+BR.dl.i+" of "+BR.dl.n+"…") : (nSaved? nSaved+" breeds have a photo so far." : "")}</span></div>` : `<p class="muted" style="font-size:13.5px;margin:0">Photos need a connection, and they cannot load inside claude.ai: use the installed app (GitHub Pages version), which also keeps them for offline use.</p>`}</div>`;
-  $("main").innerHTML=tabs+body+foot+`<p class="muted" style="font-size:12.5px;text-align:center">${BREEDS.length} breeds. Photos from dog.ceo and TheCatAPI.</p>`;
+  $("main").innerHTML=tabs+body+foot+`<p id="brdiag" class="muted" style="font-size:12.5px;text-align:center;margin:0 0 6px"></p><p class="muted" style="font-size:12.5px;text-align:center">${BREEDS.length} breeds. Photos from dog.ceo, Wikipedia and TheCatAPI.</p>`;
+  brDiag();
   brBind();
   if(BR.tab==="guide"){ searchBind("bsearch", v=>{ BR.q=v; }, renderBreeds); brGuideLoad(); }
   else if(BR.tab==="memo") brMemoLoad();

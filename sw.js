@@ -1,7 +1,7 @@
-const CACHE="vetprep-7bf4386ae6";
+const CACHE="vetprep-1909919c4c";
 const ASSETS=["./","./index.html","./manifest.webmanifest","./icon-192-v2.png","./icon-512-v2.png","./apple-touch-icon-v2.png"];
 self.addEventListener("install", e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())); });
-const PHOTOS="vetprep-breeds", PHOTO_HOSTS=["images.dog.ceo","cdn2.thecatapi.com"];
+const PHOTOS="vetprep-breeds", PHOTO_HOSTS=["images.dog.ceo","cdn2.thecatapi.com","upload.wikimedia.org"];
 self.addEventListener("activate", e=>{ e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==PHOTOS).map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });
 self.addEventListener("fetch", e=>{
   if(e.request.method!=="GET") return;
