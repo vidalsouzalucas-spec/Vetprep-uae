@@ -1,4 +1,4 @@
-const CACHE="vetprep-adf5a5ae4a";
+const CACHE="vetprep-5939448651";
 const ASSETS=["./","./index.html","./manifest.webmanifest","./icon-192-v2.png","./icon-512-v2.png","./apple-touch-icon-v2.png"];
 self.addEventListener("install", e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())); });
 const PHOTOS="vetprep-breeds", PHOTO_HOSTS=["images.dog.ceo"];

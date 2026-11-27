@@ -11621,11 +11621,11 @@ window.__REVIEW_MISS=miss;
 })();
 // ===== TOOLS: daily review (spaced repetition), dose / CRI calculator, emergency sheet, quick reference, clinical English, saved items and notes =====
 // Loaded before app.js: only declarations here; everything that touches `store` or the DOM runs later, from render() and act().
-const TOOL_VIEWS=["tools","daily","calc","ref","phrases","saved","mock","proto","anes","vacc","breeds","snap","cells"];
+const TOOL_VIEWS=["tools","daily","calc","ref","phrases","saved","mock","proto","anes","vacc","breeds","snap","cells","dgame"];
 const SRS_INT=[1,3,7], DAILY_N=20, SRS_MODES=["quiz","drugs","anat","basic"];
 function dayNum(){ const d=new Date(); return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/864e5); }
-function freshX(){ return {srs:{},daily:{last:0,streak:0},marks:{},notes:{},mock:[],br:{},brt:0}; }
-function xs(){ if(!store.x) store.x=freshX(); const X=store.x; if(!X.srs) X.srs={}; if(!X.daily) X.daily={last:0,streak:0}; if(!X.marks) X.marks={}; if(!X.notes) X.notes={}; if(!X.mock) X.mock=[]; if(!X.br) X.br={}; return X; }
+function freshX(){ return {srs:{},daily:{last:0,streak:0},marks:{},notes:{},mock:[],br:{},brt:0,dg:{}}; }
+function xs(){ if(!store.x) store.x=freshX(); const X=store.x; if(!X.srs) X.srs={}; if(!X.daily) X.daily={last:0,streak:0}; if(!X.marks) X.marks={}; if(!X.notes) X.notes={}; if(!X.mock) X.mock=[]; if(!X.br) X.br={}; if(!X.dg) X.dg={}; return X; }
 // merge of the extras from two devices: the most recently changed entry wins (removals are kept as tombstones)
 function mergeX(a,b){ a=a||{}; b=b||{}; const out=freshX();
   [a.srs||{},b.srs||{}].forEach(S=>Object.keys(S).forEach(k=>{ const e=S[k]; if(!e) return; if(!out.srs[k]||(e.u||0)>(out.srs[k].u||0)) out.srs[k]=e; }));
@@ -11636,6 +11636,7 @@ function mergeX(a,b){ a=a||{}; b=b||{}; const out=freshX();
   // breed flashcards: the latest answer per breed wins; a reset (brt) removes everything answered before it
   out.brt=Math.max(a.brt||0,b.brt||0);
   [a.br||{},b.br||{}].forEach(S=>Object.keys(S).forEach(k=>{ const e=S[k]; if(!e||(e.u||0)<=out.brt) return; if(!out.br[k]||(e.u||0)>(out.br[k].u||0)) out.br[k]=e; }));
+  out.dg=dgMerge(a.dg,b.dg);
   return out; }
 function backTo(v){ const b=$("topbar").querySelector('[data-act="home"]'); if(b){ b.setAttribute("data-act","go"); b.setAttribute("data-v",v); } }
 function segTabs(on){ return `<nav class="seg nav" aria-label="Sections"><button class="${on==="home"?"on":""}" data-act="go" data-v="home"><span class="si">🎯</span><span>Practice</span></button><button class="${on==="theory"?"on":""}" data-act="go" data-v="theory"><span class="si">📖</span><span>Theory</span></button><button class="${on==="tools"?"on":""}" data-act="go" data-v="tools"><span class="si">🧰</span><span>Tools</span></button></nav>`; }
@@ -12053,7 +12054,7 @@ function renderTools(){
   const X=xs(), nSaved=Object.keys(X.marks).filter(k=>X.marks[k]>0).length, nNotes=THEORY.filter(t=>noteOf(t.id).trim()).length;
   $("main").innerHTML=`${segTabs("tools")}
     <div class="hero"><h2>Tools</h2><p class="muted" style="margin:6px 0 0">For studying every day and for looking things up at work.</p></div>
-    <div class="modes">${dailyCard()}${mockCard()}
+    <div class="modes">${dgCard()}${dailyCard()}${mockCard()}
       <button class="mode c-tools" data-act="go" data-v="proto"><div class="ic">🚑</div><div class="t"><b>Emergency protocols</b><span>${PROTO.length} step-by-step guides: CPR, blocked cat, GDV, seizures, breathing, poisoning, heat</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="anes"><div class="ic">😴</div><div class="t"><b>Anesthesia protocols</b><span>${ANES.length} plans by patient: routine dog and cat, brachycephalic, cardiac, cesarean, emergencies, problems during anesthesia</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="calc"><div class="ic">🧮</div><div class="t"><b>Dose calculator</b><span>mg and mL by weight for ${DOSES.length} drugs, CRI rates and dilutions, emergency sheet</span></div></button>
@@ -12065,10 +12066,11 @@ function renderTools(){
       <button class="mode c-tools" data-act="go" data-v="phrases"><div class="ic">💬</div><div class="t"><b>Clinical English</b><span>${PHRASES.reduce((a,s)=>a+s.items.length,0)} phrases for owners, the phone and the team</span></div></button>
       <button class="mode c-tools" data-act="go" data-v="saved"><div class="ic">⭐</div><div class="t"><b>Saved &amp; notes</b><span>${nSaved} saved item${nSaved===1?"":"s"} · ${nNotes} note${nNotes===1?"":"s"}</span></div></button></div>`;
 }
-function renderTool(v){ if(v==="mock") return renderMock(); if(v==="proto") return renderProto(); if(v==="anes") return renderAnes(); if(v==="vacc") return renderVacc(); if(v==="breeds") return renderBreeds(); if(v==="snap") return renderSnap(); if(v==="cells") return renderCells(); if(v==="tools") renderTools(); else if(v==="daily") renderDaily(); else if(v==="calc") renderCalc(); else if(v==="ref") renderRef(); else if(v==="phrases") renderPhrases(); else if(v==="saved") renderSaved(); }
+function renderTool(v){ if(v==="mock") return renderMock(); if(v==="proto") return renderProto(); if(v==="anes") return renderAnes(); if(v==="vacc") return renderVacc(); if(v==="breeds") return renderBreeds(); if(v==="dgame") return renderDgame(); if(v==="snap") return renderSnap(); if(v==="cells") return renderCells(); if(v==="tools") renderTools(); else if(v==="daily") renderDaily(); else if(v==="calc") renderCalc(); else if(v==="ref") renderRef(); else if(v==="phrases") renderPhrases(); else if(v==="saved") renderSaved(); }
 function toolsAct(a,d){
   if(breedsAct(a,d)) return;
   if(extraToolsAct(a,d)) return;
+  if(dgAct(a,d)) return;
   switch(a){
     case "dstart": dailyStart(); window.scrollTo(0,0); render(); break;
     case "dans": dailyAnswer(+d.k); break;
@@ -12187,6 +12189,203 @@ function renderAnes(){
       ${p.blocks.map(B=>`<div class="section-label" style="margin-top:14px">${esc(B.h)}</div><ul style="font-size:14.5px;margin:4px 0 0;padding-left:20px">${B.items.map(x=>`<li style="margin:5px 0">${esc(x)}</li>`).join("")}</ul>`).join("")}
       <div class="fb bad" style="margin-top:14px"><b>Avoid</b><ul style="margin:0;padding-left:18px">${p.avoid.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
       <div class="actions" style="flex-wrap:wrap"><button class="btn small" data-act="adose">🧮 Dose calculator</button>${t?`<button class="btn ghost small tlink" data-act="topic" data-id="${t.id}" data-ret="anes">📖 Theory: ${esc(t.title)}</button>`:""}</div></div>${note}`;
+}
+// ===== DAILY CHALLENGE: one fixed set a day (10 questions, 1 case, 1 fluid exercise, 1 lab panel, 1 cytology photo), one attempt, saved and reviewable =====
+// The set depends only on the calendar date, so it is the same on every device. Each pool is walked in a shuffled order without repeats
+// until it is used up, then reshuffled. Results live in store.x.dg[date] and travel with the normal progress backup and sync.
+const DG_SMAX=[1,1,1,1,1,1,1,1,1,1,3,1,2,1], DG_MAX=17, DG_N=14, DG_KEEP=45, DG_EPOCH="2026-11-26";
+const DG_LBL=["Q1","Q2","Q3","Q4","Q5","Q6","Q7","Q8","Q9","Q10","Case","Fluids","Lab","Cytology"];
+let DG_NOW=null;   // tests set this to pretend it is another day
+const DGS={scr:"home",date:null,pos:0,shown:false,cstep:0,sel:{},flags:{},choice:null,input:"",copied:""};
+function dgDs(t){ const d=new Date(t); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function dgToday(){ return DG_NOW||dgDs(Date.now()); }
+function dgDayNum(ds){ const p=ds.split("-").map(Number); return Math.round(Date.UTC(p[0],p[1]-1,p[2])/864e5); }
+function dgAdd(ds,k){ return new Date((dgDayNum(ds)+k)*864e5).toISOString().slice(0,10); }
+function dgNo(ds){ return dgDayNum(ds)-dgDayNum(DG_EPOCH); }
+function dgNice(ds){ const p=ds.split("-").map(Number), d=new Date(Date.UTC(p[0],p[1]-1,p[2])); return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()]+" "+p[2]+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][p[1]-1]+(p[0]!==+dgToday().slice(0,4)?" "+p[0]:""); }
+function dgSeed(str){ let h=2166136261; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
+function dgRng(str){ let a=dgSeed(str); return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function dgShuf(arr,tag){ const b=arr.slice(), r=dgRng("dg1:"+tag); for(let i=b.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); const x=b[i]; b[i]=b[j]; b[j]=x; } return b; }
+function dgPerm(ds,tag,n){ return dgShuf(range(n),ds+":"+tag); }
+const _dgPool={};
+function dgPool(type){ if(_dgPool[type]) return _dgPool[type];
+  let p; if(type==="q") p=Array.from(new Set(QUIZ.map(q=>mkey(q)))); else if(type==="c") p=CASES.map(c=>c.id); else if(type==="f") p=FLUIDS.map(f=>f.id); else if(type==="l") p=LAB.map(l=>l.id);
+  else p=CYTO.filter(c=>c.img&&typeof QIMG!=="undefined"&&QIMG[c.img]).map(c=>c.id);
+  return _dgPool[type]=p.slice().sort(); }
+function dgPick(type,k,ds){ const P=dgPool(type), n=dgNo(ds), per=Math.max(1,Math.floor(P.length/k)), cyc=Math.floor(n/per), idx=((n%per)+per)%per; return dgShuf(P,type+":"+cyc).slice(idx*k,idx*k+k); }
+const dgQ=k=>{ const i=kidx("quiz")[k]; return i===undefined? null : QUIZ[i]; }, dgCase=id=>CASES.find(c=>c.id===id)||null, dgFl=id=>FLUIDS.find(f=>f.id===id)||null, dgLab=id=>LAB.find(l=>l.id===id)||null, dgCy=id=>CYTO.find(c=>c.id===id)||null;
+function dgAll(){ const X=xs(); if(!X.dg) X.dg={}; return X.dg; }
+function dgRec(ds){ return dgAll()[ds]||null; }
+function dgAnswered(r){ return r&&r.pt? r.pt.filter(x=>x!==null&&x!==undefined).length : 0; }
+function dgPts(r){ return r? (r.pt||[]).reduce((a,x)=>a+(x||0),0) : 0; }
+function dgPosOf(r){ const i=r.pt.findIndex(x=>x===null||x===undefined); return i<0? DG_N : i; }
+function dgNew(ds){ const D=dgAll(); if(D[ds]&&(D[ds].q||D[ds].done)) return D[ds];
+  D[ds]={d:ds,q:dgPick("q",10,ds),c:dgPick("c",1,ds)[0],f:dgPick("f",1,ds)[0],l:dgPick("l",1,ds)[0],y:dgPick("y",1,ds)[0],
+    a:{q:range(10).map(()=>null),c:{sel:null,ddx:null,tx:null},f:null,l:null,y:null},pt:range(DG_N).map(()=>null),done:0,late:ds!==dgToday()?1:0,u:Date.now()};
+  save(); return D[ds]; }
+// two devices: a finished day beats an unfinished one; two finished copies keep the first one finished; otherwise the one further along
+function dgMerge(a,b){ const out={}; [a||{},b||{}].forEach(S=>Object.keys(S).forEach(k=>{ const e=S[k]; if(!e||!e.d) return; const o=out[k]; if(!o){ out[k]=e; return; }
+  if(!!e.done!==!!o.done){ if(e.done) out[k]=e; return; }
+  if(e.done){ if((e.u||0)<(o.u||0)) out[k]=e; return; }
+  const ae=dgAnswered(e), ao=dgAnswered(o); if(ae>ao||(ae===ao&&(e.u||0)>(o.u||0))) out[k]=e; })); return out; }
+function dgTrim(){ const D=dgAll(); Object.keys(D).sort().reverse().slice(DG_KEEP).forEach(k=>{ const r=D[k]; if(r&&r.q){ D[k]={d:r.d,pt:r.pt,p:r.p,done:r.done,late:r.late,u:r.u}; } }); }
+function dgStreak(){ const D=dgAll(), ok=ds=>D[ds]&&D[ds].done&&!D[ds].late; let ds=dgToday(), n=0; if(!ok(ds)) ds=dgAdd(ds,-1); while(ok(ds)){ n++; ds=dgAdd(ds,-1); } return n; }
+function dgBestStreak(){ const D=dgAll(), ks=Object.keys(D).filter(k=>D[k].done&&!D[k].late).sort(); let best=0, run=0, prev=null; ks.forEach(k=>{ run=(prev&&dgDayNum(k)===dgDayNum(prev)+1)? run+1 : 1; if(run>best) best=run; prev=k; }); return best; }
+function dgSqCol(pt,max){ return pt===null||pt===undefined? "var(--line)" : pt>=max? "var(--ok)" : pt>0? "var(--warn)" : "var(--bad)"; }
+function dgSquares(r,cur){ return `<div style="display:flex;gap:3px;flex-wrap:wrap;align-items:center">${range(DG_N).map(i=>`<span title="${DG_LBL[i]}" style="width:${i>=10?20:14}px;height:14px;border-radius:4px;background:${dgSqCol(r&&r.pt?r.pt[i]:null,DG_SMAX[i])};${cur===i?"outline:2px solid var(--ink);outline-offset:1px;":""}${i===10?"margin-left:5px;":""}"></span>`).join("")}</div>`; }
+function dgEmoji(r){ return range(DG_N).map(i=>{ const p=r.pt[i]; return (i===10?" ":"")+(p===null||p===undefined?"⬜":p>=DG_SMAX[i]?"🟩":p>0?"🟨":"🟥"); }).join(""); }
+function dgShareText(r){ return "VetPrep Daily #"+dgNo(r.d)+" ("+dgNice(r.d)+") "+dgPts(r)+"/"+DG_MAX+"\n"+dgEmoji(r)+"\nQuestions "+r.pt.slice(0,10).reduce((a,x)=>a+(x||0),0)+"/10 · Case "+(r.pt[10]||0)+"/3 · Fluids "+(r.pt[11]||0)+"/1 · Lab "+(r.pt[12]||0)+"/2 · Cytology "+(r.pt[13]||0)+"/1"; }
+function dgCountdown(){ const now=new Date(), mid=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1), m=Math.max(1,Math.round((mid-now)/60000)); return (m>=60? Math.floor(m/60)+" h ":"")+(m%60)+" min"; }
+function dgCard(){ const ds=dgToday(), r=dgRec(ds), st=dgStreak(), n=dgAnswered(r);
+  const txt= r&&r.done? `Done today: ${dgPts(r)}/${DG_MAX} ✓ · next in ${dgCountdown()}` : n? `In progress: ${n} of ${DG_N} answered` : "10 questions, 1 case, 1 fluid exercise, 1 lab panel and 1 cytology photo. One attempt";
+  return `<button class="mode c-tools" data-act="dgenter"><div class="ic">🎲</div><div class="t"><b>Daily challenge #${dgNo(ds)}</b><span>${txt}${st?` · ${st}-day streak 🔥`:""}</span></div><div class="pct">${r&&r.done?dgPts(r)+"/"+DG_MAX:n?n+"/"+DG_N:"New"}</div></button>`; }
+
+// ---------- station renderers (the same HTML is used while playing and in the review) ----------
+function dgGone(lbl){ return `<div class="card"><p class="muted" style="margin:0">${lbl}: this item was edited or removed after you played it, so it cannot be shown again.</p></div>`; }
+function dgFb(ok,head,body){ return `<div class="fb ${ok?"ok":"bad"}"><b>${head}</b>${body}</div>`; }
+function dgQHtml(r,i){ const q=dgQ(r.q[i]); if(!q) return dgGone("Question "+(i+1));
+  const ans=r.a.q[i], done=ans!==null&&ans!==undefined, perm=dgPerm(r.d,"q"+i,4);
+  const opts=perm.map((oi,k)=>{ let cls="opt"; if(done){ if(oi===0) cls+=" correct"; else if(oi===ans) cls+=" wrong"; else cls+=" dim"; }
+    return `<button class="${cls}" data-act="dgq" data-i="${i}" data-oi="${oi}" ${done?"disabled":""}>${q.fig&&q.o[0].length===1?"":String.fromCharCode(65+k)+". "}${esc(q.o[oi])}</button>`; }).join("");
+  const fb=done? dgFb(ans===0, ans===0?"✅ Correct":"❌ Not quite - the correct answer is "+(q.fig&&q.o[0].length===1?esc(q.o[0]):String.fromCharCode(65+perm.indexOf(0))), esc(q.e)) : "";
+  return `<div class="card c-quiz"><div class="row space" style="margin-bottom:8px"><span class="chip mode-chip">Question ${i+1} of 10 · ${esc(q.c)}</span>${starBtn("q:quiz:"+mkey(q))}</div>
+    <h3 style="font-size:17px;line-height:1.45">${esc(q.q)}</h3>${figHtml(q,done)}${opts}${fb}${done&&DGS.scr==="play"?`<div class="actions">${theoryBtn("quiz",q)}</div>`:""}</div>`; }
+function dgCaseScore(cs,a){ const keyT=cs.tests.filter(t=>t.key).length, sel=a.sel||[], keyH=sel.filter(i=>cs.tests[i]&&cs.tests[i].key).length, low=sel.length-keyH; return {keyT,keyH,low,tests:(keyH===keyT&&low<=2)?1:0,d:a.ddx!==null&&cs.ddx.options[a.ddx]&&cs.ddx.options[a.ddx].ok?1:0,t:a.tx!==null&&cs.tx.options[a.tx]&&cs.tx.options[a.tx].ok?1:0}; }
+function dgCaseBlock(r,cs,isD){ const blk=isD?cs.ddx:cs.tx, ans=isD?r.a.c.ddx:r.a.c.tx, done=ans!==null, perm=dgPerm(r.d,isD?"cd":"ct",blk.options.length), best=blk.options.find(o=>o.ok);
+  return `<div class="section-label">${isD?"Differential diagnosis":"Treatment"}</div><h3>${esc(blk.q)}</h3>
+    ${perm.map(oi=>{ const o=blk.options[oi]; let cls="opt"; if(done){ if(o.ok) cls+=" correct"; else if(oi===ans) cls+=" wrong"; else cls+=" dim"; } return `<button class="${cls}" data-act="${isD?"dgcddx":"dgctx"}" data-oi="${oi}" ${done?"disabled":""}>${esc(o.t)}</button>`; }).join("")}
+    ${done? dgFb(blk.options[ans].ok, blk.options[ans].ok?"✅ Correct":"❌ Not the best choice", esc(blk.options[ans].fb)+fullHtml(blk.options[ans],isD?"Full answer":"Full plan")) + (blk.options[ans].ok?"":`<div class="fb ok"><b>Best answer: ${esc(best.t)}</b>${esc(best.fb)}${fullHtml(best,isD?"Full answer":"Full plan")}</div>`) : ""}`; }
+function dgCaseResults(cs,sel){ const chosen=cs.tests.map((t,i)=>({t,i})).filter(x=>sel.indexOf(x.i)>=0), missed=cs.tests.filter((t,i)=>t.key&&sel.indexOf(i)<0);
+  return `<div class="section-label">Results</div>${chosen.map(x=>`<div class="result"><div class="nm"><span>${esc(x.t.name)}</span><span class="tag ${x.t.key?"key":"low"}">${x.t.key?"Key test":"Low yield"}</span></div><div class="rs">${esc(x.t.result)}</div>${caseImg(x.t)}<div class="nt">${esc(x.t.note)}</div></div>`).join("")}
+    ${missed.length?`<div class="section-label">Key tests you did not order</div>${missed.map(t=>`<div class="result"><div class="nm"><span>${esc(t.name)}</span><span class="tag miss">Missed</span></div><div class="rs">${esc(t.result)}</div>${caseImg(t)}<div class="nt">${esc(t.note)}</div></div>`).join("")}`:""}`; }
+function dgCaseIntro(cs){ return `<div class="section-label">Signalment</div><p>${esc(cs.signalment)}</p><div class="section-label">History</div><p>${esc(cs.history)}</p><div class="section-label">Physical examination</div><ul>${cs.pe.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`; }
+function dgCaseHtml(r,review){ const cs=dgCase(r.c); if(!cs) return dgGone("Case"); const a=r.a.c, head=`<div class="row space" style="margin-bottom:6px"><span class="chip" style="background:var(--coral-bg);color:var(--coral-ink)">Case · ${esc(cs.species)}</span><span class="muted">3 points</span></div><h2>${esc(cs.title)}</h2>`;
+  const sc=dgCaseScore(cs,a), tline=a.sel? `<div class="fb ${sc.tests?"ok":"warn"}"><b>Diagnostics: ${sc.keyH}/${sc.keyT} key tests ordered${sc.low?`, ${sc.low} low-yield`:""} · ${sc.tests} of 1 point</b>${esc(cs.testsSummary)}</div>` : "";
+  if(review){ if(!a.sel) return `<div class="card c-cases">${head}<p class="muted">Not answered.</p></div>`;
+    return `<div class="card c-cases">${head}${dgCaseIntro(cs)}${tline}${dgCaseResults(cs,a.sel)}${a.ddx!==null?dgCaseBlock(r,cs,true):""}${a.tx!==null?dgCaseBlock(r,cs,false):""}<div class="section-label">Clinical pearls</div><ul>${cs.pearls.map(p=>`<li>${esc(p)}</li>`).join("")}</ul></div>`; }
+  const step=DGS.cstep, stepper=`<div class="c-cases stepper">${range(6).map(i=>`<span class="${i<=step?"on":""}"></span>`).join("")}</div>`; let body="";
+  if(step===0) body=dgCaseIntro(cs)+`<div class="actions"><button class="btn" style="background:var(--coral)" data-act="dgcstep" data-s="1">Choose diagnostics →</button></div>`;
+  else if(step===1){ const n=Object.values(DGS.sel).filter(Boolean).length;
+    body=`<p class="muted">Select the tests you would run now. The point is given for ordering every key test with no more than 2 low-yield ones. This choice cannot be changed afterwards.</p>
+      ${cs.tests.map((t,i)=>`<button class="check ${DGS.sel[i]?"on":""}" data-act="dgctoggle" data-i="${i}"><span class="box">${DGS.sel[i]?"✓":""}</span><span>${esc(t.name)}</span></button>`).join("")}
+      <div class="actions"><button class="btn ghost" data-act="dgcstep" data-s="0">← Back</button><button class="btn" style="background:var(--coral)" data-act="dgcrun" ${n?"":"disabled"}>Run ${n} test${n===1?"":"s"} →</button></div>`; }
+  else if(step===2) body=tline+dgCaseResults(cs,a.sel)+`<div class="actions"><button class="btn" style="background:var(--coral)" data-act="dgcstep" data-s="3">Differential diagnosis →</button></div>`;
+  else if(step===3) body=dgCaseBlock(r,cs,true)+(a.ddx!==null?`<div class="actions"><button class="btn" style="background:var(--coral)" data-act="dgcstep" data-s="4">Choose treatment →</button></div>`:"");
+  else if(step===4) body=dgCaseBlock(r,cs,false)+(a.tx!==null?`<div class="actions"><button class="btn" style="background:var(--coral)" data-act="dgcstep" data-s="5">Case summary →</button></div>`:"");
+  else body=`<div class="fb ${r.pt[10]===3?"ok":"warn"}"><b>Case complete: ${r.pt[10]} of 3 points</b>Diagnostics: ${sc.keyH}/${sc.keyT} key tests${sc.low?`, ${sc.low} low-yield`:""} · Diagnosis: ${sc.d?"correct":"incorrect"} · Treatment: ${sc.t?"correct":"incorrect"}</div><div class="section-label">Clinical pearls</div><ul>${cs.pearls.map(p=>`<li>${esc(p)}</li>`).join("")}</ul><div class="actions">${theoryBtn("cases",{t:cs.t,q:cs.title+" "+(cs.dx||""),e:cs.ddx.options.find(o=>o.ok).fb})}</div>`;
+  return `<div class="card c-cases">${stepper}${head}${body}</div>`; }
+function dgFlOk(ex,v){ const x=parseFloat(v), tol=Math.max(Math.abs(ex.answer*ex.tol),0.5); return !isNaN(x)&&Math.abs(x-ex.answer)<=tol; }
+function dgFlHtml(r){ const ex=dgFl(r.f); if(!ex) return dgGone("Fluid exercise"); const a=r.a.f, done=!!a;
+  return `<div class="card c-fluids"><div class="row space" style="margin-bottom:6px"><span class="chip" style="background:var(--blue-bg);color:var(--blue-ink)">Fluid therapy</span><span class="muted">1 point</span></div>
+    <h2>${esc(ex.title)}</h2><p>${esc(ex.text)}</p><div class="section-label">${esc(ex.ask)}</div>
+    <div class="ans"><input id="dg_ans" type="number" inputmode="decimal" step="any" value="${esc(done?a.v:DGS.input)}" placeholder="Your answer" ${done?"disabled":""}><span>${esc(ex.unit)}</span></div>
+    ${done? dgFb(a.ok,(a.ok?"✅ Correct":"❌ Not correct")+" - expected ≈ "+fmt(ex.answer)+" "+esc(ex.unit), a.ok?"Within the accepted tolerance.":"Compare your calculation with the worked steps below.")+`<div class="section-label">Step-by-step solution</div><ol class="steps">${ex.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>` : `<p class="muted" style="font-size:13px">One attempt: check your arithmetic before you press Check.</p><div class="actions"><button class="btn" style="background:var(--blue)" data-act="dgfcheck">Check</button></div>`}</div>`; }
+function dgLabScore(ex,a){ const nAb=ex.panel.filter(r=>rowAbn(r)).length, hit=ex.panel.filter((r,i)=>rowAbn(r)&&a.fl.indexOf(i)>=0).length, fp=ex.panel.filter((r,i)=>!rowAbn(r)&&a.fl.indexOf(i)>=0).length, ok=!!(ex.options[a.ch]&&ex.options[a.ch].ok); return {nAb,hit,fp,ok,flags:(hit===nAb&&fp<=1)?1:0}; }
+function dgLabHtml(r){ const ex=dgLab(r.l); if(!ex) return dgGone("Lab panel"); const a=r.a.l, done=!!a, flags=done? a.fl : Object.keys(DGS.flags).filter(k=>DGS.flags[k]).map(Number), choice=done? a.ch : DGS.choice, perm=dgPerm(r.d,"l",ex.options.length);
+  const rows=ex.panel.map((row,i)=>{ const ab=rowAbn(row), fl=flags.indexOf(i)>=0; let cls="sel-row", mark="";
+    if(done){ cls=ab? ab+" abn":""; if(ab&&fl) mark=`<span class="mark hit">✓</span>`; else if(ab&&!fl) mark=`<span class="mark miss">missed</span>`; else if(!ab&&fl) mark=`<span class="mark fp">normal</span>`; } else if(fl) cls+=" flag";
+    const val=row.txt!==undefined? esc(row.txt) : (row.v.toLocaleString("en-US",{maximumFractionDigits:3})+(row.u?" "+esc(row.u):"")), arrow=done?(ab==="hi"?" ↑":ab==="lo"?" ↓":ab==="abn"?" !":""):"";
+    return `<tr class="${cls}" data-act="${done?"":"dglflag"}" data-i="${i}"><td>${done?"":`<span style="display:inline-block;width:16px;height:16px;border-radius:5px;border:2px solid ${fl?"var(--violet)":"var(--line2)"};background:${fl?"var(--violet)":"var(--card)"};vertical-align:-3px;margin-right:6px"></span>`}${esc(row.p)}</td><td class="val">${val}${arrow}${mark}</td><td class="ref">${row.txt!==undefined?"-":row.lo+"-"+row.hi}</td></tr>`; }).join("");
+  const opts=perm.map(oi=>{ const o=ex.options[oi]; let cls="opt"; if(done){ if(o.ok) cls+=" correct"; else if(oi===choice) cls+=" wrong"; else cls+=" dim"; }
+    return `<button class="${cls}" ${oi===choice&&!done?'style="border-color:var(--violet);background:var(--violet-bg)"':""} data-act="dglchoose" data-oi="${oi}" ${done?"disabled":""}>${esc(o.t)}</button>`; }).join("");
+  let fb=""; if(done){ const s=dgLabScore(ex,a), o=ex.options[a.ch], best=ex.options.find(x=>x.ok);
+    fb=dgFb(s.ok, s.ok?"✅ Correct pattern":"❌ Not this pattern", esc(o.fb)+fullHtml(o,"Full answer"))+(s.ok?"":`<div class="fb ok"><b>Correct pattern: ${esc(best.t)}</b>${esc(best.fb)}${fullHtml(best,"Full answer")}</div>`)+
+      `<div class="fb ${s.flags?"ok":"warn"}"><b>Abnormal values: you flagged ${s.hit}/${s.nAb}${s.fp?` (${s.fp} normal value${s.fp>1?"s":""} flagged)`:""} · ${s.flags} of 1 point</b>The point needs every abnormal value flagged with no more than one normal value marked.</div>`; }
+  return `<div class="card c-lab"><div class="row space" style="margin-bottom:6px"><span class="chip" style="background:var(--violet-bg);color:var(--violet-ink)">Lab panel · ${esc(ex.species)}</span><span class="muted">2 points</span></div>
+    <h2>${esc(ex.title)}</h2><p class="muted">${esc(ex.intro)}</p><div class="section-label">1. Tap every value you think is abnormal</div>
+    <table class="lab"><thead><tr><th>Parameter</th><th>Result</th><th>Ref (${esc(ex.species)})</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="section-label" style="margin-top:14px">2. Which pattern fits best?</div>${opts}
+    ${done? fb : `<div class="actions"><button class="btn" style="background:var(--violet)" data-act="dglsubmit" ${choice===null?"disabled":""}>Check answer</button></div>`}</div>`; }
+function dgCyHtml(r){ const it=dgCy(r.y); if(!it||!it.img||!QIMG[it.img]) return dgGone("Cytology"); const ans=r.a.y, done=ans!==null&&ans!==undefined, perm=dgPerm(r.d,"y",4);
+  return `<div class="card c-cyto"><div class="row space" style="margin-bottom:6px"><span class="chip mode-chip">Cytology · ${esc(it.mag)}</span><span class="muted">1 point</span></div>
+    <h2 style="font-size:18px">${esc(it.title)}</h2><p class="muted" style="font-size:13.5px">${esc(it.prep)}</p>
+    <figure class="qimg"><img src="${QIMG[it.img]}" alt="Photomicrograph for this field" data-act="zoom" data-img="${it.img}"><figcaption>Tap the image to enlarge · ${it.cr?esc(it.cr):"Class notes (USC)"}</figcaption></figure>
+    <div class="section-label" style="margin-top:10px">${esc(it.q)}</div>
+    ${perm.map((oi,k)=>{ let cls="opt"; if(done){ if(oi===0) cls+=" correct"; else if(oi===ans) cls+=" wrong"; else cls+=" dim"; } return `<button class="${cls}" data-act="dgy" data-oi="${oi}" ${done?"disabled":""}>${String.fromCharCode(65+k)}. ${esc(it.o[oi])}</button>`; }).join("")}
+    ${done? dgFb(ans===0, ans===0?"✅ Correct":"❌ Not quite - the answer is "+String.fromCharCode(65+perm.indexOf(0)), esc(it.e)) : ""}</div>`; }
+function dgStation(r,i,review){ return i<10? dgQHtml(r,i) : i===10? dgCaseHtml(r,review) : i===11? dgFlHtml(r) : i===12? dgLabHtml(r) : dgCyHtml(r); }
+
+// ---------- screens ----------
+function dgOpen(ds){ const r=dgNew(ds); DGS.date=ds; DGS.pos=dgPosOf(r); DGS.sel={}; DGS.flags={}; DGS.choice=null; DGS.input=""; DGS.copied="";
+  if(r.done||DGS.pos>=DG_N){ DGS.scr="result"; return; }
+  DGS.scr="play"; const a=r.a.c; DGS.cstep= !a.sel? 0 : a.ddx===null? 2 : a.tx===null? 4 : 5; }
+function dgCommit(r,i,pt){ r.pt[i]=pt; r.u=Date.now(); if(dgPosOf(r)>=DG_N){ r.done=1; r.p=dgPts(r); dgTrim(); } save(); }
+function dgStatsLine(){ const D=dgAll(), done=Object.keys(D).filter(k=>D[k].done), avg=done.length? Math.round(done.reduce((a,k)=>a+dgPts(D[k]),0)/done.length/DG_MAX*100) : 0;
+  return `<div class="kpis"><div class="kpi"><b>${dgStreak()}</b><small>day streak</small></div><div class="kpi"><b>${done.length}</b><small>days played</small></div><div class="kpi"><b>${done.length?avg+"%":"-"}</b><small>average score</small></div></div>`; }
+function dgHistRow(ds,r,today){ const done=r&&r.done, n=dgAnswered(r), can=dgDayNum(today)-dgDayNum(ds)<=7;
+  return `<div style="border-top:1px solid var(--line);padding:10px 0"><div class="row space"><b style="font-size:14.5px">#${dgNo(ds)} · ${dgNice(ds)}${ds===today?" · today":""}</b><span style="font-weight:700">${done?dgPts(r)+"/"+DG_MAX:n?n+"/"+DG_N+" answered":"not played"}</span></div>
+    <div class="row space" style="margin-top:6px">${dgSquares(r)}${done? (r.q?`<button class="btn ghost small" data-act="dgreview" data-d="${ds}">Review</button>`:`<span class="muted" style="font-size:12.5px">score only</span>`) : (ds===today||can)?`<button class="btn small" data-act="dgopen" data-d="${ds}">${n?"Continue":ds===today?"Play":"Play late"}</button>`:""}</div>${r&&r.late&&done?`<div class="muted" style="font-size:12px;margin-top:4px">Played late: it does not count for the streak.</div>`:""}</div>`; }
+function renderDgame(){
+  const today=dgToday(), D=dgAll();
+  if(DGS.scr==="play"||DGS.scr==="result"||DGS.scr==="review"){ if(!DGS.date||!dgRec(DGS.date)) DGS.scr="home"; }
+  if(DGS.scr==="home"||DGS.scr==="history"){
+    topbar("Daily challenge"); $("topprog").innerHTML=""; const r=dgRec(today), n=dgAnswered(r);
+    const days= DGS.scr==="history"? Object.keys(D).sort().reverse() : range(8).map(k=>dgAdd(today,-k)).filter(ds=>dgNo(ds)>=1);
+    if(DGS.scr==="history") backTo("dgame");
+    $("main").innerHTML=(DGS.scr==="home"?`<div class="hero"><h2>Daily challenge #${dgNo(today)}</h2><p class="muted" style="margin:6px 0 0">${dgNice(today)}. One set a day, the same on every device: 10 questions, 1 clinical case, 1 fluid exercise, 1 lab panel and 1 cytology photo, for ${DG_MAX} points. Each answer is final and is saved as you go.</p></div>
+      <div class="card c-tools">${dgStatsLine()}
+        <div style="margin-top:12px">${dgSquares(r)}</div>
+        <p class="muted" style="font-size:13.5px;margin:10px 0 0">${r&&r.done?`Today's challenge is done: <b style="color:var(--ink)">${dgPts(r)}/${DG_MAX}</b>. The next one starts in ${dgCountdown()}.`:n?`You have answered ${n} of ${DG_N}. You can stop and come back: it continues where you left it.`:"Not played yet. It takes about 15 minutes."}</p>
+        <div class="actions"><button class="btn" data-act="dgopen" data-d="${today}">${r&&r.done?"See today's result":n?"Continue":"Start today's challenge"}</button></div></div>`:"")+
+      `<div class="card"><div class="row space"><h3 style="margin:0">${DGS.scr==="history"?"All days played":"Last days"}</h3>${DGS.scr==="home"&&Object.keys(D).length?`<button class="btn ghost small" data-act="dghist">All (${Object.keys(D).length})</button>`:""}</div>
+        ${DGS.scr==="history"?`<p class="muted" style="font-size:13px;margin:6px 0 0">Best streak: ${dgBestStreak()} days. Full answers are kept for the last ${DG_KEEP} days played; older days keep the score.</p>`:`<p class="muted" style="font-size:13px;margin:6px 0 0">A missed day can still be played for 7 days, marked as late.</p>`}
+        ${days.length? days.map(ds=>dgHistRow(ds,D[ds],today)).join("") : `<p class="muted">Nothing here yet.</p>`}</div>
+      <p class="muted" style="font-size:12.5px;text-align:center">Green: full marks · amber: part of the points · red: none. Questions answered here also count in Quiz Mode, and wrong ones enter the Daily review.</p>`;
+    if(DGS.scr==="home") backTo("home");
+    return; }
+  const r=dgRec(DGS.date);
+  if(DGS.scr==="review"){ topbar("Review · #"+dgNo(r.d)); backTo("dgame"); $("topprog").innerHTML="";
+    $("main").innerHTML=`<div class="card c-tools"><div class="row space"><b>${dgNice(r.d)}</b><b>${dgPts(r)}/${DG_MAX}</b></div><div style="margin-top:8px">${dgSquares(r)}</div></div>`+(r.q? range(DG_N).map(i=>dgStation(r,i,true)).join("") : `<div class="card"><p class="muted" style="margin:0">Only the score is kept for this day.</p></div>`)+`<div class="actions" style="justify-content:center"><button class="btn ghost" data-act="dghome">Back</button></div>`;
+    return; }
+  if(DGS.scr==="result"){ topbar("Daily challenge #"+dgNo(r.d)); backTo("dgame"); $("topprog").innerHTML=""; const p=dgPts(r), qs=r.pt.slice(0,10).reduce((a,x)=>a+(x||0),0);
+    $("main").innerHTML=`<div class="card c-tools done-banner"><div class="big">${p===DG_MAX?"🏆":p>=13?"🎯":p>=9?"👍":"📚"}</div><h2>${p}/${DG_MAX}</h2><p class="muted" style="margin:4px 0 10px">${dgNice(r.d)}${r.late?" · played late":""} · ${dgStreak()}-day streak</p>
+        <div style="display:flex;justify-content:center">${dgSquares(r)}</div>
+        <div style="text-align:left;margin-top:14px">${[["Questions",qs,10],["Clinical case",r.pt[10]||0,3],["Fluid therapy",r.pt[11]||0,1],["Lab panel",r.pt[12]||0,2],["Cytology",r.pt[13]||0,1]].map(x=>barRow(x[0],x[1],x[2],"var(--mc,var(--teal))",x[1]+"/"+x[2])).join("")}</div>
+        <div class="actions" style="justify-content:center">${r.q?`<button class="btn" data-act="dgreview" data-d="${r.d}">Review answers</button>`:""}<button class="btn ghost" data-act="dgshare">Copy result</button></div>
+        ${DGS.copied?`<p class="muted" style="font-size:13px;margin:8px 0 0">${esc(DGS.copied)}</p><textarea readonly rows="3" style="width:100%;margin-top:6px;font-size:13px">${esc(dgShareText(r))}</textarea>`:""}
+        <p class="muted" style="font-size:13px;margin:12px 0 0">${r.d===today?`Next challenge in ${dgCountdown()}.`:""}</p></div>
+      <div class="actions" style="justify-content:center"><button class="btn ghost" data-act="dghome">All days</button><button class="btn ghost" data-act="home">Home</button></div>`;
+    return; }
+  // play
+  topbar("Daily #"+dgNo(r.d)); backTo("dgame"); const i=DGS.pos, done=r.pt[i]!==null&&r.pt[i]!==undefined;
+  $("topprog").innerHTML=`<div class="c-tools"><div class="row space" style="font-size:12.5px;color:var(--muted);margin-top:6px"><span>${DG_LBL[i]} · step ${i+1} of ${DG_N}</span><span><b style="color:var(--ink)">${dgPts(r)}</b> points</span></div><div style="margin-top:5px">${dgSquares(r,i)}</div></div>`;
+  $("main").innerHTML=dgStation(r,i,false)+(done&&(i!==10||DGS.cstep===5)?`<div class="actions" style="justify-content:center"><button class="btn" data-act="dgnext">${dgPosOf(r)>=DG_N?"See the result →":"Next →"}</button></div>`:"")+`<div class="actions" style="justify-content:center"><button class="btn ghost small" data-act="dghome">Leave and continue later</button></div>`;
+  const inp=$("dg_ans"); if(inp&&!r.a.f){ inp.addEventListener("input",e=>{ DGS.input=e.target.value; }); inp.addEventListener("keydown",e=>{ if(e.key==="Enter") act("dgfcheck",{}); }); }
+}
+function dgAct(a,d){
+  if(a.slice(0,2)!=="dg") return false;
+  const r=DGS.date? dgRec(DGS.date) : null, playing=DGS.scr==="play"&&r&&!r.done;
+  switch(a){
+    case "dgopen": dgOpen(d.d||dgToday()); window.scrollTo(0,0); render(); return true;
+    case "dgenter": if(!(DGS.scr==="play"&&r&&!r.done)) DGS.scr="home"; go("dgame"); return true;
+    case "dghome": DGS.scr="home"; window.scrollTo(0,0); render(); return true;
+    case "dghist": DGS.scr="history"; window.scrollTo(0,0); render(); return true;
+    case "dgreview": if(dgRec(d.d)){ DGS.date=d.d; DGS.scr="review"; window.scrollTo(0,0); render(); } return true;
+    case "dgnext": if(r){ if(dgPosOf(r)>=DG_N){ DGS.scr="result"; } else { DGS.pos=dgPosOf(r); if(DGS.pos===10) DGS.cstep=0; } window.scrollTo(0,0); render(); } return true;
+    case "dgshare": if(r){ const txt=dgShareText(r); DGS.copied="Select the text below and copy it."; try{ navigator.clipboard.writeText(txt).then(()=>{ DGS.copied="Copied. Paste it wherever you like."; render(); },()=>{}); }catch(e){} render(); } return true;
+    case "dgq": if(playing&&+d.i===DGS.pos&&r.a.q[DGS.pos]===null){ const i=DGS.pos, oi=+d.oi, q=dgQ(r.q[i]), ok=oi===0; r.a.q[i]=oi;
+        if(q){ const kk=mkey(q); store.quiz.done[kk]=true; store.quiz.correct[kk]=ok; markWrong(store.quiz,kk,ok); srsMark("quiz",kk,ok); }
+        dgCommit(r,i,ok?1:0); render(); } return true;
+    case "dgcstep": if(playing&&DGS.pos===10){ const s=+d.s, c=r.a.c; if((s<=1&&!c.sel)||(s>=2&&c.sel&&(s<4||c.ddx!==null)&&(s<5||c.tx!==null))){ DGS.cstep=s; window.scrollTo(0,0); render(); } } return true;
+    case "dgctoggle": if(playing&&DGS.pos===10&&!r.a.c.sel){ DGS.sel[d.i]=!DGS.sel[d.i]; render(); } return true;
+    case "dgcrun": if(playing&&DGS.pos===10&&!r.a.c.sel){ const sel=Object.keys(DGS.sel).filter(k=>DGS.sel[k]).map(Number).sort((x,y)=>x-y); if(sel.length){ r.a.c.sel=sel; r.u=Date.now(); save(); DGS.cstep=2; window.scrollTo(0,0); render(); } } return true;
+    case "dgcddx": if(playing&&DGS.pos===10&&r.a.c.sel&&r.a.c.ddx===null){ r.a.c.ddx=+d.oi; r.u=Date.now(); save(); render(); } return true;
+    case "dgctx": if(playing&&DGS.pos===10&&r.a.c.ddx!==null&&r.a.c.tx===null){ r.a.c.tx=+d.oi; const cs=dgCase(r.c), s=cs? dgCaseScore(cs,r.a.c) : {tests:0,d:0,t:0};
+        if(cs){ const k=ckey(cs); store.cases.done[k]=true; stamp(store.cases,k); store.cases.result[k]={d:!!s.d,t:!!s.t,k:s.keyH,kt:s.keyT}; }
+        dgCommit(r,10,s.tests+s.d+s.t); render(); } return true;
+    case "dgfcheck": if(playing&&DGS.pos===11&&!r.a.f&&DGS.input!==""){ const ex=dgFl(r.f), ok=ex? dgFlOk(ex,DGS.input) : false; r.a.f={v:String(DGS.input).slice(0,20),ok:ok};
+        if(ex){ const k=fkey(ex); store.fluids.done[k]=true; stamp(store.fluids,k); store.fluids.result[k]={ok:ok}; }
+        dgCommit(r,11,ok?1:0); render(); } return true;
+    case "dglflag": if(playing&&DGS.pos===12&&!r.a.l){ DGS.flags[d.i]=!DGS.flags[d.i]; render(); } return true;
+    case "dglchoose": if(playing&&DGS.pos===12&&!r.a.l){ DGS.choice=+d.oi; render(); } return true;
+    case "dglsubmit": if(playing&&DGS.pos===12&&!r.a.l&&DGS.choice!==null){ const ex=dgLab(r.l); r.a.l={fl:Object.keys(DGS.flags).filter(k=>DGS.flags[k]).map(Number),ch:DGS.choice}; const s=ex? dgLabScore(ex,r.a.l) : {ok:false,flags:0,hit:0,nAb:0};
+        if(ex){ const k=lkey(ex); store.lab.done[k]=true; stamp(store.lab,k); store.lab.result[k]={ok:s.ok,hit:s.hit,n:s.nAb}; }
+        dgCommit(r,12,(s.ok?1:0)+s.flags); render(); } return true;
+    case "dgy": if(playing&&DGS.pos===13&&(r.a.y===null||r.a.y===undefined)){ const oi=+d.oi, it=dgCy(r.y), ok=oi===0; r.a.y=oi;
+        if(it){ const k=ykey(it); if(!store.cyto.done[k]||ok){ store.cyto.done[k]=true; store.cyto.correct[k]=ok; } markWrong(store.cyto,k,ok); }
+        dgCommit(r,13,ok?1:0); render(); } return true;
+  }
+  return true;
 }
 // ===== APP LOGIC =====
 const KEY = "vetprep_uae_v1";
@@ -12503,7 +12702,7 @@ function renderHome(){
       <p class="muted">Preparation for small-animal practice in Abu Dhabi and the MOCCAE licensing exam. Content in English. Pick a mode to start.</p>
       <div class="stats"><span>Overall: <b>${totalDone}/${totalAll}</b> items completed</span>${store.quiz.best?`<span>Best quiz streak: <b>${store.quiz.best}</b></span>`:""}</div>
     </div>
-    <div class="modes">${dailyCard()}${cards}${mockCard()}</div>
+    <div class="modes">${dgCard()}${dailyCard()}${cards}${mockCard()}</div>
     <button class="mode" data-act="go" data-v="review" style="margin-top:2px"><div class="ic" style="background:var(--bad-bg);color:var(--ink)">❌</div><div class="t"><b>Review mistakes</b><span>${(()=>{ const n=mistakesTotal(); return n?`${n} item${n>1?"s":""} answered wrong, waiting to be corrected`:"No pending mistakes"; })()}</span></div><div class="pct">${mistakesTotal()}</div></button>
     <button class="mode" data-act="go" data-v="stats" style="margin-top:2px"><div class="ic" style="background:var(--soft);color:var(--ink)">📊</div><div class="t"><b>Statistics</b><span>Accuracy by category, weak areas, streaks</span></div></button>
     <p class="muted kbhint" style="font-size:13px;margin:0">Keyboard: A-D (or 1-4) to answer, Enter or → for the next question.</p><div class="row space" style="margin-top:6px"><span class="muted">${BASIC_TOTAL()} basic items · ${QUIZ.length} quiz questions · ${DRUGS.length} drug questions · ${CYTO.length} cytology fields · ${CASES.length} cases · ${LAB.length} lab panels · ${FLUIDS.length} fluid exercises</span></div>
@@ -12959,7 +13158,7 @@ function renderTheory(){
   const inp=$("tsearch"); inp.addEventListener("input", e=>{ T.q=e.target.value; const pos=inp.selectionStart; renderTheory(); const n=$("tsearch"); n.focus(); n.setSelectionRange(pos,pos); });
 }
 function renderTopic(t){
-  topbar(t.title, `${starBtn("t:"+t.id)}<button class="btn ghost small" data-act="tback">${T.ret==="saved"?"← Saved":(T.ret==="proto"||T.ret==="anes")?"← Protocol":T.ret==="vacc"?"← Vaccines":T.ret?"← Back to question":"Topics"}</button>`); $("topprog").innerHTML="";
+  topbar(t.title, `${starBtn("t:"+t.id)}<button class="btn ghost small" data-act="tback">${T.ret==="saved"?"← Saved":(T.ret==="proto"||T.ret==="anes")?"← Protocol":T.ret==="vacc"?"← Vaccines":T.ret==="dgame"?"← Challenge":T.ret?"← Back to question":"Topics"}</button>`); $("topprog").innerHTML="";
   const done=!!store.theory.done[tkey(t)];
   const idx=THEORY.indexOf(t), prev=THEORY[idx-1], next=THEORY[idx+1];
   const practice=(t.practice||[]).map(p=>`<button class="btn ghost small" data-act="mpractice" data-m="${p.m}" data-c="${esc(p.cat)}" data-tab="${p.tab||""}">${MODES[p.m]?MODES[p.m].icon:""} ${esc(p.label||p.cat)}</button>`).join(" ");
